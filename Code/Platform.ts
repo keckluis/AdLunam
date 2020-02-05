@@ -7,7 +7,7 @@ namespace AdLunam {
     private static sprites: Sprite[];
     //private static material: fudge.Material = new fudge.Material("Platform", fudge.ShaderUniColor, new fudge.CoatColored(fudge.Color.CSS("red", 0.5)));
 
-    public constructor(posX: number, posY: number) {
+    public constructor(_posX: number, _posY: number, _item?: ITEM) {
       super("Platform");
       let nodeSprite: NodeSprite = new NodeSprite("PlatformSprite", Platform.sprites[0]);
       nodeSprite.activate(false);
@@ -21,12 +21,18 @@ namespace AdLunam {
 
       this.cmpTransform.local.scaleX(2);
       this.cmpTransform.local.scaleY(2);
-      this.cmpTransform.local.translateX(posX * 0.1);
-      if (posY > 22)
-        posY = 22;
-      if (posY < -30)
-        posY = -30;
-      this.cmpTransform.local.translateY(posY * 0.1);
+      this.cmpTransform.local.translateX(_posX * 0.1);
+      if (_posY > 22)
+        _posY = 22;
+      if (_posY < -30)
+        _posY = -30;
+      this.cmpTransform.local.translateY(_posY * 0.1);
+
+      if (_item) {
+
+        let item: Item = new Item(_item);
+        this.appendChild(item);
+      }
     }
 
     public static generateSprites(_txtImage: fudge.TextureImage): void {

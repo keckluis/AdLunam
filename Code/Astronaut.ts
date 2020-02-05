@@ -9,12 +9,6 @@ namespace AdLunam {
     export enum DIRECTION {
       RIGHT, LEFT
     }
-    export enum ITEM {
-      NONE, 
-      GUN, 
-      SHIELD,
-      JETPACK
-    }
   
     export class Astronaut extends fudge.Node {
       private static sprites: Sprite[];

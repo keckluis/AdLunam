@@ -4,7 +4,7 @@ var AdLunam;
     var fudge = FudgeCore;
     class Platform extends fudge.Node {
         //private static material: fudge.Material = new fudge.Material("Platform", fudge.ShaderUniColor, new fudge.CoatColored(fudge.Color.CSS("red", 0.5)));
-        constructor(posX, posY) {
+        constructor(_posX, _posY, _item) {
             super("Platform");
             let nodeSprite = new AdLunam.NodeSprite("PlatformSprite", Platform.sprites[0]);
             nodeSprite.activate(false);
@@ -17,12 +17,16 @@ var AdLunam;
             this.show();
             this.cmpTransform.local.scaleX(2);
             this.cmpTransform.local.scaleY(2);
-            this.cmpTransform.local.translateX(posX * 0.1);
-            if (posY > 22)
-                posY = 22;
-            if (posY < -30)
-                posY = -30;
-            this.cmpTransform.local.translateY(posY * 0.1);
+            this.cmpTransform.local.translateX(_posX * 0.1);
+            if (_posY > 22)
+                _posY = 22;
+            if (_posY < -30)
+                _posY = -30;
+            this.cmpTransform.local.translateY(_posY * 0.1);
+            if (_item) {
+                let item = new AdLunam.Item(_item);
+                this.appendChild(item);
+            }
         }
         static generateSprites(_txtImage) {
             Platform.sprites = [];
