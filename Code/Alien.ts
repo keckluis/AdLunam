@@ -15,6 +15,7 @@ namespace AdLunam {
       private static speedMax: fudge.Vector2 = new fudge.Vector2(0.3, 5); // units per second
       private static gravity: fudge.Vector2 = fudge.Vector2.Y(-3);
       public speed: fudge.Vector3 = fudge.Vector3.ZERO();
+      private alienDirection: DIRECTION_ALIEN;
   
       constructor(_name: string = "Alien") {
         super(_name);
@@ -33,7 +34,7 @@ namespace AdLunam {
           this.appendChild(nodeSprite);
         }
         
-        this.act(ACTION_ALIEN.IDLE);
+        this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.RIGHT);
         fudge.Loop.addEventListener(fudge.EVENT.LOOP_FRAME, this.update);
       }
   
@@ -66,6 +67,7 @@ namespace AdLunam {
           case ACTION_ALIEN.WALK:
             this.speed.x = Alien.speedMax.x * direction;
             this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
+            this.alienDirection = _direction;
             break;
           case ACTION_ALIEN.DEAD:
               break;
@@ -83,20 +85,31 @@ namespace AdLunam {
 
         this.cmpTransform.local.translate(distance);
 
-        this.checkCollision();
+        if (!this.checkCollision()) {
+          if (this.alienDirection == DIRECTION_ALIEN.RIGHT) {
+              this.cmpTransform.local.translateX(-0.1);
+              this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
+          } else {
+            this.cmpTransform.local.translateX(0.1);
+            this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.RIGHT);
+          }
+        }
       }
     
-      private checkCollision(): void {
+      private checkCollision(): boolean {
         for (let floor of level.getChildren()) {
           let rect: fudge.Rectangle = (<Floor>floor).getRectWorld();
           let hit: boolean = rect.isInside(this.cmpTransform.local.translation.toVector2());
           if (hit) {
+            console.log("ALIEN HIT");
             let translation: fudge.Vector3 = this.cmpTransform.local.translation;
             translation.y = rect.y;
             this.cmpTransform.local.translation = translation;
             this.speed.y = 0;
-          }
+          } 
+          return hit;
         }
+        return false;
       }
     }
   }

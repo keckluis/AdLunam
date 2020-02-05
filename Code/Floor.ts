@@ -3,17 +3,31 @@ namespace AdLunam {
 
   export class Floor extends ƒ.Node {
     private static mesh: ƒ.MeshSprite = new ƒ.MeshSprite();
-    private static material: ƒ.Material = new ƒ.Material("Floor", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("red", 0.5)));
     private static readonly pivot: ƒ.Matrix4x4 = ƒ.Matrix4x4.TRANSLATION(ƒ.Vector3.Y(-0.5));
+    private static sprites: Sprite[];
 
     public constructor() {
       super("Floor");
+      let nodeSprite: NodeSprite = new NodeSprite("FloorSprite", Floor.sprites[0]);
+      nodeSprite.activate(false);
+      this.appendChild(nodeSprite);
       this.addComponent(new ƒ.ComponentTransform());
-      this.addComponent(new ƒ.ComponentMaterial(Floor.material));
       let cmpMesh: ƒ.ComponentMesh = new ƒ.ComponentMesh(Floor.mesh);
-      //cmpMesh.pivot.translateY(-0.5);
       cmpMesh.pivot = Floor.pivot;
       this.addComponent(cmpMesh);
+      this.show();
+    }
+
+    public static generateSprites(_txtImage: fudge.TextureImage): void {
+      Floor.sprites = [];
+      let sprite: Sprite = new Sprite("FloorSprite");
+      sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 156, 72, 61), 1, fudge.Vector2.ZERO(), 72, fudge.ORIGIN2D.TOPCENTER);
+      Floor.sprites.push(sprite);
+    }
+
+    public show(): void {
+      for (let child of this.getChildren())
+        child.activate(child.name == "FloorSprite");
     }
 
     public getRectWorld(): ƒ.Rectangle {

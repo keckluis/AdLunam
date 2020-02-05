@@ -12,16 +12,17 @@ namespace AdLunam {
     export let level: fudge.Node;
     let astronaut: Astronaut;
     let alien: Alien;
-    let txtAstronaut: fudge.TextureImage;  
+    let txtImage: fudge.TextureImage;  
     let cmpCamera: fudge.ComponentCamera;
   
     function test(): void {
       let canvas: HTMLCanvasElement = document.querySelector("canvas");
       let img: HTMLImageElement = document.querySelector("img");
-      txtAstronaut = new fudge.TextureImage();
-      txtAstronaut.image = img;
-      Astronaut.generateSprites(txtAstronaut);
-      Alien.generateSprites(txtAstronaut);
+      txtImage = new fudge.TextureImage();
+      txtImage.image = img;
+      Astronaut.generateSprites(txtImage);
+      Alien.generateSprites(txtImage);
+      Floor.generateSprites(txtImage);
   
       fudge.RenderManager.initialize(true, false);
       game = new fudge.Node("Game");
@@ -113,14 +114,14 @@ namespace AdLunam {
     function createLevel(): fudge.Node {
       let level: fudge.Node = new fudge.Node("Level");
       let floor: Floor = new Floor();
-      floor.cmpTransform.local.scaleY(1);
+      floor.cmpTransform.local.scaleY(0.5);
       level.appendChild(floor);
   
       floor = new Floor();
       floor.cmpTransform.local.scaleY(1);
       floor.cmpTransform.local.scaleX(2);
-      floor.cmpTransform.local.translateY(0.2);
-      floor.cmpTransform.local.translateX(1.5);
+      floor.cmpTransform.local.translateY(0);
+      floor.cmpTransform.local.translateX(3);
       level.appendChild(floor);
 
       floor = new Floor();

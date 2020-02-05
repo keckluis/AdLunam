@@ -5,12 +5,24 @@ var AdLunam;
     class Floor extends ƒ.Node {
         constructor() {
             super("Floor");
+            let nodeSprite = new AdLunam.NodeSprite("FloorSprite", Floor.sprites[0]);
+            nodeSprite.activate(false);
+            this.appendChild(nodeSprite);
             this.addComponent(new ƒ.ComponentTransform());
-            this.addComponent(new ƒ.ComponentMaterial(Floor.material));
             let cmpMesh = new ƒ.ComponentMesh(Floor.mesh);
-            //cmpMesh.pivot.translateY(-0.5);
             cmpMesh.pivot = Floor.pivot;
             this.addComponent(cmpMesh);
+            this.show();
+        }
+        static generateSprites(_txtImage) {
+            Floor.sprites = [];
+            let sprite = new AdLunam.Sprite("FloorSprite");
+            sprite.generateByGrid(_txtImage, AdLunam.fudge.Rectangle.GET(0, 156, 72, 61), 1, AdLunam.fudge.Vector2.ZERO(), 72, AdLunam.fudge.ORIGIN2D.TOPCENTER);
+            Floor.sprites.push(sprite);
+        }
+        show() {
+            for (let child of this.getChildren())
+                child.activate(child.name == "FloorSprite");
         }
         getRectWorld() {
             let rect = ƒ.Rectangle.GET(0, 0, 100, 100);
@@ -27,7 +39,6 @@ var AdLunam;
         }
     }
     Floor.mesh = new ƒ.MeshSprite();
-    Floor.material = new ƒ.Material("Floor", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("red", 0.5)));
     Floor.pivot = ƒ.Matrix4x4.TRANSLATION(ƒ.Vector3.Y(-0.5));
     AdLunam.Floor = Floor;
 })(AdLunam || (AdLunam = {}));

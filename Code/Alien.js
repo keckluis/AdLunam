@@ -23,7 +23,16 @@ var AdLunam;
                 this.speed.y += Alien.gravity.y * timeFrame;
                 let distance = fudge.Vector3.SCALE(this.speed, timeFrame);
                 this.cmpTransform.local.translate(distance);
-                this.checkCollision();
+                if (!this.checkCollision()) {
+                    if (this.alienDirection == DIRECTION_ALIEN.RIGHT) {
+                        this.cmpTransform.local.translateX(-0.1);
+                        this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
+                    }
+                    else {
+                        this.cmpTransform.local.translateX(0.1);
+                        this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.RIGHT);
+                    }
+                }
             };
             this.addComponent(new fudge.ComponentTransform());
             for (let sprite of Alien.sprites) {
@@ -32,7 +41,7 @@ var AdLunam;
                 nodeSprite.addEventListener("showNext", (_event) => { _event.currentTarget.showFrameNext(); }, true);
                 this.appendChild(nodeSprite);
             }
-            this.act(ACTION_ALIEN.IDLE);
+            this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.RIGHT);
             fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         }
         static generateSprites(_txtImage) {
@@ -60,6 +69,7 @@ var AdLunam;
                 case ACTION_ALIEN.WALK:
                     this.speed.x = Alien.speedMax.x * direction;
                     this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
+                    this.alienDirection = _direction;
                     break;
                 case ACTION_ALIEN.DEAD:
                     break;
@@ -71,12 +81,15 @@ var AdLunam;
                 let rect = floor.getRectWorld();
                 let hit = rect.isInside(this.cmpTransform.local.translation.toVector2());
                 if (hit) {
+                    console.log("ALIEN HIT");
                     let translation = this.cmpTransform.local.translation;
                     translation.y = rect.y;
                     this.cmpTransform.local.translation = translation;
                     this.speed.y = 0;
                 }
+                return hit;
             }
+            return false;
         }
     }
     Alien.speedMax = new fudge.Vector2(0.3, 5); // units per second
