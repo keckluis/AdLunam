@@ -18,7 +18,7 @@ namespace AdLunam {
   
     export class Astronaut extends fudge.Node {
       private static sprites: Sprite[];
-      private static speedMax: fudge.Vector2 = new fudge.Vector2(1.5, 2); // units per second
+      private static speedMax: fudge.Vector2 = new fudge.Vector2(2, 2); // units per second
       private static gravity: fudge.Vector2 = fudge.Vector2.Y(-3);
       public speed: fudge.Vector3 = fudge.Vector3.ZERO();
       public item: ITEM = ITEM.NONE;
@@ -151,11 +151,13 @@ namespace AdLunam {
 
         if (this.speed.y == 0)
           this.isOnFloor = true;
+        else
+          this.isOnFloor = false;
       }
 
       private checkCollision(): void {
-        for (let floor of level.getChildren()) {
-          let rect: fudge.Rectangle = (<Floor>floor).getRectWorld();
+        for (let platform of level.getChildren()) {
+          let rect: fudge.Rectangle = (<Platform>platform).getRectWorld();
           let hit: boolean = rect.isInside(this.cmpTransform.local.translation.toVector2());
           if (hit) {
             let translation: fudge.Vector3 = this.cmpTransform.local.translation;

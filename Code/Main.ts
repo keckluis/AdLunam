@@ -1,7 +1,7 @@
 namespace AdLunam {
     export import fudge = FudgeCore;
   
-    window.addEventListener("load", test);
+    window.addEventListener("load", main);
   
     interface KeyPressed {
       [code: string]: boolean;
@@ -15,20 +15,20 @@ namespace AdLunam {
     let txtImage: fudge.TextureImage;  
     let cmpCamera: fudge.ComponentCamera;
   
-    function test(): void {
+    function main(): void {
       let canvas: HTMLCanvasElement = document.querySelector("canvas");
       let img: HTMLImageElement = document.querySelector("img");
       txtImage = new fudge.TextureImage();
       txtImage.image = img;
       Astronaut.generateSprites(txtImage);
       Alien.generateSprites(txtImage);
-      Floor.generateSprites(txtImage);
+      Platform.generateSprites(txtImage);
   
       fudge.RenderManager.initialize(true, false);
       game = new fudge.Node("Game");
       astronaut = new Astronaut("Astronaut");
       alien = new Alien("Alien");
-      level = createLevel();
+      level = new Level();
       game.appendChild(level);
       game.appendChild(astronaut);
       game.appendChild(alien);
@@ -49,6 +49,7 @@ namespace AdLunam {
       fudge.Loop.start(fudge.LOOP_MODE.TIME_GAME, 10);
   
       function update(_event: fudge.Eventƒ): void {
+
         processInput();
         
         cmpCamera.pivot.translation = new fudge.Vector3(astronaut.cmpTransform.local.translation.x, cmpCamera.pivot.translation.y, cmpCamera.pivot.translation.z);
@@ -109,27 +110,5 @@ namespace AdLunam {
       }
       if (astronaut.isOnFloor)
         astronaut.act(ACTION.IDLE);
-    }
-
-    function createLevel(): fudge.Node {
-      let level: fudge.Node = new fudge.Node("Level");
-      let floor: Floor = new Floor();
-      floor.cmpTransform.local.scaleY(0.5);
-      level.appendChild(floor);
-  
-      floor = new Floor();
-      floor.cmpTransform.local.scaleY(1);
-      floor.cmpTransform.local.scaleX(2);
-      floor.cmpTransform.local.translateY(0);
-      floor.cmpTransform.local.translateX(3);
-      level.appendChild(floor);
-
-      floor = new Floor();
-      floor.cmpTransform.local.scaleY(1);
-      floor.cmpTransform.local.scaleX(2);
-      floor.cmpTransform.local.translateX(6);
-      level.appendChild(floor);
-  
-      return level;
     }
   }

@@ -35,6 +35,8 @@ var AdLunam;
                 this.checkCollision();
                 if (this.speed.y == 0)
                     this.isOnFloor = true;
+                else
+                    this.isOnFloor = false;
             };
             this.addComponent(new fudge.ComponentTransform());
             for (let sprite of Astronaut.sprites) {
@@ -124,8 +126,8 @@ var AdLunam;
             this.show(_action, this.item);
         }
         checkCollision() {
-            for (let floor of AdLunam.level.getChildren()) {
-                let rect = floor.getRectWorld();
+            for (let platform of AdLunam.level.getChildren()) {
+                let rect = platform.getRectWorld();
                 let hit = rect.isInside(this.cmpTransform.local.translation.toVector2());
                 if (hit) {
                     let translation = this.cmpTransform.local.translation;
@@ -136,7 +138,7 @@ var AdLunam;
             }
         }
     }
-    Astronaut.speedMax = new fudge.Vector2(1.5, 2); // units per second
+    Astronaut.speedMax = new fudge.Vector2(2, 2); // units per second
     Astronaut.gravity = fudge.Vector2.Y(-3);
     AdLunam.Astronaut = Astronaut;
 })(AdLunam || (AdLunam = {}));

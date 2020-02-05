@@ -23,16 +23,7 @@ var AdLunam;
                 this.speed.y += Alien.gravity.y * timeFrame;
                 let distance = fudge.Vector3.SCALE(this.speed, timeFrame);
                 this.cmpTransform.local.translate(distance);
-                if (!this.checkCollision()) {
-                    if (this.alienDirection == DIRECTION_ALIEN.RIGHT) {
-                        this.cmpTransform.local.translateX(-0.1);
-                        this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
-                    }
-                    else {
-                        this.cmpTransform.local.translateX(0.1);
-                        this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.RIGHT);
-                    }
-                }
+                this.checkCollision();
             };
             this.addComponent(new fudge.ComponentTransform());
             for (let sprite of Alien.sprites) {
@@ -69,7 +60,6 @@ var AdLunam;
                 case ACTION_ALIEN.WALK:
                     this.speed.x = Alien.speedMax.x * direction;
                     this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
-                    this.alienDirection = _direction;
                     break;
                 case ACTION_ALIEN.DEAD:
                     break;
@@ -77,22 +67,19 @@ var AdLunam;
             this.show(_action);
         }
         checkCollision() {
-            for (let floor of AdLunam.level.getChildren()) {
-                let rect = floor.getRectWorld();
+            for (let platform of AdLunam.level.getChildren()) {
+                let rect = platform.getRectWorld();
                 let hit = rect.isInside(this.cmpTransform.local.translation.toVector2());
                 if (hit) {
-                    console.log("ALIEN HIT");
                     let translation = this.cmpTransform.local.translation;
                     translation.y = rect.y;
                     this.cmpTransform.local.translation = translation;
                     this.speed.y = 0;
                 }
-                return hit;
             }
-            return false;
         }
     }
-    Alien.speedMax = new fudge.Vector2(0.3, 5); // units per second
+    Alien.speedMax = new fudge.Vector2(0.2, 5); // units per second
     Alien.gravity = fudge.Vector2.Y(-3);
     AdLunam.Alien = Alien;
 })(AdLunam || (AdLunam = {}));

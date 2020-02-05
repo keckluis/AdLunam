@@ -2,25 +2,25 @@
 var AdLunam;
 (function (AdLunam) {
     AdLunam.fudge = FudgeCore;
-    window.addEventListener("load", test);
+    window.addEventListener("load", main);
     let keysPressed = {};
     let astronaut;
     let alien;
     let txtImage;
     let cmpCamera;
-    function test() {
+    function main() {
         let canvas = document.querySelector("canvas");
         let img = document.querySelector("img");
         txtImage = new AdLunam.fudge.TextureImage();
         txtImage.image = img;
         AdLunam.Astronaut.generateSprites(txtImage);
         AdLunam.Alien.generateSprites(txtImage);
-        AdLunam.Floor.generateSprites(txtImage);
+        AdLunam.Platform.generateSprites(txtImage);
         AdLunam.fudge.RenderManager.initialize(true, false);
         AdLunam.game = new AdLunam.fudge.Node("Game");
         astronaut = new AdLunam.Astronaut("Astronaut");
         alien = new AdLunam.Alien("Alien");
-        AdLunam.level = createLevel();
+        AdLunam.level = new AdLunam.Level();
         AdLunam.game.appendChild(AdLunam.level);
         AdLunam.game.appendChild(astronaut);
         AdLunam.game.appendChild(alien);
@@ -89,24 +89,6 @@ var AdLunam;
         }
         if (astronaut.isOnFloor)
             astronaut.act(AdLunam.ACTION.IDLE);
-    }
-    function createLevel() {
-        let level = new AdLunam.fudge.Node("Level");
-        let floor = new AdLunam.Floor();
-        floor.cmpTransform.local.scaleY(0.5);
-        level.appendChild(floor);
-        floor = new AdLunam.Floor();
-        floor.cmpTransform.local.scaleY(1);
-        floor.cmpTransform.local.scaleX(2);
-        floor.cmpTransform.local.translateY(0);
-        floor.cmpTransform.local.translateX(3);
-        level.appendChild(floor);
-        floor = new AdLunam.Floor();
-        floor.cmpTransform.local.scaleY(1);
-        floor.cmpTransform.local.scaleX(2);
-        floor.cmpTransform.local.translateX(6);
-        level.appendChild(floor);
-        return level;
     }
 })(AdLunam || (AdLunam = {}));
 //# sourceMappingURL=Main.js.map
