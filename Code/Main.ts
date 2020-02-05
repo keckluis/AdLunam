@@ -33,7 +33,7 @@ namespace AdLunam {
       game.appendChild(alien);
   
       cmpCamera = new fudge.ComponentCamera();
-      cmpCamera.pivot.translateZ(5);
+      cmpCamera.pivot.translateZ(10);
       cmpCamera.pivot.lookAt(fudge.Vector3.ZERO());
       cmpCamera.backgroundColor = fudge.Color.CSS("black");
   
@@ -51,6 +51,7 @@ namespace AdLunam {
         processInput();
         
         cmpCamera.pivot.translation = new fudge.Vector3(astronaut.cmpTransform.local.translation.x, cmpCamera.pivot.translation.y, cmpCamera.pivot.translation.z);
+
         viewport.draw();
       }
     }
@@ -61,17 +62,30 @@ namespace AdLunam {
   
     function processInput(): void {
       if (keysPressed[fudge.KEYBOARD_CODE.A]) {
-        astronaut.act(ACTION.WALK, DIRECTION.LEFT);
+        if (keysPressed[fudge.KEYBOARD_CODE.W]) {
+          astronaut.act(ACTION.JUMP, DIRECTION.LEFT);
+          astronaut.isOnFloor = false;
+          return;
+        }
+        if (astronaut.isOnFloor)
+          astronaut.act(ACTION.WALK, DIRECTION.LEFT);
         return;
       }
 
       if (keysPressed[fudge.KEYBOARD_CODE.D]) {
-        astronaut.act(ACTION.WALK, DIRECTION.RIGHT);
+        if (keysPressed[fudge.KEYBOARD_CODE.W]) {
+          astronaut.act(ACTION.JUMP, DIRECTION.RIGHT);
+          astronaut.isOnFloor = false;
+          return;
+        }
+        if (astronaut.isOnFloor)
+          astronaut.act(ACTION.WALK, DIRECTION.RIGHT);
         return;
       }
-      
-      if (keysPressed[fudge.KEYBOARD_CODE.W] && astronaut.isOnFloor) {
+
+      if (keysPressed[fudge.KEYBOARD_CODE.W]) {
         astronaut.act(ACTION.JUMP);
+        astronaut.isOnFloor = false;
         return;
       }
       
@@ -92,21 +106,27 @@ namespace AdLunam {
         astronaut.item = ITEM.JETPACK;
         return;
       }
-  
-      astronaut.act(ACTION.IDLE);
+      if (astronaut.isOnFloor)
+        astronaut.act(ACTION.IDLE);
     }
 
     function createLevel(): fudge.Node {
       let level: fudge.Node = new fudge.Node("Level");
       let floor: Floor = new Floor();
-      floor.cmpTransform.local.scaleY(0.2);
+      floor.cmpTransform.local.scaleY(1);
       level.appendChild(floor);
   
       floor = new Floor();
-      floor.cmpTransform.local.scaleY(0.2);
+      floor.cmpTransform.local.scaleY(1);
       floor.cmpTransform.local.scaleX(2);
       floor.cmpTransform.local.translateY(0.2);
-      floor.cmpTransform.local.translateX(3);
+      floor.cmpTransform.local.translateX(1.5);
+      level.appendChild(floor);
+
+      floor = new Floor();
+      floor.cmpTransform.local.scaleY(1);
+      floor.cmpTransform.local.scaleX(2);
+      floor.cmpTransform.local.translateX(6);
       level.appendChild(floor);
   
       return level;

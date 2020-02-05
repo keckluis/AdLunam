@@ -12,10 +12,9 @@ namespace AdLunam {
   
     export class Alien extends fudge.Node {
       private static sprites: Sprite[];
-      private static speedMax: number = 0.3; // units per second
-      // private action: ACTION_ALIEN;
-      // private time: fudge.Time = new fudge.Time();
-      public speed: number = 0;
+      private static speedMax: fudge.Vector2 = new fudge.Vector2(0.3, 5); // units per second
+      private static gravity: fudge.Vector2 = fudge.Vector2.Y(-3);
+      public speed: fudge.Vector3 = fudge.Vector3.ZERO();
   
       constructor(_name: string = "Alien") {
         super(_name);
@@ -34,43 +33,41 @@ namespace AdLunam {
           this.appendChild(nodeSprite);
         }
         
-        this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.RIGHT);
+        this.act(ACTION_ALIEN.IDLE);
         fudge.Loop.addEventListener(fudge.EVENT.LOOP_FRAME, this.update);
       }
   
       public static generateSprites(_txtImage: fudge.TextureImage): void {
         Alien.sprites = [];
         let sprite: Sprite = new Sprite(ACTION_ALIEN.WALK);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 73, 8, 10), 2, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 72, 8, 10), 2, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
         Alien.sprites.push(sprite);
   
         sprite = new Sprite(ACTION_ALIEN.IDLE);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(16, 0, 8, 10), 3, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(16, 72, 8, 10), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
         Alien.sprites.push(sprite);
 
         sprite = new Sprite(ACTION_ALIEN.DEAD);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(40, 0, 8, 10), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(40, 72, 8, 10), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
         Alien.sprites.push(sprite);
       }
   
       public show(_action: ACTION_ALIEN): void {
         for (let child of this.getChildren())
           child.activate(child.name == _action);
-        // this.action = _action;
       }
   
       public act(_action: ACTION_ALIEN, _direction?: DIRECTION_ALIEN): void {
         let direction: number = (_direction == DIRECTION_ALIEN.RIGHT ? 1 : -1);
         switch (_action) {
           case ACTION_ALIEN.IDLE:
-            this.speed = 0;
+            this.speed.x = 0;
             break;
           case ACTION_ALIEN.WALK:
-            this.speed = Alien.speedMax * direction;
+            this.speed.x = Alien.speedMax.x * direction;
             this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
             break;
           case ACTION_ALIEN.DEAD:
-              
               break;
         }
         this.show(_action);
@@ -78,14 +75,28 @@ namespace AdLunam {
   
       private update = (_event: fudge.Eventƒ): void => {
 
-        if (this.cmpTransform.local.translation.x > 0.5)
-          this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
-        else if (this.cmpTransform.local.translation.x < -0.5)
-          this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.RIGHT);
+        this.broadcastEvent(new CustomEvent("showNext"));
 
         let timeFrame: number = fudge.Loop.timeFrameGame / 1000;
-        this.cmpTransform.local.translateX(this.speed * timeFrame);
-        this.broadcastEvent(new CustomEvent("showNext"));
+        this.speed.y += Alien.gravity.y * timeFrame;
+        let distance: fudge.Vector3 = fudge.Vector3.SCALE(this.speed, timeFrame);
+
+        this.cmpTransform.local.translate(distance);
+
+        this.checkCollision();
+      }
+    
+      private checkCollision(): void {
+        for (let floor of level.getChildren()) {
+          let rect: fudge.Rectangle = (<Floor>floor).getRectWorld();
+          let hit: boolean = rect.isInside(this.cmpTransform.local.translation.toVector2());
+          if (hit) {
+            let translation: fudge.Vector3 = this.cmpTransform.local.translation;
+            translation.y = rect.y;
+            this.cmpTransform.local.translation = translation;
+            this.speed.y = 0;
+          }
+        }
       }
     }
   }

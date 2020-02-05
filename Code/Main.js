@@ -24,7 +24,7 @@ var AdLunam;
         AdLunam.game.appendChild(astronaut);
         AdLunam.game.appendChild(alien);
         cmpCamera = new AdLunam.fudge.ComponentCamera();
-        cmpCamera.pivot.translateZ(5);
+        cmpCamera.pivot.translateZ(10);
         cmpCamera.pivot.lookAt(AdLunam.fudge.Vector3.ZERO());
         cmpCamera.backgroundColor = AdLunam.fudge.Color.CSS("black");
         let viewport = new AdLunam.fudge.Viewport();
@@ -45,15 +45,28 @@ var AdLunam;
     }
     function processInput() {
         if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.A]) {
-            astronaut.act(AdLunam.ACTION.WALK, AdLunam.DIRECTION.LEFT);
+            if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.W]) {
+                astronaut.act(AdLunam.ACTION.JUMP, AdLunam.DIRECTION.LEFT);
+                astronaut.isOnFloor = false;
+                return;
+            }
+            if (astronaut.isOnFloor)
+                astronaut.act(AdLunam.ACTION.WALK, AdLunam.DIRECTION.LEFT);
             return;
         }
         if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.D]) {
-            astronaut.act(AdLunam.ACTION.WALK, AdLunam.DIRECTION.RIGHT);
+            if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.W]) {
+                astronaut.act(AdLunam.ACTION.JUMP, AdLunam.DIRECTION.RIGHT);
+                astronaut.isOnFloor = false;
+                return;
+            }
+            if (astronaut.isOnFloor)
+                astronaut.act(AdLunam.ACTION.WALK, AdLunam.DIRECTION.RIGHT);
             return;
         }
-        if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.W] && astronaut.isOnFloor) {
+        if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.W]) {
             astronaut.act(AdLunam.ACTION.JUMP);
+            astronaut.isOnFloor = false;
             return;
         }
         //ITEMS
@@ -73,18 +86,24 @@ var AdLunam;
             astronaut.item = AdLunam.ITEM.JETPACK;
             return;
         }
-        astronaut.act(AdLunam.ACTION.IDLE);
+        if (astronaut.isOnFloor)
+            astronaut.act(AdLunam.ACTION.IDLE);
     }
     function createLevel() {
         let level = new AdLunam.fudge.Node("Level");
         let floor = new AdLunam.Floor();
-        floor.cmpTransform.local.scaleY(0.2);
+        floor.cmpTransform.local.scaleY(1);
         level.appendChild(floor);
         floor = new AdLunam.Floor();
-        floor.cmpTransform.local.scaleY(0.2);
+        floor.cmpTransform.local.scaleY(1);
         floor.cmpTransform.local.scaleX(2);
         floor.cmpTransform.local.translateY(0.2);
-        floor.cmpTransform.local.translateX(3);
+        floor.cmpTransform.local.translateX(1.5);
+        level.appendChild(floor);
+        floor = new AdLunam.Floor();
+        floor.cmpTransform.local.scaleY(1);
+        floor.cmpTransform.local.scaleX(2);
+        floor.cmpTransform.local.translateX(6);
         level.appendChild(floor);
         return level;
     }

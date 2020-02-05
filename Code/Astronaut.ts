@@ -7,7 +7,7 @@ namespace AdLunam {
       JUMP = "Jump"
     }
     export enum DIRECTION {
-      LEFT, RIGHT
+      RIGHT, LEFT
     }
     export enum ITEM {
       NONE, 
@@ -18,7 +18,7 @@ namespace AdLunam {
   
     export class Astronaut extends fudge.Node {
       private static sprites: Sprite[];
-      private static speedMax: fudge.Vector2 = new fudge.Vector2(1.5, 5); // units per second
+      private static speedMax: fudge.Vector2 = new fudge.Vector2(1.5, 2); // units per second
       private static gravity: fudge.Vector2 = fudge.Vector2.Y(-3);
       public speed: fudge.Vector3 = fudge.Vector3.ZERO();
       public item: ITEM = ITEM.NONE;
@@ -110,8 +110,6 @@ namespace AdLunam {
       }
   
       public show(_action: ACTION, _item: ITEM): void {
-        //if (_action == ACTION.JUMP)
-         // return;
         for (let child of this.getChildren())
           child.activate(child.name == _action + "." + _item);
       }
@@ -127,8 +125,13 @@ namespace AdLunam {
             this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
             break;
           case ACTION.JUMP:
-              this.speed.y = 3;
-              this.isOnFloor = false;
+              if (this.isOnFloor) {
+                this.speed.y = 3;
+                if (_direction != null) {
+                  this.speed.x = Astronaut.speedMax.x;
+                  this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
+                }
+              }
               break;
         }
         this.show(_action, this.item);
@@ -145,10 +148,12 @@ namespace AdLunam {
         this.cmpTransform.local.translate(distance);
 
         this.checkCollision();
+
+        if (this.speed.y == 0)
+          this.isOnFloor = true;
       }
 
       private checkCollision(): void {
-
         for (let floor of level.getChildren()) {
           let rect: fudge.Rectangle = (<Floor>floor).getRectWorld();
           let hit: boolean = rect.isInside(this.cmpTransform.local.translation.toVector2());
@@ -157,7 +162,6 @@ namespace AdLunam {
             translation.y = rect.y;
             this.cmpTransform.local.translation = translation;
             this.speed.y = 0;
-            this.isOnFloor = true;
           }
         }
       }

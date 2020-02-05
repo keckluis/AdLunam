@@ -10,8 +10,8 @@ var AdLunam;
     })(ACTION = AdLunam.ACTION || (AdLunam.ACTION = {}));
     let DIRECTION;
     (function (DIRECTION) {
-        DIRECTION[DIRECTION["LEFT"] = 0] = "LEFT";
-        DIRECTION[DIRECTION["RIGHT"] = 1] = "RIGHT";
+        DIRECTION[DIRECTION["RIGHT"] = 0] = "RIGHT";
+        DIRECTION[DIRECTION["LEFT"] = 1] = "LEFT";
     })(DIRECTION = AdLunam.DIRECTION || (AdLunam.DIRECTION = {}));
     let ITEM;
     (function (ITEM) {
@@ -33,6 +33,8 @@ var AdLunam;
                 let distance = fudge.Vector3.SCALE(this.speed, timeFrame);
                 this.cmpTransform.local.translate(distance);
                 this.checkCollision();
+                if (this.speed.y == 0)
+                    this.isOnFloor = true;
             };
             this.addComponent(new fudge.ComponentTransform());
             for (let sprite of Astronaut.sprites) {
@@ -96,8 +98,6 @@ var AdLunam;
             Astronaut.sprites.push(sprite);
         }
         show(_action, _item) {
-            //if (_action == ACTION.JUMP)
-            // return;
             for (let child of this.getChildren())
                 child.activate(child.name == _action + "." + _item);
         }
@@ -112,8 +112,13 @@ var AdLunam;
                     this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
                     break;
                 case ACTION.JUMP:
-                    this.speed.y = 3;
-                    this.isOnFloor = false;
+                    if (this.isOnFloor) {
+                        this.speed.y = 3;
+                        if (_direction != null) {
+                            this.speed.x = Astronaut.speedMax.x;
+                            this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
+                        }
+                    }
                     break;
             }
             this.show(_action, this.item);
@@ -127,12 +132,11 @@ var AdLunam;
                     translation.y = rect.y;
                     this.cmpTransform.local.translation = translation;
                     this.speed.y = 0;
-                    this.isOnFloor = true;
                 }
             }
         }
     }
-    Astronaut.speedMax = new fudge.Vector2(1.5, 5); // units per second
+    Astronaut.speedMax = new fudge.Vector2(1.5, 2); // units per second
     Astronaut.gravity = fudge.Vector2.Y(-3);
     AdLunam.Astronaut = Astronaut;
 })(AdLunam || (AdLunam = {}));
