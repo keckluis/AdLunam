@@ -4,7 +4,6 @@ var AdLunam;
     AdLunam.fudge = FudgeCore;
     window.addEventListener("load", main);
     let keysPressed = {};
-    let astronaut;
     let txtImage;
     let cmpCamera;
     function main() {
@@ -16,12 +15,13 @@ var AdLunam;
         AdLunam.Alien.generateSprites(txtImage);
         AdLunam.Platform.generateSprites(txtImage);
         AdLunam.Item.generateSprites(txtImage);
+        AdLunam.Bullet.generateSprites(txtImage);
         AdLunam.fudge.RenderManager.initialize(true, false);
         AdLunam.game = new AdLunam.fudge.Node("Game");
-        astronaut = new AdLunam.Astronaut("Astronaut");
+        AdLunam.astronaut = new AdLunam.Astronaut();
         AdLunam.level = new AdLunam.Level();
         AdLunam.game.appendChild(AdLunam.level);
-        AdLunam.game.appendChild(astronaut);
+        AdLunam.game.appendChild(AdLunam.astronaut);
         cmpCamera = new AdLunam.fudge.ComponentCamera();
         cmpCamera.pivot.translateZ(10);
         cmpCamera.pivot.lookAt(AdLunam.fudge.Vector3.ZERO());
@@ -39,7 +39,7 @@ var AdLunam;
                 if (platform.item)
                     platform.item.cmpTransform.local.rotateY(5);
             }
-            cmpCamera.pivot.translation = new AdLunam.fudge.Vector3(astronaut.cmpTransform.local.translation.x, cmpCamera.pivot.translation.y, cmpCamera.pivot.translation.z);
+            cmpCamera.pivot.translation = new AdLunam.fudge.Vector3(AdLunam.astronaut.cmpTransform.local.translation.x, cmpCamera.pivot.translation.y, cmpCamera.pivot.translation.z);
             viewport.draw();
         }
     }
@@ -47,50 +47,63 @@ var AdLunam;
         keysPressed[_event.code] = (_event.type == "keydown");
     }
     function processInput() {
+        if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.F] && AdLunam.astronaut.item == AdLunam.ITEM.GUN) {
+            let bullet = new AdLunam.Bullet();
+            AdLunam.game.appendChild(bullet);
+            bullet.cmpTransform.local.translation = AdLunam.astronaut.cmpTransform.local.translation;
+            bullet.cmpTransform.local.translateY(0.22);
+            AdLunam.astronaut.item = AdLunam.ITEM.NONE;
+        }
+        if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.F] && AdLunam.astronaut.item == AdLunam.ITEM.JETPACK) {
+            AdLunam.astronaut.isOnFloor = true;
+            AdLunam.astronaut.act(AdLunam.ACTION.JUMP);
+            AdLunam.astronaut.isOnFloor = false;
+            AdLunam.astronaut.item = AdLunam.ITEM.NONE;
+        }
         if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.A]) {
             if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.W]) {
-                astronaut.act(AdLunam.ACTION.JUMP, AdLunam.DIRECTION.LEFT);
-                astronaut.isOnFloor = false;
+                AdLunam.astronaut.act(AdLunam.ACTION.JUMP, AdLunam.DIRECTION.LEFT);
+                AdLunam.astronaut.isOnFloor = false;
                 return;
             }
-            if (astronaut.isOnFloor)
-                astronaut.act(AdLunam.ACTION.WALK, AdLunam.DIRECTION.LEFT);
+            if (AdLunam.astronaut.isOnFloor)
+                AdLunam.astronaut.act(AdLunam.ACTION.WALK, AdLunam.DIRECTION.LEFT);
             return;
         }
         if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.D]) {
             if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.W]) {
-                astronaut.act(AdLunam.ACTION.JUMP, AdLunam.DIRECTION.RIGHT);
-                astronaut.isOnFloor = false;
+                AdLunam.astronaut.act(AdLunam.ACTION.JUMP, AdLunam.DIRECTION.RIGHT);
+                AdLunam.astronaut.isOnFloor = false;
                 return;
             }
-            if (astronaut.isOnFloor)
-                astronaut.act(AdLunam.ACTION.WALK, AdLunam.DIRECTION.RIGHT);
+            if (AdLunam.astronaut.isOnFloor)
+                AdLunam.astronaut.act(AdLunam.ACTION.WALK, AdLunam.DIRECTION.RIGHT);
             return;
         }
         if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.W]) {
-            astronaut.act(AdLunam.ACTION.JUMP);
-            astronaut.isOnFloor = false;
+            AdLunam.astronaut.act(AdLunam.ACTION.JUMP);
+            AdLunam.astronaut.isOnFloor = false;
             return;
         }
         //ITEMS
         if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.ONE]) {
-            astronaut.item = AdLunam.ITEM.NONE;
+            AdLunam.astronaut.item = AdLunam.ITEM.NONE;
             return;
         }
         if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.TWO]) {
-            astronaut.item = AdLunam.ITEM.GUN;
+            AdLunam.astronaut.item = AdLunam.ITEM.GUN;
             return;
         }
         if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.THREE]) {
-            astronaut.item = AdLunam.ITEM.SHIELD;
+            AdLunam.astronaut.item = AdLunam.ITEM.SHIELD;
             return;
         }
         if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.FOUR]) {
-            astronaut.item = AdLunam.ITEM.JETPACK;
+            AdLunam.astronaut.item = AdLunam.ITEM.JETPACK;
             return;
         }
-        if (astronaut.isOnFloor)
-            astronaut.act(AdLunam.ACTION.IDLE);
+        if (AdLunam.astronaut.isOnFloor)
+            AdLunam.astronaut.act(AdLunam.ACTION.IDLE);
     }
 })(AdLunam || (AdLunam = {}));
 //# sourceMappingURL=Main.js.map

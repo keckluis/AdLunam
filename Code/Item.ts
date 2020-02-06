@@ -11,10 +11,11 @@ namespace AdLunam {
     export class Item extends fudge.Node {
 
         private static sprites: Sprite[];
-        private type: ITEM;
+        public type: ITEM;
+        public hitbox: Hitbox;
 
         public constructor(type: ITEM) {
-            super(type);
+            super("Item");
             this.type = type;
             this.addComponent(new fudge.ComponentTransform());
 
@@ -25,6 +26,8 @@ namespace AdLunam {
             }
 
             this.show();
+            this.hitbox = this.creatHitbox();
+            this.appendChild(this.hitbox);
         }
 
         public static generateSprites(_txtImage: fudge.TextureImage): void {
@@ -47,6 +50,16 @@ namespace AdLunam {
         public show(): void {
             for (let child of this.getChildren())
                 child.activate(child.name == this.type);
+        }
+
+        public creatHitbox(): Hitbox {
+
+            let hitbox: Hitbox = new Hitbox("ItemHitbox");
+            hitbox.cmpTransform.local.translateY(0.25);
+            hitbox.cmpTransform.local.scaleX(0.15);
+            hitbox.cmpTransform.local.scaleY(0.25);
+            this.hitbox = hitbox;
+            return hitbox;
         }
     }
 }

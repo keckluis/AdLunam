@@ -17,9 +17,10 @@ namespace AdLunam {
       public speed: fudge.Vector3 = fudge.Vector3.ZERO();
       public item: ITEM = ITEM.NONE;
       public isOnFloor: boolean = false;
+      public hitbox: Hitbox;
   
-      constructor(_name: string = "Astronaut") {
-        super(_name);
+      constructor() {
+        super("Astronaut");
         this.addComponent(new fudge.ComponentTransform());
   
         for (let sprite of Astronaut.sprites) {
@@ -31,11 +32,13 @@ namespace AdLunam {
             (_event: Event) => { (<NodeSprite>_event.currentTarget).showFrameNext(); },
             true
           );
-  
           this.appendChild(nodeSprite);
         }
-  
         this.show(ACTION.IDLE, this.item);
+
+        this.hitbox = this.createHitbox();
+        game.appendChild(this.hitbox);
+
         fudge.Loop.addEventListener(fudge.EVENT.LOOP_FRAME, this.update);
       }
   
@@ -130,6 +133,15 @@ namespace AdLunam {
         }
         this.show(_action, this.item);
       }
+
+      public createHitbox(): Hitbox {
+
+        let hitbox: Hitbox = new Hitbox("PlayerHitbox");
+        hitbox.cmpTransform.local.scaleX(0.35);
+        hitbox.cmpTransform.local.scaleY(0.55);
+        this.hitbox = hitbox;
+        return hitbox;
+      }
   
       private update = (_event: fudge.Eventƒ): void => {
 
@@ -147,6 +159,10 @@ namespace AdLunam {
           this.isOnFloor = true;
         else
           this.isOnFloor = false;
+        
+        this.hitbox.cmpTransform.local.translation = this.cmpTransform.local.translation;
+        this.hitbox.cmpTransform.local.translateY(0.55);
+        this.hitbox.checkCollision();
       }
 
       private checkCollision(): void {

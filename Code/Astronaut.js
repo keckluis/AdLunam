@@ -14,8 +14,8 @@ var AdLunam;
         DIRECTION[DIRECTION["LEFT"] = 1] = "LEFT";
     })(DIRECTION = AdLunam.DIRECTION || (AdLunam.DIRECTION = {}));
     class Astronaut extends fudge.Node {
-        constructor(_name = "Astronaut") {
-            super(_name);
+        constructor() {
+            super("Astronaut");
             this.speed = fudge.Vector3.ZERO();
             this.item = AdLunam.ITEM.NONE;
             this.isOnFloor = false;
@@ -30,6 +30,9 @@ var AdLunam;
                     this.isOnFloor = true;
                 else
                     this.isOnFloor = false;
+                this.hitbox.cmpTransform.local.translation = this.cmpTransform.local.translation;
+                this.hitbox.cmpTransform.local.translateY(0.55);
+                this.hitbox.checkCollision();
             };
             this.addComponent(new fudge.ComponentTransform());
             for (let sprite of Astronaut.sprites) {
@@ -39,6 +42,8 @@ var AdLunam;
                 this.appendChild(nodeSprite);
             }
             this.show(ACTION.IDLE, this.item);
+            this.hitbox = this.createHitbox();
+            AdLunam.game.appendChild(this.hitbox);
             fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         }
         static generateSprites(_txtImage) {
@@ -117,6 +122,13 @@ var AdLunam;
                     break;
             }
             this.show(_action, this.item);
+        }
+        createHitbox() {
+            let hitbox = new AdLunam.Hitbox("PlayerHitbox");
+            hitbox.cmpTransform.local.scaleX(0.35);
+            hitbox.cmpTransform.local.scaleY(0.55);
+            this.hitbox = hitbox;
+            return hitbox;
         }
         checkCollision() {
             for (let platform of AdLunam.level.getChildren()) {

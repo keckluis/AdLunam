@@ -11,7 +11,7 @@ var AdLunam;
     })(ITEM = AdLunam.ITEM || (AdLunam.ITEM = {}));
     class Item extends fudge.Node {
         constructor(type) {
-            super(type);
+            super("Item");
             this.type = type;
             this.addComponent(new fudge.ComponentTransform());
             for (let sprite of Item.sprites) {
@@ -20,6 +20,8 @@ var AdLunam;
                 this.appendChild(nodeSprite);
             }
             this.show();
+            this.hitbox = this.creatHitbox();
+            this.appendChild(this.hitbox);
         }
         static generateSprites(_txtImage) {
             Item.sprites = [];
@@ -36,6 +38,14 @@ var AdLunam;
         show() {
             for (let child of this.getChildren())
                 child.activate(child.name == this.type);
+        }
+        creatHitbox() {
+            let hitbox = new AdLunam.Hitbox("ItemHitbox");
+            hitbox.cmpTransform.local.translateY(0.25);
+            hitbox.cmpTransform.local.scaleX(0.15);
+            hitbox.cmpTransform.local.scaleY(0.25);
+            this.hitbox = hitbox;
+            return hitbox;
         }
     }
     AdLunam.Item = Item;

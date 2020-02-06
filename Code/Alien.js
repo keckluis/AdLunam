@@ -14,8 +14,8 @@ var AdLunam;
         DIRECTION_ALIEN[DIRECTION_ALIEN["RIGHT"] = 1] = "RIGHT";
     })(DIRECTION_ALIEN = AdLunam.DIRECTION_ALIEN || (AdLunam.DIRECTION_ALIEN = {}));
     class Alien extends fudge.Node {
-        constructor(_name = "Alien") {
-            super(_name);
+        constructor() {
+            super("Alien");
             this.speed = fudge.Vector3.ZERO();
             this.update = (_event) => {
                 this.broadcastEvent(new CustomEvent("showNext"));
@@ -24,10 +24,13 @@ var AdLunam;
                 let distance = fudge.Vector3.SCALE(this.speed, timeFrame);
                 this.cmpTransform.local.translate(distance);
                 this.checkCollision();
+                this.hitbox.checkCollision();
                 if (this.cmpTransform.local.translation.x > 0.4)
                     this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
                 else if (this.cmpTransform.local.translation.x < -0.4)
                     this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.RIGHT);
+                this.hitbox.cmpTransform.local.translation = this.cmpTransform.local.translation;
+                this.hitbox.cmpTransform.local.translateY(0.35);
             };
             this.addComponent(new fudge.ComponentTransform());
             for (let sprite of Alien.sprites) {
@@ -36,6 +39,8 @@ var AdLunam;
                 nodeSprite.addEventListener("showNext", (_event) => { _event.currentTarget.showFrameNext(); }, true);
                 this.appendChild(nodeSprite);
             }
+            this.hitbox = this.creatHitbox();
+            AdLunam.game.appendChild(this.hitbox);
             this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
             fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         }
@@ -68,6 +73,14 @@ var AdLunam;
                     break;
             }
             this.show(_action);
+            AdLunam.game.appendChild(this.hitbox);
+        }
+        creatHitbox() {
+            let hitbox = new AdLunam.Hitbox("AlienHitbox");
+            hitbox.cmpTransform.local.scaleX(0.25);
+            hitbox.cmpTransform.local.scaleY(0.35);
+            this.hitbox = hitbox;
+            return hitbox;
         }
         checkCollision() {
             for (let platform of AdLunam.level.getChildren()) {

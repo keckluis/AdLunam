@@ -10,7 +10,7 @@ namespace AdLunam {
   
     export let game: fudge.Node;
     export let level: fudge.Node;
-    let astronaut: Astronaut;
+    export let astronaut: Astronaut;
     let txtImage: fudge.TextureImage;  
     let cmpCamera: fudge.ComponentCamera;
   
@@ -23,10 +23,11 @@ namespace AdLunam {
       Alien.generateSprites(txtImage);
       Platform.generateSprites(txtImage);
       Item.generateSprites(txtImage);
+      Bullet.generateSprites(txtImage);
   
       fudge.RenderManager.initialize(true, false);
       game = new fudge.Node("Game");
-      astronaut = new Astronaut("Astronaut");
+      astronaut = new Astronaut();
       level = new Level();
       game.appendChild(level);
       game.appendChild(astronaut);
@@ -66,6 +67,23 @@ namespace AdLunam {
     }
   
     function processInput(): void {
+
+      if (keysPressed[fudge.KEYBOARD_CODE.F] && astronaut.item == ITEM.GUN) {
+
+        let bullet: Bullet = new Bullet();
+        game.appendChild(bullet);
+        bullet.cmpTransform.local.translation = astronaut.cmpTransform.local.translation;
+        bullet.cmpTransform.local.translateY(0.22);
+        astronaut.item = ITEM.NONE;
+      }
+
+      if (keysPressed[fudge.KEYBOARD_CODE.F] && astronaut.item == ITEM.JETPACK) {
+          astronaut.isOnFloor = true;
+          astronaut.act(ACTION.JUMP);
+          astronaut.isOnFloor = false;
+          astronaut.item = ITEM.NONE;
+      }
+
       if (keysPressed[fudge.KEYBOARD_CODE.A]) {
         if (keysPressed[fudge.KEYBOARD_CODE.W]) {
           astronaut.act(ACTION.JUMP, DIRECTION.LEFT);
@@ -110,7 +128,8 @@ namespace AdLunam {
       if (keysPressed[fudge.KEYBOARD_CODE.FOUR]) {
         astronaut.item = ITEM.JETPACK;
         return;
-      }
+      } 
+
       if (astronaut.isOnFloor)
         astronaut.act(ACTION.IDLE);
     }

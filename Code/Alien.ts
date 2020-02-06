@@ -15,9 +15,10 @@ namespace AdLunam {
       private static speedMax: fudge.Vector2 = new fudge.Vector2(0.1, 5); // units per second
       private static gravity: fudge.Vector2 = fudge.Vector2.Y(-3);
       public speed: fudge.Vector3 = fudge.Vector3.ZERO();
-  
-      constructor(_name: string = "Alien") {
-        super(_name);
+      public hitbox: Hitbox;
+
+      constructor() {
+        super("Alien");
         this.addComponent(new fudge.ComponentTransform());
   
         for (let sprite of Alien.sprites) {
@@ -29,10 +30,10 @@ namespace AdLunam {
             (_event: Event) => { (<NodeSprite>_event.currentTarget).showFrameNext(); },
             true
           );
-  
           this.appendChild(nodeSprite);
         }
-        
+        this.hitbox = this.creatHitbox();
+        game.appendChild(this.hitbox);
         this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
         fudge.Loop.addEventListener(fudge.EVENT.LOOP_FRAME, this.update);
       }
@@ -70,6 +71,16 @@ namespace AdLunam {
               break;
         }
         this.show(_action);
+        game.appendChild(this.hitbox);
+      }
+
+      public creatHitbox(): Hitbox {
+
+        let hitbox: Hitbox = new Hitbox("AlienHitbox");
+        hitbox.cmpTransform.local.scaleX(0.25);
+        hitbox.cmpTransform.local.scaleY(0.35);
+        this.hitbox = hitbox;
+        return hitbox;
       }
   
       private update = (_event: fudge.Eventƒ): void => {
@@ -79,15 +90,18 @@ namespace AdLunam {
         let timeFrame: number = fudge.Loop.timeFrameGame / 1000;
         this.speed.y += Alien.gravity.y * timeFrame;
         let distance: fudge.Vector3 = fudge.Vector3.SCALE(this.speed, timeFrame);
-        
         this.cmpTransform.local.translate(distance);
 
         this.checkCollision();
+        this.hitbox.checkCollision();
 
         if (this.cmpTransform.local.translation.x > 0.4)
           this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
         else if (this.cmpTransform.local.translation.x < -0.4)
           this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.RIGHT);
+
+        this.hitbox.cmpTransform.local.translation = this.cmpTransform.local.translation;
+        this.hitbox.cmpTransform.local.translateY(0.35);
       }
     
       private checkCollision(): void {
