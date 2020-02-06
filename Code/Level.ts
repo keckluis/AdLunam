@@ -9,23 +9,23 @@ namespace AdLunam {
 
             let platform: Platform;
 
-            platform = new Platform(0, 0, null, true);
+            platform = new Platform(0, 0);
             this.appendChild(platform);
 
-            platform = new Platform(40, 10, ITEM.GUN, true);  
+            platform = new Platform(40, 0, null, true);  
             this.appendChild(platform);
       
-            platform = new Platform(100, 0, ITEM.JETPACK);
+            platform = new Platform(80, 0, null, true);
             this.appendChild(platform);
 
-            platform = new Platform(150, -20, ITEM.SHIELD);   
+            platform = new Platform(120, 0, null, true);   
             this.appendChild(platform);
 
-            platform = new Platform(190, -10);   
-            this.appendChild(platform);
+            // platform = new Platform(160, 0, null, true);   
+            // this.appendChild(platform);
 
-            platform = new Platform(220, 0);   
-            this.appendChild(platform);
+            // platform = new Platform(200, 0, null, true);   
+            // this.appendChild(platform);
         }
     }
 }

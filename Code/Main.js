@@ -54,11 +54,11 @@ var AdLunam;
             bullet.cmpTransform.local.translateY(0.22);
             AdLunam.astronaut.item = AdLunam.ITEM.NONE;
         }
-        if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.F] && AdLunam.astronaut.item == AdLunam.ITEM.JETPACK) {
+        else if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.F] && AdLunam.astronaut.item == AdLunam.ITEM.JETPACK && !AdLunam.astronaut.jetpackUsed) {
             AdLunam.astronaut.isOnFloor = true;
+            AdLunam.astronaut.jetpackUsed = true;
             AdLunam.astronaut.act(AdLunam.ACTION.JUMP);
             AdLunam.astronaut.isOnFloor = false;
-            AdLunam.astronaut.item = AdLunam.ITEM.NONE;
         }
         if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.A]) {
             if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.W]) {

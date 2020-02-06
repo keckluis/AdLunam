@@ -18,19 +18,17 @@ var AdLunam;
             super("Alien");
             this.speed = fudge.Vector3.ZERO();
             this.update = (_event) => {
+                console.log(this.hitbox.cmpTransform.local.translation.x);
                 this.broadcastEvent(new CustomEvent("showNext"));
                 let timeFrame = fudge.Loop.timeFrameGame / 1000;
                 this.speed.y += Alien.gravity.y * timeFrame;
                 let distance = fudge.Vector3.SCALE(this.speed, timeFrame);
                 this.cmpTransform.local.translate(distance);
                 this.checkCollision();
-                this.hitbox.checkCollision();
                 if (this.cmpTransform.local.translation.x > 0.4)
                     this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
                 else if (this.cmpTransform.local.translation.x < -0.4)
                     this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.RIGHT);
-                this.hitbox.cmpTransform.local.translation = this.cmpTransform.local.translation;
-                this.hitbox.cmpTransform.local.translateY(0.35);
             };
             this.addComponent(new fudge.ComponentTransform());
             for (let sprite of Alien.sprites) {
@@ -39,8 +37,8 @@ var AdLunam;
                 nodeSprite.addEventListener("showNext", (_event) => { _event.currentTarget.showFrameNext(); }, true);
                 this.appendChild(nodeSprite);
             }
-            this.hitbox = this.creatHitbox();
-            AdLunam.game.appendChild(this.hitbox);
+            this.hitbox = this.createHitbox();
+            this.appendChild(this.hitbox);
             this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
             fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         }
@@ -55,6 +53,14 @@ var AdLunam;
             sprite = new AdLunam.Sprite(ACTION_ALIEN.DEAD);
             sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(40, 72, 8, 10), 1, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
             Alien.sprites.push(sprite);
+        }
+        createHitbox() {
+            let hitbox = new AdLunam.Hitbox("AlienHitbox");
+            hitbox.cmpTransform.local.translateY(0.35);
+            hitbox.cmpTransform.local.scaleX(0.25);
+            hitbox.cmpTransform.local.scaleY(0.35);
+            this.hitbox = hitbox;
+            return hitbox;
         }
         show(_action) {
             for (let child of this.getChildren())
@@ -74,13 +80,6 @@ var AdLunam;
             }
             this.show(_action);
             AdLunam.game.appendChild(this.hitbox);
-        }
-        creatHitbox() {
-            let hitbox = new AdLunam.Hitbox("AlienHitbox");
-            hitbox.cmpTransform.local.scaleX(0.25);
-            hitbox.cmpTransform.local.scaleY(0.35);
-            this.hitbox = hitbox;
-            return hitbox;
         }
         checkCollision() {
             for (let platform of AdLunam.level.getChildren()) {

@@ -16,8 +16,10 @@ namespace AdLunam {
       private static gravity: fudge.Vector2 = fudge.Vector2.Y(-3);
       public speed: fudge.Vector3 = fudge.Vector3.ZERO();
       public item: ITEM = ITEM.NONE;
+      public direction: DIRECTION = DIRECTION.RIGHT;
       public isOnFloor: boolean = false;
       public hitbox: Hitbox;
+      public jetpackUsed: boolean = false;
   
       constructor() {
         super("Astronaut");
@@ -34,10 +36,9 @@ namespace AdLunam {
           );
           this.appendChild(nodeSprite);
         }
-        this.show(ACTION.IDLE, this.item);
-
         this.hitbox = this.createHitbox();
-        game.appendChild(this.hitbox);
+        this.appendChild(this.hitbox);
+        this.show(ACTION.IDLE, this.item);
 
         fudge.Loop.addEventListener(fudge.EVENT.LOOP_FRAME, this.update);
       }
@@ -102,13 +103,31 @@ namespace AdLunam {
 
         //JUMP JETPACK
         sprite = new Sprite(ACTION.JUMP + "." + ITEM.JETPACK);
+        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(55, 77, 17, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+        Astronaut.sprites.push(sprite);
+
+        //JUMP JETPACK BOOST
+        sprite = new Sprite(ACTION.JUMP + "." + ITEM.JETPACK + "BOOST");
         sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(54, 54, 18, 23), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
         Astronaut.sprites.push(sprite);
       }
+
+      public createHitbox(): Hitbox {
+        let hitbox: Hitbox = new Hitbox("PlayerHitbox");
+        hitbox.cmpTransform.local.translateY(0.55);
+        hitbox.cmpTransform.local.scaleX(0.35);
+        hitbox.cmpTransform.local.scaleY(0.55);
+        this.hitbox = hitbox;
+        return hitbox;
+      }
   
       public show(_action: ACTION, _item: ITEM): void {
-        for (let child of this.getChildren())
-          child.activate(child.name == _action + "." + _item);
+        for (let child of this.getChildren()) {
+          if (this.jetpackUsed)
+            child.activate(child.name == _action + "." + _item + "BOOST");
+          else
+           child.activate(child.name == _action + "." + _item);
+        }
       }
   
       public act(_action: ACTION, _direction?: DIRECTION): void {
@@ -118,11 +137,13 @@ namespace AdLunam {
             this.speed.x = 0;
             break;
           case ACTION.WALK:
+            astronaut.direction = _direction;
             this.speed.x = Astronaut.speedMax.x;
             this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
             break;
           case ACTION.JUMP:
               if (this.isOnFloor) {
+                this.isOnFloor = false;
                 this.speed.y = 3;
                 if (_direction != null) {
                   this.speed.x = Astronaut.speedMax.x;
@@ -134,14 +155,7 @@ namespace AdLunam {
         this.show(_action, this.item);
       }
 
-      public createHitbox(): Hitbox {
-
-        let hitbox: Hitbox = new Hitbox("PlayerHitbox");
-        hitbox.cmpTransform.local.scaleX(0.35);
-        hitbox.cmpTransform.local.scaleY(0.55);
-        this.hitbox = hitbox;
-        return hitbox;
-      }
+      
   
       private update = (_event: fudge.Eventƒ): void => {
 
@@ -160,8 +174,11 @@ namespace AdLunam {
         else
           this.isOnFloor = false;
         
-        this.hitbox.cmpTransform.local.translation = this.cmpTransform.local.translation;
-        this.hitbox.cmpTransform.local.translateY(0.55);
+        if (this.isOnFloor && this.jetpackUsed) {
+          this.item = ITEM.NONE;
+          this.jetpackUsed = false;
+        }
+      
         this.hitbox.checkCollision();
       }
 

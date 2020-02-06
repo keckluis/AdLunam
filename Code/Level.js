@@ -6,18 +6,18 @@ var AdLunam;
         constructor() {
             super("Level");
             let platform;
-            platform = new AdLunam.Platform(0, 0, null, true);
+            platform = new AdLunam.Platform(0, 0);
             this.appendChild(platform);
-            platform = new AdLunam.Platform(40, 10, AdLunam.ITEM.GUN, true);
+            platform = new AdLunam.Platform(40, 0, null, true);
             this.appendChild(platform);
-            platform = new AdLunam.Platform(100, 0, AdLunam.ITEM.JETPACK);
+            platform = new AdLunam.Platform(80, 0, null, true);
             this.appendChild(platform);
-            platform = new AdLunam.Platform(150, -20, AdLunam.ITEM.SHIELD);
+            platform = new AdLunam.Platform(120, 0, null, true);
             this.appendChild(platform);
-            platform = new AdLunam.Platform(190, -10);
-            this.appendChild(platform);
-            platform = new AdLunam.Platform(220, 0);
-            this.appendChild(platform);
+            // platform = new Platform(160, 0, null, true);   
+            // this.appendChild(platform);
+            // platform = new Platform(200, 0, null, true);   
+            // this.appendChild(platform);
         }
     }
     AdLunam.Level = Level;

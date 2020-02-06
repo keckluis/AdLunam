@@ -11,7 +11,7 @@ var AdLunam;
                 super("Hitbox");
             }
             this.addComponent(new fudge.ComponentTransform());
-            //this.addComponent(new fudge.ComponentMaterial(Hitbox.material));
+            this.addComponent(new fudge.ComponentMaterial(Hitbox.material));
             let cmpMesh = new fudge.ComponentMesh(Hitbox.mesh);
             cmpMesh.pivot = Hitbox.pivot;
             this.addComponent(cmpMesh);
@@ -28,49 +28,29 @@ var AdLunam;
             rect.size = size;
             return rect;
         }
-        checkCollision() {
+        checkCollision(isBullet) {
             for (let platform of AdLunam.level.getChildren()) {
                 for (let child of platform.getChildren()) {
-                    if (child.name == "Item" || child.name == "Alien") {
-                        let hitbox;
-                        if (child.name == "Item")
-                            hitbox = child.hitbox;
-                        else
-                            hitbox = child.hitbox;
-                        let hit = false;
-                        let rectOfThis = this.getRectWorld();
-                        let rectOfThat = hitbox.getRectWorld();
-                        let expansionRight = new fudge.Vector2(rectOfThat.size.x);
-                        let expansionDown = new fudge.Vector2(0, rectOfThat.size.y);
-                        let topRight = fudge.Vector2.SUM(rectOfThat.position, expansionRight);
-                        let bottomLeft = fudge.Vector2.SUM(rectOfThat.position, expansionDown);
-                        let bottomRight = fudge.Vector2.SUM(rectOfThat.position, expansionDown, expansionRight);
-                        if (rectOfThis.isInside(rectOfThat.position)) {
-                            hit = true;
-                        }
-                        else if (rectOfThis.isInside(topRight)) {
-                            hit = true;
-                        }
-                        else if (rectOfThis.isInside(bottomLeft)) {
-                            hit = true;
-                        }
-                        else if (rectOfThis.isInside(bottomRight)) {
-                            hit = true;
-                        }
-                        if (hit && child.name == "Item") {
+                    if (child.name == "Item") {
+                        let hitbox = child.hitbox;
+                        if (this.detectHit(hitbox)) {
                             console.log("HIT ITEM");
                             if (AdLunam.astronaut.item == AdLunam.ITEM.NONE) {
                                 AdLunam.astronaut.item = child.type;
-                                platform.item.activate(false);
-                                platform.item = null;
+                                child.cmpTransform.local.translateY(100);
                             }
                         }
-                        else if (hit && child.name == "Alien") {
+                    }
+                    else if (child.name == "Alien") {
+                        let hitbox = child.hitbox;
+                        if (this.detectHit(hitbox)) {
                             console.log("HIT ALIEN");
-                            if (AdLunam.astronaut.item == AdLunam.ITEM.SHIELD) {
+                            if (AdLunam.astronaut.item == AdLunam.ITEM.SHIELD || isBullet) {
                                 AdLunam.astronaut.item = AdLunam.ITEM.NONE;
-                                platform.alien.activate(false);
-                                platform.alien = null;
+                                child.cmpTransform.local.translateY(100);
+                            }
+                            else {
+                                //console.log("PLAYER DEAD");
                             }
                         }
                     }
@@ -80,9 +60,32 @@ var AdLunam;
                 }
             }
         }
+        detectHit(hitbox) {
+            let hit = false;
+            let rectOfThis = this.getRectWorld();
+            let rectOfThat = hitbox.getRectWorld();
+            let expansionRight = new fudge.Vector2(rectOfThat.size.x);
+            let expansionDown = new fudge.Vector2(0, rectOfThat.size.y);
+            let topRight = fudge.Vector2.SUM(rectOfThat.position, expansionRight);
+            let bottomLeft = fudge.Vector2.SUM(rectOfThat.position, expansionDown);
+            let bottomRight = fudge.Vector2.SUM(rectOfThat.position, expansionDown, expansionRight);
+            if (rectOfThis.isInside(rectOfThat.position)) {
+                hit = true;
+            }
+            else if (rectOfThis.isInside(topRight)) {
+                hit = true;
+            }
+            else if (rectOfThis.isInside(bottomLeft)) {
+                hit = true;
+            }
+            else if (rectOfThis.isInside(bottomRight)) {
+                hit = true;
+            }
+            return hit;
+        }
     }
     Hitbox.mesh = new fudge.MeshSprite();
-    //private static material: fudge.Material = new fudge.Material("Hitbox", fudge.ShaderUniColor, new fudge.CoatColored(fudge.Color.CSS("red", 0.1)));
+    Hitbox.material = new fudge.Material("Hitbox", fudge.ShaderUniColor, new fudge.CoatColored(fudge.Color.CSS("red", 0.1)));
     Hitbox.pivot = fudge.Matrix4x4.TRANSLATION(fudge.Vector3.Y(-0.5));
     AdLunam.Hitbox = Hitbox;
 })(AdLunam || (AdLunam = {}));

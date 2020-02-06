@@ -75,13 +75,12 @@ namespace AdLunam {
         bullet.cmpTransform.local.translation = astronaut.cmpTransform.local.translation;
         bullet.cmpTransform.local.translateY(0.22);
         astronaut.item = ITEM.NONE;
-      }
 
-      if (keysPressed[fudge.KEYBOARD_CODE.F] && astronaut.item == ITEM.JETPACK) {
+      } else if (keysPressed[fudge.KEYBOARD_CODE.F] && astronaut.item == ITEM.JETPACK && !astronaut.jetpackUsed) {
           astronaut.isOnFloor = true;
+          astronaut.jetpackUsed = true;
           astronaut.act(ACTION.JUMP);
           astronaut.isOnFloor = false;
-          astronaut.item = ITEM.NONE;
       }
 
       if (keysPressed[fudge.KEYBOARD_CODE.A]) {

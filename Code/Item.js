@@ -20,7 +20,7 @@ var AdLunam;
                 this.appendChild(nodeSprite);
             }
             this.show();
-            this.hitbox = this.creatHitbox();
+            this.hitbox = this.createHitbox();
             this.appendChild(this.hitbox);
         }
         static generateSprites(_txtImage) {
@@ -39,7 +39,7 @@ var AdLunam;
             for (let child of this.getChildren())
                 child.activate(child.name == this.type);
         }
-        creatHitbox() {
+        createHitbox() {
             let hitbox = new AdLunam.Hitbox("ItemHitbox");
             hitbox.cmpTransform.local.translateY(0.25);
             hitbox.cmpTransform.local.scaleX(0.15);

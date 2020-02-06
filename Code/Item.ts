@@ -26,7 +26,7 @@ namespace AdLunam {
             }
 
             this.show();
-            this.hitbox = this.creatHitbox();
+            this.hitbox = this.createHitbox();
             this.appendChild(this.hitbox);
         }
 
@@ -52,7 +52,7 @@ namespace AdLunam {
                 child.activate(child.name == this.type);
         }
 
-        public creatHitbox(): Hitbox {
+        public createHitbox(): Hitbox {
 
             let hitbox: Hitbox = new Hitbox("ItemHitbox");
             hitbox.cmpTransform.local.translateY(0.25);

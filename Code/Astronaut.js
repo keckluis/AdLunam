@@ -18,7 +18,9 @@ var AdLunam;
             super("Astronaut");
             this.speed = fudge.Vector3.ZERO();
             this.item = AdLunam.ITEM.NONE;
+            this.direction = DIRECTION.RIGHT;
             this.isOnFloor = false;
+            this.jetpackUsed = false;
             this.update = (_event) => {
                 this.broadcastEvent(new CustomEvent("showNext"));
                 let timeFrame = fudge.Loop.timeFrameGame / 1000;
@@ -30,8 +32,10 @@ var AdLunam;
                     this.isOnFloor = true;
                 else
                     this.isOnFloor = false;
-                this.hitbox.cmpTransform.local.translation = this.cmpTransform.local.translation;
-                this.hitbox.cmpTransform.local.translateY(0.55);
+                if (this.isOnFloor && this.jetpackUsed) {
+                    this.item = AdLunam.ITEM.NONE;
+                    this.jetpackUsed = false;
+                }
                 this.hitbox.checkCollision();
             };
             this.addComponent(new fudge.ComponentTransform());
@@ -41,9 +45,9 @@ var AdLunam;
                 nodeSprite.addEventListener("showNext", (_event) => { _event.currentTarget.showFrameNext(); }, true);
                 this.appendChild(nodeSprite);
             }
-            this.show(ACTION.IDLE, this.item);
             this.hitbox = this.createHitbox();
-            AdLunam.game.appendChild(this.hitbox);
+            this.appendChild(this.hitbox);
+            this.show(ACTION.IDLE, this.item);
             fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         }
         static generateSprites(_txtImage) {
@@ -94,12 +98,28 @@ var AdLunam;
             Astronaut.sprites.push(sprite);
             //JUMP JETPACK
             sprite = new AdLunam.Sprite(ACTION.JUMP + "." + AdLunam.ITEM.JETPACK);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(55, 77, 17, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+            Astronaut.sprites.push(sprite);
+            //JUMP JETPACK BOOST
+            sprite = new AdLunam.Sprite(ACTION.JUMP + "." + AdLunam.ITEM.JETPACK + "BOOST");
             sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(54, 54, 18, 23), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
             Astronaut.sprites.push(sprite);
         }
+        createHitbox() {
+            let hitbox = new AdLunam.Hitbox("PlayerHitbox");
+            hitbox.cmpTransform.local.translateY(0.55);
+            hitbox.cmpTransform.local.scaleX(0.35);
+            hitbox.cmpTransform.local.scaleY(0.55);
+            this.hitbox = hitbox;
+            return hitbox;
+        }
         show(_action, _item) {
-            for (let child of this.getChildren())
-                child.activate(child.name == _action + "." + _item);
+            for (let child of this.getChildren()) {
+                if (this.jetpackUsed)
+                    child.activate(child.name == _action + "." + _item + "BOOST");
+                else
+                    child.activate(child.name == _action + "." + _item);
+            }
         }
         act(_action, _direction) {
             let direction = (_direction == DIRECTION.RIGHT ? 1 : -1);
@@ -108,11 +128,13 @@ var AdLunam;
                     this.speed.x = 0;
                     break;
                 case ACTION.WALK:
+                    AdLunam.astronaut.direction = _direction;
                     this.speed.x = Astronaut.speedMax.x;
                     this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
                     break;
                 case ACTION.JUMP:
                     if (this.isOnFloor) {
+                        this.isOnFloor = false;
                         this.speed.y = 3;
                         if (_direction != null) {
                             this.speed.x = Astronaut.speedMax.x;
@@ -122,13 +144,6 @@ var AdLunam;
                     break;
             }
             this.show(_action, this.item);
-        }
-        createHitbox() {
-            let hitbox = new AdLunam.Hitbox("PlayerHitbox");
-            hitbox.cmpTransform.local.scaleX(0.35);
-            hitbox.cmpTransform.local.scaleY(0.55);
-            this.hitbox = hitbox;
-            return hitbox;
         }
         checkCollision() {
             for (let platform of AdLunam.level.getChildren()) {
