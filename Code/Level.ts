@@ -9,16 +9,16 @@ namespace AdLunam {
 
             let platform: Platform;
 
-            platform = new Platform(0, 0);
+            platform = new Platform(0, 0, null, true);
             this.appendChild(platform);
 
-            platform = new Platform(40, 10, ITEM.JETPACK);  
+            platform = new Platform(40, 10, ITEM.GUN, true);  
             this.appendChild(platform);
       
-            platform = new Platform(100, 0);
+            platform = new Platform(100, 0, ITEM.JETPACK);
             this.appendChild(platform);
 
-            platform = new Platform(150, -20);   
+            platform = new Platform(150, -20, ITEM.SHIELD);   
             this.appendChild(platform);
 
             platform = new Platform(190, -10);   

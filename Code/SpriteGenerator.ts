@@ -1,15 +1,15 @@
 namespace AdLunam {
-  import ƒ = FudgeCore;
+  import fudge = FudgeCore;
 
   export class SpriteFrame {
-    rectTexture: ƒ.Rectangle;
-    pivot: ƒ.Matrix4x4;
-    material: ƒ.Material;
+    rectTexture: fudge.Rectangle;
+    pivot: fudge.Matrix4x4;
+    material: fudge.Material;
     timeScale: number;
   }
 
   export class Sprite {
-    private static mesh: ƒ.MeshSprite = new ƒ.MeshSprite();
+    private static mesh: fudge.MeshSprite = new fudge.MeshSprite();
     public frames: SpriteFrame[] = [];
     public name: string;
 
@@ -17,7 +17,7 @@ namespace AdLunam {
       this.name = _name;
     }
 
-    public static getMesh(): ƒ.MeshSprite {
+    public static getMesh(): fudge.MeshSprite {
       return Sprite.mesh;
     }
 
@@ -28,9 +28,9 @@ namespace AdLunam {
      * @param _resolutionQuad The desired number of pixels within a length of 1 of the sprite quad
      * @param _origin The location of the origin of the sprite quad
      */
-    public generate(_texture: ƒ.TextureImage, _rects: ƒ.Rectangle[], _resolutionQuad: number, _origin: ƒ.ORIGIN2D): void {
+    public generate(_texture: fudge.TextureImage, _rects: fudge.Rectangle[], _resolutionQuad: number, _origin: fudge.ORIGIN2D): void {
       this.frames = [];
-      let framing: ƒ.FramingScaled = new ƒ.FramingScaled();
+      let framing: fudge.FramingScaled = new fudge.FramingScaled();
       framing.setScale(1 / _texture.image.width, 1 / _texture.image.height);
 
       let count: number = 0;
@@ -39,17 +39,17 @@ namespace AdLunam {
         frame.timeScale = 1;
         this.frames.push(frame);
 
-        // ƒ.Debug.log(frame.rectTexture.toString());
-        // ƒ.Debug.log(frame.pivot.toString());
-        // ƒ.Debug.log(frame.material);
+        // fudge.Debug.log(frame.rectTexture.toString());
+        // fudge.Debug.log(frame.pivot.toString());
+        // fudge.Debug.log(frame.material);
 
         count++;
       }
     }
 
-    public generateByGrid(_texture: ƒ.TextureImage, _startRect: ƒ.Rectangle, _frames: number, _borderSize: ƒ.Vector2, _resolutionQuad: number, _origin: ƒ.ORIGIN2D): void {
-      let rect: ƒ.Rectangle = _startRect.copy;
-      let rects: ƒ.Rectangle[] = [];
+    public generateByGrid(_texture: fudge.TextureImage, _startRect: fudge.Rectangle, _frames: number, _borderSize: fudge.Vector2, _resolutionQuad: number, _origin: fudge.ORIGIN2D): void {
+      let rect: fudge.Rectangle = _startRect.copy;
+      let rects: fudge.Rectangle[] = [];
       while (_frames--) {
         rects.push(rect.copy);
         rect.position.x += _startRect.size.x + _borderSize.x;
@@ -63,40 +63,40 @@ namespace AdLunam {
           break;
       }
 
-      rects.forEach((_rect: ƒ.Rectangle) => ƒ.Debug.log(_rect.toString()));
+      rects.forEach((_rect: fudge.Rectangle) => fudge.Debug.log(_rect.toString()));
       this.generate(_texture, rects, _resolutionQuad, _origin);
     }
 
-    private createFrame(_name: string, _texture: ƒ.TextureImage, _framing: ƒ.FramingScaled, _rect: ƒ.Rectangle, _resolutionQuad: number, _origin: ƒ.ORIGIN2D): SpriteFrame {
-      let rectTexture: ƒ.Rectangle = new ƒ.Rectangle(0, 0, _texture.image.width, _texture.image.height);
+    private createFrame(_name: string, _texture: fudge.TextureImage, _framing: fudge.FramingScaled, _rect: fudge.Rectangle, _resolutionQuad: number, _origin: fudge.ORIGIN2D): SpriteFrame {
+      let rectTexture: fudge.Rectangle = new fudge.Rectangle(0, 0, _texture.image.width, _texture.image.height);
       let frame: SpriteFrame = new SpriteFrame();
 
       frame.rectTexture = _framing.getRect(_rect);
       frame.rectTexture.position = _framing.getPoint(_rect.position, rectTexture);
 
-      let rectQuad: ƒ.Rectangle = new ƒ.Rectangle(0, 0, _rect.width / _resolutionQuad, _rect.height / _resolutionQuad, _origin);
-      frame.pivot = ƒ.Matrix4x4.IDENTITY;
-      frame.pivot.translate(new ƒ.Vector3(rectQuad.position.x + rectQuad.size.x / 2, -rectQuad.position.y - rectQuad.size.y / 2, 0));
+      let rectQuad: fudge.Rectangle = new fudge.Rectangle(0, 0, _rect.width / _resolutionQuad, _rect.height / _resolutionQuad, _origin);
+      frame.pivot = fudge.Matrix4x4.IDENTITY;
+      frame.pivot.translate(new fudge.Vector3(rectQuad.position.x + rectQuad.size.x / 2, -rectQuad.position.y - rectQuad.size.y / 2, 0));
       frame.pivot.scaleX(rectQuad.size.x);
       frame.pivot.scaleY(rectQuad.size.y);
-      // ƒ.Debug.log(rectQuad.toString());
+      // fudge.Debug.log(rectQuad.toString());
 
-      let coat: ƒ.CoatTextured = new ƒ.CoatTextured();
+      let coat: fudge.CoatTextured = new fudge.CoatTextured();
       coat.pivot.translate(frame.rectTexture.position);
       coat.pivot.scale(frame.rectTexture.size);
       coat.name = _name;
       coat.texture = _texture;
 
-      frame.material = new ƒ.Material(_name, ƒ.ShaderTexture, coat);
-      // ƒ.Debug.log(coat.pivot.toString());  
+      frame.material = new fudge.Material(_name, fudge.ShaderTexture, coat);
+      // fudge.Debug.log(coat.pivot.toString());  
 
       return frame;
     }
   }
 
-  export class NodeSprite extends ƒ.Node {
-    private cmpMesh: ƒ.ComponentMesh;
-    private cmpMaterial: ƒ.ComponentMaterial;
+  export class NodeSprite extends fudge.Node {
+    private cmpMesh: fudge.ComponentMesh;
+    private cmpMaterial: fudge.ComponentMaterial;
     private sprite: Sprite;
     private frameCurrent: number = 0;
     private direction: number = 1;
@@ -105,21 +105,21 @@ namespace AdLunam {
       super(_name);
       this.sprite = _sprite;
 
-      this.cmpMesh = new ƒ.ComponentMesh(Sprite.getMesh());
-      this.cmpMaterial = new ƒ.ComponentMaterial();
+      this.cmpMesh = new fudge.ComponentMesh(Sprite.getMesh());
+      this.cmpMaterial = new fudge.ComponentMaterial();
       this.addComponent(this.cmpMesh);
       this.addComponent(this.cmpMaterial);
 
       this.showFrame(this.frameCurrent);
 
-      ƒ.Debug.info("NodeSprite constructor", this);
+      fudge.Debug.info("NodeSprite constructor", this);
     }
 
     public showFrame(_index: number): void {
       let spriteFrame: SpriteFrame = this.sprite.frames[_index];
       this.cmpMesh.pivot = spriteFrame.pivot;
       this.cmpMaterial.material = spriteFrame.material;
-      ƒ.RenderManager.updateNode(this);
+      fudge.RenderManager.updateNode(this);
       this.frameCurrent = _index;
     }
 

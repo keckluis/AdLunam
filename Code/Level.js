@@ -6,13 +6,13 @@ var AdLunam;
         constructor() {
             super("Level");
             let platform;
-            platform = new AdLunam.Platform(0, 0);
+            platform = new AdLunam.Platform(0, 0, null, true);
             this.appendChild(platform);
-            platform = new AdLunam.Platform(40, 10, AdLunam.ITEM.JETPACK);
+            platform = new AdLunam.Platform(40, 10, AdLunam.ITEM.GUN, true);
             this.appendChild(platform);
-            platform = new AdLunam.Platform(100, 0);
+            platform = new AdLunam.Platform(100, 0, AdLunam.ITEM.JETPACK);
             this.appendChild(platform);
-            platform = new AdLunam.Platform(150, -20);
+            platform = new AdLunam.Platform(150, -20, AdLunam.ITEM.SHIELD);
             this.appendChild(platform);
             platform = new AdLunam.Platform(190, -10);
             this.appendChild(platform);

@@ -5,9 +5,11 @@ namespace AdLunam {
     private static mesh: fudge.MeshSprite = new fudge.MeshSprite();
     private static readonly pivot: fudge.Matrix4x4 = fudge.Matrix4x4.TRANSLATION(fudge.Vector3.Y(-0.5));
     private static sprites: Sprite[];
+    public item: Item;
+    public alien: Alien;
     //private static material: fudge.Material = new fudge.Material("Platform", fudge.ShaderUniColor, new fudge.CoatColored(fudge.Color.CSS("red", 0.5)));
 
-    public constructor(_posX: number, _posY: number, _item?: ITEM) {
+    public constructor(_posX: number, _posY: number, _item?: ITEM, _alien?: boolean) {
       super("Platform");
       let nodeSprite: NodeSprite = new NodeSprite("PlatformSprite", Platform.sprites[0]);
       nodeSprite.activate(false);
@@ -29,9 +31,15 @@ namespace AdLunam {
       this.cmpTransform.local.translateY(_posY * 0.1);
 
       if (_item) {
-
         let item: Item = new Item(_item);
-        this.appendChild(item);
+        this.item = item;
+        this.appendChild(this.item);
+      }
+
+      if (_alien) {
+        let alien: Alien = new Alien();
+        this.alien = alien;
+        this.appendChild(this.alien);
       }
     }
 

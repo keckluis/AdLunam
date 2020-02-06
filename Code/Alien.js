@@ -24,6 +24,10 @@ var AdLunam;
                 let distance = fudge.Vector3.SCALE(this.speed, timeFrame);
                 this.cmpTransform.local.translate(distance);
                 this.checkCollision();
+                if (this.cmpTransform.local.translation.x > 0.4)
+                    this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
+                else if (this.cmpTransform.local.translation.x < -0.4)
+                    this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.RIGHT);
             };
             this.addComponent(new fudge.ComponentTransform());
             for (let sprite of Alien.sprites) {
@@ -32,19 +36,19 @@ var AdLunam;
                 nodeSprite.addEventListener("showNext", (_event) => { _event.currentTarget.showFrameNext(); }, true);
                 this.appendChild(nodeSprite);
             }
-            this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.RIGHT);
+            this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
             fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         }
         static generateSprites(_txtImage) {
             Alien.sprites = [];
             let sprite = new AdLunam.Sprite(ACTION_ALIEN.WALK);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 72, 8, 10), 2, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 72, 8, 10), 2, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
             Alien.sprites.push(sprite);
             sprite = new AdLunam.Sprite(ACTION_ALIEN.IDLE);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(16, 72, 8, 10), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(16, 72, 8, 10), 1, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
             Alien.sprites.push(sprite);
             sprite = new AdLunam.Sprite(ACTION_ALIEN.DEAD);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(40, 72, 8, 10), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(40, 72, 8, 10), 1, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
             Alien.sprites.push(sprite);
         }
         show(_action) {
@@ -59,7 +63,6 @@ var AdLunam;
                     break;
                 case ACTION_ALIEN.WALK:
                     this.speed.x = Alien.speedMax.x * direction;
-                    this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
                     break;
                 case ACTION_ALIEN.DEAD:
                     break;
@@ -79,7 +82,7 @@ var AdLunam;
             }
         }
     }
-    Alien.speedMax = new fudge.Vector2(0.2, 5); // units per second
+    Alien.speedMax = new fudge.Vector2(0.1, 5); // units per second
     Alien.gravity = fudge.Vector2.Y(-3);
     AdLunam.Alien = Alien;
 })(AdLunam || (AdLunam = {}));

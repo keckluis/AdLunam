@@ -11,7 +11,6 @@ namespace AdLunam {
     export let game: fudge.Node;
     export let level: fudge.Node;
     let astronaut: Astronaut;
-    let alien: Alien;
     let txtImage: fudge.TextureImage;  
     let cmpCamera: fudge.ComponentCamera;
   
@@ -23,15 +22,14 @@ namespace AdLunam {
       Astronaut.generateSprites(txtImage);
       Alien.generateSprites(txtImage);
       Platform.generateSprites(txtImage);
+      Item.generateSprites(txtImage);
   
       fudge.RenderManager.initialize(true, false);
       game = new fudge.Node("Game");
       astronaut = new Astronaut("Astronaut");
-      alien = new Alien("Alien");
       level = new Level();
       game.appendChild(level);
       game.appendChild(astronaut);
-      game.appendChild(alien);
   
       cmpCamera = new fudge.ComponentCamera();
       cmpCamera.pivot.translateZ(10);
@@ -51,6 +49,11 @@ namespace AdLunam {
       function update(_event: fudge.Eventƒ): void {
 
         processInput();
+
+        for (let platform of level.getChildren()) {
+          if ((<Platform>platform).item)
+            (<Platform>platform).item.cmpTransform.local.rotateY(5);
+        }
         
         cmpCamera.pivot.translation = new fudge.Vector3(astronaut.cmpTransform.local.translation.x, cmpCamera.pivot.translation.y, cmpCamera.pivot.translation.z);
 

@@ -12,7 +12,7 @@ namespace AdLunam {
   
     export class Alien extends fudge.Node {
       private static sprites: Sprite[];
-      private static speedMax: fudge.Vector2 = new fudge.Vector2(0.2, 5); // units per second
+      private static speedMax: fudge.Vector2 = new fudge.Vector2(0.1, 5); // units per second
       private static gravity: fudge.Vector2 = fudge.Vector2.Y(-3);
       public speed: fudge.Vector3 = fudge.Vector3.ZERO();
   
@@ -33,22 +33,22 @@ namespace AdLunam {
           this.appendChild(nodeSprite);
         }
         
-        this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.RIGHT);
+        this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
         fudge.Loop.addEventListener(fudge.EVENT.LOOP_FRAME, this.update);
       }
   
       public static generateSprites(_txtImage: fudge.TextureImage): void {
         Alien.sprites = [];
         let sprite: Sprite = new Sprite(ACTION_ALIEN.WALK);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 72, 8, 10), 2, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 72, 8, 10), 2, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
         Alien.sprites.push(sprite);
   
         sprite = new Sprite(ACTION_ALIEN.IDLE);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(16, 72, 8, 10), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(16, 72, 8, 10), 1, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
         Alien.sprites.push(sprite);
 
         sprite = new Sprite(ACTION_ALIEN.DEAD);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(40, 72, 8, 10), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(40, 72, 8, 10), 1, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
         Alien.sprites.push(sprite);
       }
   
@@ -65,7 +65,6 @@ namespace AdLunam {
             break;
           case ACTION_ALIEN.WALK:
             this.speed.x = Alien.speedMax.x * direction;
-            this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
             break;
           case ACTION_ALIEN.DEAD:
               break;
@@ -84,6 +83,11 @@ namespace AdLunam {
         this.cmpTransform.local.translate(distance);
 
         this.checkCollision();
+
+        if (this.cmpTransform.local.translation.x > 0.4)
+          this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
+        else if (this.cmpTransform.local.translation.x < -0.4)
+          this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.RIGHT);
       }
     
       private checkCollision(): void {

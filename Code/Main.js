@@ -5,7 +5,6 @@ var AdLunam;
     window.addEventListener("load", main);
     let keysPressed = {};
     let astronaut;
-    let alien;
     let txtImage;
     let cmpCamera;
     function main() {
@@ -16,14 +15,13 @@ var AdLunam;
         AdLunam.Astronaut.generateSprites(txtImage);
         AdLunam.Alien.generateSprites(txtImage);
         AdLunam.Platform.generateSprites(txtImage);
+        AdLunam.Item.generateSprites(txtImage);
         AdLunam.fudge.RenderManager.initialize(true, false);
         AdLunam.game = new AdLunam.fudge.Node("Game");
         astronaut = new AdLunam.Astronaut("Astronaut");
-        alien = new AdLunam.Alien("Alien");
         AdLunam.level = new AdLunam.Level();
         AdLunam.game.appendChild(AdLunam.level);
         AdLunam.game.appendChild(astronaut);
-        AdLunam.game.appendChild(alien);
         cmpCamera = new AdLunam.fudge.ComponentCamera();
         cmpCamera.pivot.translateZ(10);
         cmpCamera.pivot.lookAt(AdLunam.fudge.Vector3.ZERO());
@@ -37,6 +35,10 @@ var AdLunam;
         AdLunam.fudge.Loop.start(AdLunam.fudge.LOOP_MODE.TIME_GAME, 10);
         function update(_event) {
             processInput();
+            for (let platform of AdLunam.level.getChildren()) {
+                if (platform.item)
+                    platform.item.cmpTransform.local.rotateY(5);
+            }
             cmpCamera.pivot.translation = new AdLunam.fudge.Vector3(astronaut.cmpTransform.local.translation.x, cmpCamera.pivot.translation.y, cmpCamera.pivot.translation.z);
             viewport.draw();
         }
