@@ -2,12 +2,6 @@
 var AdLunam;
 (function (AdLunam) {
     var fudge = FudgeCore;
-    let ACTION_ALIEN;
-    (function (ACTION_ALIEN) {
-        ACTION_ALIEN["IDLE"] = "Idle";
-        ACTION_ALIEN["WALK"] = "Walk";
-        ACTION_ALIEN["DEAD"] = "Dead";
-    })(ACTION_ALIEN = AdLunam.ACTION_ALIEN || (AdLunam.ACTION_ALIEN = {}));
     let DIRECTION_ALIEN;
     (function (DIRECTION_ALIEN) {
         DIRECTION_ALIEN[DIRECTION_ALIEN["LEFT"] = 0] = "LEFT";
@@ -18,7 +12,6 @@ var AdLunam;
             super("Alien");
             this.speed = fudge.Vector3.ZERO();
             this.update = (_event) => {
-                console.log(this.hitbox.cmpTransform.local.translation.x);
                 this.broadcastEvent(new CustomEvent("showNext"));
                 let timeFrame = fudge.Loop.timeFrameGame / 1000;
                 this.speed.y += Alien.gravity.y * timeFrame;
@@ -26,9 +19,9 @@ var AdLunam;
                 this.cmpTransform.local.translate(distance);
                 this.checkCollision();
                 if (this.cmpTransform.local.translation.x > 0.4)
-                    this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
+                    this.act(DIRECTION_ALIEN.LEFT);
                 else if (this.cmpTransform.local.translation.x < -0.4)
-                    this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.RIGHT);
+                    this.act(DIRECTION_ALIEN.RIGHT);
             };
             this.addComponent(new fudge.ComponentTransform());
             for (let sprite of Alien.sprites) {
@@ -39,19 +32,13 @@ var AdLunam;
             }
             this.hitbox = this.createHitbox();
             this.appendChild(this.hitbox);
-            this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
+            this.act(DIRECTION_ALIEN.RIGHT);
             fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         }
         static generateSprites(_txtImage) {
             Alien.sprites = [];
-            let sprite = new AdLunam.Sprite(ACTION_ALIEN.WALK);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 72, 8, 10), 2, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
-            Alien.sprites.push(sprite);
-            sprite = new AdLunam.Sprite(ACTION_ALIEN.IDLE);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(16, 72, 8, 10), 1, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
-            Alien.sprites.push(sprite);
-            sprite = new AdLunam.Sprite(ACTION_ALIEN.DEAD);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(40, 72, 8, 10), 1, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
+            let sprite = new AdLunam.Sprite("AlienSprite");
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 72, 8, 10), 4, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
             Alien.sprites.push(sprite);
         }
         createHitbox() {
@@ -62,24 +49,14 @@ var AdLunam;
             this.hitbox = hitbox;
             return hitbox;
         }
-        show(_action) {
+        show() {
             for (let child of this.getChildren())
-                child.activate(child.name == _action);
+                child.activate(child.name == "AlienSprite");
         }
-        act(_action, _direction) {
+        act(_direction) {
             let direction = (_direction == DIRECTION_ALIEN.RIGHT ? 1 : -1);
-            switch (_action) {
-                case ACTION_ALIEN.IDLE:
-                    this.speed.x = 0;
-                    break;
-                case ACTION_ALIEN.WALK:
-                    this.speed.x = Alien.speedMax.x * direction;
-                    break;
-                case ACTION_ALIEN.DEAD:
-                    break;
-            }
-            this.show(_action);
-            AdLunam.game.appendChild(this.hitbox);
+            this.speed.x = Alien.speedMax.x * direction;
+            this.show();
         }
         checkCollision() {
             for (let platform of AdLunam.level.getChildren()) {

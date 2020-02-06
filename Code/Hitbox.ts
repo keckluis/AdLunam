@@ -3,7 +3,7 @@ namespace AdLunam {
   
     export class Hitbox extends fudge.Node {
       private static mesh: fudge.MeshSprite = new fudge.MeshSprite();
-      private static material: fudge.Material = new fudge.Material("Hitbox", fudge.ShaderUniColor, new fudge.CoatColored(fudge.Color.CSS("red", 0.1)));
+      //private static material: fudge.Material = new fudge.Material("Hitbox", fudge.ShaderUniColor, new fudge.CoatColored(fudge.Color.CSS("red", 0.1)));
       private static readonly pivot: fudge.Matrix4x4 = fudge.Matrix4x4.TRANSLATION(fudge.Vector3.Y(-0.5));
   
       public constructor(_name?: string) {
@@ -14,7 +14,7 @@ namespace AdLunam {
           super("Hitbox");
         }
         this.addComponent(new fudge.ComponentTransform());
-        this.addComponent(new fudge.ComponentMaterial(Hitbox.material));
+        //this.addComponent(new fudge.ComponentMaterial(Hitbox.material));
         let cmpMesh: fudge.ComponentMesh = new fudge.ComponentMesh(Hitbox.mesh);
         cmpMesh.pivot = Hitbox.pivot;
         this.addComponent(cmpMesh);
@@ -36,14 +36,14 @@ namespace AdLunam {
         return rect;
       }
 
-      public checkCollision(isBullet?: boolean): void {
+      public checkCollision(_isBullet?: boolean): boolean {
         for (let platform of level.getChildren()) {
           for (let child of platform.getChildren()) {
             if (child.name == "Item") {
               let hitbox: Hitbox = (<Item>child).hitbox;
               if (this.detectHit(hitbox)) {
                 console.log("HIT ITEM");
-                if (astronaut.item == ITEM.NONE) {
+                if (astronaut.item == ITEM.NONE && !_isBullet) {
                   astronaut.item = (<Item>child).type;
                   (<Item>child).cmpTransform.local.translateY(100);
                 }
@@ -52,18 +52,20 @@ namespace AdLunam {
               let hitbox: Hitbox = (<Alien>child).hitbox;
               if (this.detectHit(hitbox)) {
                 console.log("HIT ALIEN");
-                if (astronaut.item == ITEM.SHIELD || isBullet) {
+                if (astronaut.item == ITEM.SHIELD || _isBullet) {
                   astronaut.item = ITEM.NONE;
-                  (<Alien>child).cmpTransform.local.translateY(100);
-                } else {
-                  //console.log("PLAYER DEAD");
-                }
+                  (<Alien>child).cmpTransform.local.translateY(10);
+                  return true;
+                } else { 
+                  console.log("PLAYER DEAD");
+                } 
               } 
            } else {
               continue;
             }
           }
         }
+        return false;
       }
 
       private detectHit(hitbox: Hitbox): boolean {

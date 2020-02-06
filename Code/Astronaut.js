@@ -54,7 +54,7 @@ var AdLunam;
             Astronaut.sprites = [];
             //WALKING DEFAULT
             let sprite = new AdLunam.Sprite(ACTION.WALK + "." + AdLunam.ITEM.NONE);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(18, 0, 18, 18), 2, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(18, 0, 18, 18), 4, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
             Astronaut.sprites.push(sprite);
             //IDLE DEFAULT
             sprite = new AdLunam.Sprite(ACTION.IDLE + "." + AdLunam.ITEM.NONE);
@@ -62,11 +62,11 @@ var AdLunam;
             Astronaut.sprites.push(sprite);
             //JUMP DEFAULT
             sprite = new AdLunam.Sprite(ACTION.JUMP + "." + AdLunam.ITEM.NONE);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(54, 0, 18, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(90, 0, 18, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
             Astronaut.sprites.push(sprite);
             //WALKING GUN
             sprite = new AdLunam.Sprite(ACTION.WALK + "." + AdLunam.ITEM.GUN);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(18, 18, 18, 18), 2, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(18, 18, 18, 18), 4, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
             Astronaut.sprites.push(sprite);
             //IDLE GUN
             sprite = new AdLunam.Sprite(ACTION.IDLE + "." + AdLunam.ITEM.GUN);
@@ -74,11 +74,11 @@ var AdLunam;
             Astronaut.sprites.push(sprite);
             //JUMP GUN
             sprite = new AdLunam.Sprite(ACTION.JUMP + "." + AdLunam.ITEM.GUN);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(54, 18, 18, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(90, 18, 18, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
             Astronaut.sprites.push(sprite);
             //WALKING SHIELD
             sprite = new AdLunam.Sprite(ACTION.WALK + "." + AdLunam.ITEM.SHIELD);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(18, 36, 18, 18), 2, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(18, 36, 18, 18), 4, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
             Astronaut.sprites.push(sprite);
             //WALKING SHIELD
             sprite = new AdLunam.Sprite(ACTION.IDLE + "." + AdLunam.ITEM.SHIELD);
@@ -86,11 +86,11 @@ var AdLunam;
             Astronaut.sprites.push(sprite);
             //JUMP SHIELD
             sprite = new AdLunam.Sprite(ACTION.JUMP + "." + AdLunam.ITEM.SHIELD);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(54, 36, 18, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(90, 36, 18, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
             Astronaut.sprites.push(sprite);
             //WALKING JETPACK
             sprite = new AdLunam.Sprite(ACTION.WALK + "." + AdLunam.ITEM.JETPACK);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(18, 54, 17, 18), 2, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(18, 54, 17, 18), 4, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
             Astronaut.sprites.push(sprite);
             //WALKING JETPACK
             sprite = new AdLunam.Sprite(ACTION.IDLE + "." + AdLunam.ITEM.JETPACK);
@@ -98,11 +98,11 @@ var AdLunam;
             Astronaut.sprites.push(sprite);
             //JUMP JETPACK
             sprite = new AdLunam.Sprite(ACTION.JUMP + "." + AdLunam.ITEM.JETPACK);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(55, 77, 17, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(89, 77, 17, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
             Astronaut.sprites.push(sprite);
             //JUMP JETPACK BOOST
             sprite = new AdLunam.Sprite(ACTION.JUMP + "." + AdLunam.ITEM.JETPACK + "BOOST");
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(54, 54, 18, 23), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(89, 56, 18, 23), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
             Astronaut.sprites.push(sprite);
         }
         createHitbox() {

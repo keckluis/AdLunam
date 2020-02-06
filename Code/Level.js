@@ -8,16 +8,18 @@ var AdLunam;
             let platform;
             platform = new AdLunam.Platform(0, 0);
             this.appendChild(platform);
-            platform = new AdLunam.Platform(40, 0, null, true);
+            platform = new AdLunam.Platform(40, 0, AdLunam.ITEM.JETPACK);
             this.appendChild(platform);
-            platform = new AdLunam.Platform(80, 0, null, true);
+            platform = new AdLunam.Platform(80, 20, null, true);
             this.appendChild(platform);
-            platform = new AdLunam.Platform(120, 0, null, true);
+            platform = new AdLunam.Platform(120, 10, AdLunam.ITEM.GUN);
             this.appendChild(platform);
-            // platform = new Platform(160, 0, null, true);   
-            // this.appendChild(platform);
-            // platform = new Platform(200, 0, null, true);   
-            // this.appendChild(platform);
+            platform = new AdLunam.Platform(160, 0, null, true);
+            this.appendChild(platform);
+            platform = new AdLunam.Platform(200, 10, AdLunam.ITEM.SHIELD);
+            this.appendChild(platform);
+            platform = new AdLunam.Platform(240, 20, null, true);
+            this.appendChild(platform);
         }
     }
     AdLunam.Level = Level;

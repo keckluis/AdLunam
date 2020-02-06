@@ -6,6 +6,7 @@ namespace AdLunam {
         private static sprites: Sprite[];
         public hitbox: Hitbox;
         public direction: DIRECTION;
+        public hit: boolean = false;
 
         public constructor() {
             super("Bullet");
@@ -28,25 +29,35 @@ namespace AdLunam {
         }
 
         public createHitbox(): Hitbox {
-
             let hitbox: Hitbox = new Hitbox("BulletHitbox");
-            hitbox.cmpTransform.local.translateY(0.22);
-            hitbox.cmpTransform.local.scaleX(0.03);
-            hitbox.cmpTransform.local.scaleY(0.01);
+            hitbox.cmpTransform.local.translateY(0.1);
+            hitbox.cmpTransform.local.scaleX(0.2);
+            hitbox.cmpTransform.local.scaleY(0.4);
             this.hitbox = hitbox;
             return hitbox;
         }
 
         public show(): void {
-            for (let child of this.getChildren()) {
+            for (let child of this.getChildren()) 
                 child.activate(child.name == "BulletSprite");
+        }
+
+        private checkCollision(): void {
+            for (let platform of level.getChildren()) {
+                let rect: fudge.Rectangle = (<Platform>platform).getRectWorld();
+                let hit: boolean = rect.isInside(this.cmpTransform.local.translation.toVector2());
+                if (hit) {
+                    this.hit = true;
+                } 
             }
         }
 
-        private update = (_event: fudge.Eventƒ): void => {
+        private update = (_event: fudge.Eventƒ): void => {   
             let direction: number = (this.direction == DIRECTION.RIGHT ? 1 : -1);
             this.cmpTransform.local.translateX(0.5 * direction);
-            this.hitbox.checkCollision(true);
+            if (this.hitbox.checkCollision(true))
+                this.hit = true;
+            this.checkCollision();
         }
     }
 }

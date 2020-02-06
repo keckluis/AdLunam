@@ -1,11 +1,6 @@
 namespace AdLunam {
     import fudge = FudgeCore;
   
-    export enum ACTION_ALIEN {
-      IDLE = "Idle",
-      WALK = "Walk",
-      DEAD = "Dead"
-    }
     export enum DIRECTION_ALIEN {
       LEFT, RIGHT
     }
@@ -17,7 +12,7 @@ namespace AdLunam {
       public speed: fudge.Vector3 = fudge.Vector3.ZERO();
       public hitbox: Hitbox;
 
-      constructor() {
+      public constructor() {
         super("Alien");
         this.addComponent(new fudge.ComponentTransform());
   
@@ -35,22 +30,14 @@ namespace AdLunam {
         this.hitbox = this.createHitbox();
         this.appendChild(this.hitbox);
       
-        this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
+        this.act(DIRECTION_ALIEN.RIGHT);
         fudge.Loop.addEventListener(fudge.EVENT.LOOP_FRAME, this.update);
       }
   
       public static generateSprites(_txtImage: fudge.TextureImage): void {
         Alien.sprites = [];
-        let sprite: Sprite = new Sprite(ACTION_ALIEN.WALK);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 72, 8, 10), 2, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
-        Alien.sprites.push(sprite);
-  
-        sprite = new Sprite(ACTION_ALIEN.IDLE);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(16, 72, 8, 10), 1, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
-        Alien.sprites.push(sprite);
-
-        sprite = new Sprite(ACTION_ALIEN.DEAD);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(40, 72, 8, 10), 1, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
+        let sprite: Sprite = new Sprite("AlienSprite");
+        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 72, 8, 10), 4, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
         Alien.sprites.push(sprite);
       }
 
@@ -64,30 +51,18 @@ namespace AdLunam {
         return hitbox;
       }
   
-      public show(_action: ACTION_ALIEN): void {
+      public show(): void {
         for (let child of this.getChildren())
-          child.activate(child.name == _action);
+          child.activate(child.name == "AlienSprite");
       }
   
-      public act(_action: ACTION_ALIEN, _direction?: DIRECTION_ALIEN): void {
+      public act(_direction: DIRECTION_ALIEN): void {
         let direction: number = (_direction == DIRECTION_ALIEN.RIGHT ? 1 : -1);
-        switch (_action) {
-          case ACTION_ALIEN.IDLE:
-            this.speed.x = 0;
-            break;
-          case ACTION_ALIEN.WALK:
-            this.speed.x = Alien.speedMax.x * direction;
-            break;
-          case ACTION_ALIEN.DEAD:
-              break;
-        }
-        this.show(_action);
-        game.appendChild(this.hitbox);
+        this.speed.x = Alien.speedMax.x * direction;
+        this.show();
       }
   
       private update = (_event: fudge.Eventƒ): void => {
-
-        console.log(this.hitbox.cmpTransform.local.translation.x);
 
         this.broadcastEvent(new CustomEvent("showNext"));
 
@@ -99,9 +74,9 @@ namespace AdLunam {
         this.checkCollision();
 
         if (this.cmpTransform.local.translation.x > 0.4)
-          this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.LEFT);
+          this.act(DIRECTION_ALIEN.LEFT);
         else if (this.cmpTransform.local.translation.x < -0.4)
-          this.act(ACTION_ALIEN.WALK, DIRECTION_ALIEN.RIGHT);
+          this.act(DIRECTION_ALIEN.RIGHT);
       }
     
       private checkCollision(): void {

@@ -45,7 +45,7 @@ namespace AdLunam {
       document.addEventListener("keyup", handleKeyboard);
   
       fudge.Loop.addEventListener(fudge.EVENT.LOOP_FRAME, update);
-      fudge.Loop.start(fudge.LOOP_MODE.TIME_GAME, 10);
+      fudge.Loop.start(fudge.LOOP_MODE.TIME_GAME, 20);
   
       function update(_event: fudge.Eventƒ): void {
 
@@ -54,6 +54,12 @@ namespace AdLunam {
         for (let platform of level.getChildren()) {
           if ((<Platform>platform).item)
             (<Platform>platform).item.cmpTransform.local.rotateY(5);
+        }
+
+        for (let bullet of game.getChildren()) {
+          if (bullet.name == "Bullet")
+            if ((<Bullet>bullet).hit)
+              game.removeChild(bullet);
         }
         
         cmpCamera.pivot.translation = new fudge.Vector3(astronaut.cmpTransform.local.translation.x, cmpCamera.pivot.translation.y, cmpCamera.pivot.translation.z);

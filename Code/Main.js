@@ -32,12 +32,17 @@ var AdLunam;
         document.addEventListener("keydown", handleKeyboard);
         document.addEventListener("keyup", handleKeyboard);
         AdLunam.fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
-        AdLunam.fudge.Loop.start(AdLunam.fudge.LOOP_MODE.TIME_GAME, 10);
+        AdLunam.fudge.Loop.start(AdLunam.fudge.LOOP_MODE.TIME_GAME, 20);
         function update(_event) {
             processInput();
             for (let platform of AdLunam.level.getChildren()) {
                 if (platform.item)
                     platform.item.cmpTransform.local.rotateY(5);
+            }
+            for (let bullet of AdLunam.game.getChildren()) {
+                if (bullet.name == "Bullet")
+                    if (bullet.hit)
+                        AdLunam.game.removeChild(bullet);
             }
             cmpCamera.pivot.translation = new AdLunam.fudge.Vector3(AdLunam.astronaut.cmpTransform.local.translation.x, cmpCamera.pivot.translation.y, cmpCamera.pivot.translation.z);
             viewport.draw();

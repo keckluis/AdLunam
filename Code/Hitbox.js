@@ -11,7 +11,7 @@ var AdLunam;
                 super("Hitbox");
             }
             this.addComponent(new fudge.ComponentTransform());
-            this.addComponent(new fudge.ComponentMaterial(Hitbox.material));
+            //this.addComponent(new fudge.ComponentMaterial(Hitbox.material));
             let cmpMesh = new fudge.ComponentMesh(Hitbox.mesh);
             cmpMesh.pivot = Hitbox.pivot;
             this.addComponent(cmpMesh);
@@ -28,14 +28,14 @@ var AdLunam;
             rect.size = size;
             return rect;
         }
-        checkCollision(isBullet) {
+        checkCollision(_isBullet) {
             for (let platform of AdLunam.level.getChildren()) {
                 for (let child of platform.getChildren()) {
                     if (child.name == "Item") {
                         let hitbox = child.hitbox;
                         if (this.detectHit(hitbox)) {
                             console.log("HIT ITEM");
-                            if (AdLunam.astronaut.item == AdLunam.ITEM.NONE) {
+                            if (AdLunam.astronaut.item == AdLunam.ITEM.NONE && !_isBullet) {
                                 AdLunam.astronaut.item = child.type;
                                 child.cmpTransform.local.translateY(100);
                             }
@@ -45,12 +45,13 @@ var AdLunam;
                         let hitbox = child.hitbox;
                         if (this.detectHit(hitbox)) {
                             console.log("HIT ALIEN");
-                            if (AdLunam.astronaut.item == AdLunam.ITEM.SHIELD || isBullet) {
+                            if (AdLunam.astronaut.item == AdLunam.ITEM.SHIELD || _isBullet) {
                                 AdLunam.astronaut.item = AdLunam.ITEM.NONE;
-                                child.cmpTransform.local.translateY(100);
+                                child.cmpTransform.local.translateY(10);
+                                return true;
                             }
                             else {
-                                //console.log("PLAYER DEAD");
+                                console.log("PLAYER DEAD");
                             }
                         }
                     }
@@ -59,6 +60,7 @@ var AdLunam;
                     }
                 }
             }
+            return false;
         }
         detectHit(hitbox) {
             let hit = false;
@@ -85,7 +87,7 @@ var AdLunam;
         }
     }
     Hitbox.mesh = new fudge.MeshSprite();
-    Hitbox.material = new fudge.Material("Hitbox", fudge.ShaderUniColor, new fudge.CoatColored(fudge.Color.CSS("red", 0.1)));
+    //private static material: fudge.Material = new fudge.Material("Hitbox", fudge.ShaderUniColor, new fudge.CoatColored(fudge.Color.CSS("red", 0.1)));
     Hitbox.pivot = fudge.Matrix4x4.TRANSLATION(fudge.Vector3.Y(-0.5));
     AdLunam.Hitbox = Hitbox;
 })(AdLunam || (AdLunam = {}));
