@@ -81,7 +81,7 @@ namespace AdLunam {
         sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(18, 36, 18, 18), 4, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
         Astronaut.sprites.push(sprite);
         
-        //WALKING SHIELD
+        //IDLE SHIELD
         sprite = new Sprite(ACTION.IDLE + "." + ITEM.SHIELD);
         sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 36, 18, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
         Astronaut.sprites.push(sprite);
@@ -93,22 +93,22 @@ namespace AdLunam {
 
         //WALKING JETPACK
         sprite = new Sprite(ACTION.WALK + "." + ITEM.JETPACK);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(18, 54, 17, 18), 4, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(18, 54, 18, 18), 4, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
         Astronaut.sprites.push(sprite);
         
-        //WALKING JETPACK
+        //IDLE JETPACK
         sprite = new Sprite(ACTION.IDLE + "." + ITEM.JETPACK);
         sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 54, 18, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
         Astronaut.sprites.push(sprite);
 
         //JUMP JETPACK
         sprite = new Sprite(ACTION.JUMP + "." + ITEM.JETPACK);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(89, 77, 17, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(90, 54, 18, 20), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
         Astronaut.sprites.push(sprite);
 
         //JUMP JETPACK BOOST
         sprite = new Sprite(ACTION.JUMP + "." + ITEM.JETPACK + "BOOST");
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(89, 56, 18, 23), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
+        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(88, 74, 20, 22), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
         Astronaut.sprites.push(sprite);
       }
 

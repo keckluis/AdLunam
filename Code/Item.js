@@ -26,13 +26,13 @@ var AdLunam;
         static generateSprites(_txtImage) {
             Item.sprites = [];
             let sprite = new AdLunam.Sprite(ITEM.JETPACK);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 83, 8, 9), 1, fudge.Vector2.ZERO(), 40, fudge.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 86, 6, 9), 1, fudge.Vector2.ZERO(), 40, fudge.ORIGIN2D.BOTTOMCENTER);
             Item.sprites.push(sprite);
             sprite = new AdLunam.Sprite(ITEM.GUN);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(8, 83, 8, 9), 1, fudge.Vector2.ZERO(), 40, fudge.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(8, 86, 6, 9), 1, fudge.Vector2.ZERO(), 40, fudge.ORIGIN2D.BOTTOMCENTER);
             Item.sprites.push(sprite);
             sprite = new AdLunam.Sprite(ITEM.SHIELD);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(16, 83, 8, 9), 1, fudge.Vector2.ZERO(), 40, fudge.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(16, 86, 6, 9), 1, fudge.Vector2.ZERO(), 40, fudge.ORIGIN2D.BOTTOMCENTER);
             Item.sprites.push(sprite);
         }
         show() {

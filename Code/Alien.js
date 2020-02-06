@@ -38,7 +38,7 @@ var AdLunam;
         static generateSprites(_txtImage) {
             Alien.sprites = [];
             let sprite = new AdLunam.Sprite("AlienSprite");
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 72, 8, 10), 4, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 74, 8, 10), 4, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
             Alien.sprites.push(sprite);
         }
         createHitbox() {

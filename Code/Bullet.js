@@ -26,7 +26,7 @@ var AdLunam;
         static generateSprites(_txtImage) {
             Bullet.sprites = [];
             let sprite = new AdLunam.Sprite("BulletSprite");
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(24, 84, 3, 1), 1, fudge.Vector2.ZERO(), 35, fudge.ORIGIN2D.CENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(23, 87, 3, 1), 1, fudge.Vector2.ZERO(), 35, fudge.ORIGIN2D.CENTER);
             Bullet.sprites.push(sprite);
         }
         createHitbox() {

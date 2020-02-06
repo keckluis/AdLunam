@@ -24,7 +24,7 @@ namespace AdLunam {
         public static generateSprites(_txtImage: fudge.TextureImage): void {
             Bullet.sprites = [];
             let sprite: Sprite = new Sprite("BulletSprite");
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(24, 84, 3, 1), 1, fudge.Vector2.ZERO(), 35, fudge.ORIGIN2D.CENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(23, 87, 3, 1), 1, fudge.Vector2.ZERO(), 35, fudge.ORIGIN2D.CENTER);
             Bullet.sprites.push(sprite);
         }
 
