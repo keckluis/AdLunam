@@ -1,0 +1,56 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  display: none;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+canvas {
+  width: 100vw;
+  height:100vh;
+}
+
+body {
+  background-color: white;
+  display: grid;
+  grid-template-rows: min-content auto min-content 0;
+  color: white;
+  font-family: 'Arial';
+  text-shadow: 2px 0px 2px black, -2px 0px 2px black, 0px 2px 2px black, 0px -2px 2px black;
+  font-size: 1.5em;
+  font-weight: bolder;
+}
+
+div {
+  padding: 0 0.5em;
+}
+
+div#head {
+  grid-template-columns: 1fr 1fr 1fr;
+  display: grid;
+  text-align: center;
+}
+
+h1 {
+  display: inline;
+}
+
+div#Menu, div#Over {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+div#Over {
+  visibility: hidden;
+  font-size: 3em;
+  text-align: center;
+}

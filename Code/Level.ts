@@ -12,19 +12,19 @@ namespace AdLunam {
             platform = new Platform(0, 0);
             this.appendChild(platform);
 
-            platform = new Platform(40, 0, ITEM.JETPACK);  
+            platform = new Platform(40, 2, ITEM.GUN);  
             this.appendChild(platform);
       
-            platform = new Platform(80, 20, null, true);
+            platform = new Platform(80, 10, null, true);
             this.appendChild(platform);
 
-            platform = new Platform(120, 10, ITEM.GUN);   
+            platform = new Platform(120, 10, ITEM.SHIELD);   
             this.appendChild(platform);
 
             platform = new Platform(160, 0, null, true);   
             this.appendChild(platform);
 
-            platform = new Platform(200, 10, ITEM.SHIELD);   
+            platform = new Platform(200, 10, ITEM.JETPACK);   
             this.appendChild(platform);
 
             platform = new Platform(240, 20, null, true);   

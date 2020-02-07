@@ -4,9 +4,10 @@ namespace AdLunam {
     export class Bullet extends fudge.Node {
 
         private static sprites: Sprite[];
-        public hitbox: Hitbox;
-        public direction: DIRECTION;
         public hit: boolean = false;
+        public lifetime: number = 0;
+        private direction: DIRECTION;
+        private hitbox: Hitbox;
 
         public constructor() {
             super("Bullet");
@@ -30,9 +31,9 @@ namespace AdLunam {
 
         public createHitbox(): Hitbox {
             let hitbox: Hitbox = new Hitbox("BulletHitbox");
-            hitbox.cmpTransform.local.translateY(0.1);
-            hitbox.cmpTransform.local.scaleX(0.2);
-            hitbox.cmpTransform.local.scaleY(0.4);
+            hitbox.cmpTransform.local.translateY(0.15);
+            hitbox.cmpTransform.local.scaleX(0.25);
+            hitbox.cmpTransform.local.scaleY(0.35);
             this.hitbox = hitbox;
             return hitbox;
         }
@@ -52,12 +53,15 @@ namespace AdLunam {
             }
         }
 
-        private update = (_event: fudge.Eventƒ): void => {   
-            let direction: number = (this.direction == DIRECTION.RIGHT ? 1 : -1);
-            this.cmpTransform.local.translateX(0.5 * direction);
-            if (this.hitbox.checkCollision(true))
-                this.hit = true;
-            this.checkCollision();
+        private update = (_event: fudge.Eventƒ): void => {
+            if (!this.hit && this.lifetime < 100) {   
+                let direction: number = (this.direction == DIRECTION.RIGHT ? 1 : -1);
+                this.cmpTransform.local.translateX(0.2 * direction);
+                if (this.hitbox.checkCollision(true))
+                    this.hit = true;
+                this.checkCollision();
+                this.lifetime += 1;
+            }
         }
     }
 }

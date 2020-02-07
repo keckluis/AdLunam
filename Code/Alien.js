@@ -11,12 +11,15 @@ var AdLunam;
         constructor() {
             super("Alien");
             this.speed = fudge.Vector3.ZERO();
+            this.gravity = fudge.Vector2.Y(-3);
             this.update = (_event) => {
-                this.broadcastEvent(new CustomEvent("showNext"));
+                if (!AdLunam.gameOver)
+                    this.broadcastEvent(new CustomEvent("showNext"));
                 let timeFrame = fudge.Loop.timeFrameGame / 1000;
-                this.speed.y += Alien.gravity.y * timeFrame;
+                this.speed.y += this.gravity.y * timeFrame;
                 let distance = fudge.Vector3.SCALE(this.speed, timeFrame);
-                this.cmpTransform.local.translate(distance);
+                if (!AdLunam.gameOver)
+                    this.cmpTransform.local.translate(distance);
                 this.checkCollision();
                 if (this.cmpTransform.local.translation.x > 0.4)
                     this.act(DIRECTION_ALIEN.LEFT);
@@ -43,9 +46,9 @@ var AdLunam;
         }
         createHitbox() {
             let hitbox = new AdLunam.Hitbox("AlienHitbox");
-            hitbox.cmpTransform.local.translateY(0.35);
-            hitbox.cmpTransform.local.scaleX(0.25);
-            hitbox.cmpTransform.local.scaleY(0.35);
+            hitbox.cmpTransform.local.translateY(0.05);
+            hitbox.cmpTransform.local.scaleX(0.1);
+            hitbox.cmpTransform.local.scaleY(0.1);
             this.hitbox = hitbox;
             return hitbox;
         }
@@ -56,7 +59,8 @@ var AdLunam;
         act(_direction) {
             let direction = (_direction == DIRECTION_ALIEN.RIGHT ? 1 : -1);
             this.speed.x = Alien.speedMax.x * direction;
-            this.show();
+            if (!AdLunam.gameOver)
+                this.show();
         }
         checkCollision() {
             for (let platform of AdLunam.level.getChildren()) {
@@ -72,7 +76,6 @@ var AdLunam;
         }
     }
     Alien.speedMax = new fudge.Vector2(0.1, 5); // units per second
-    Alien.gravity = fudge.Vector2.Y(-3);
     AdLunam.Alien = Alien;
 })(AdLunam || (AdLunam = {}));
 //# sourceMappingURL=Alien.js.map

@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>ad lunam</title>
+  <link rel="stylesheet" href="normalize.css">
+  <link rel="stylesheet" href="style.css">
   <script src="../Fudge/FudgeCore.js"></script>
   <script src="SpriteGenerator.js"></script>
   <script src="Platform.js"></script>
@@ -24,10 +26,33 @@
   </style>
 </head>
 <body>
-  <h1>
-    ad lunam
-  </h1>
-  <canvas width="1000" height="600" style="background-color: black"></canvas>
+  <!-- <div id="head">
+    <h1 style="text-align: left;">AD LUNAM</h1>
+  </div> -->
+
+  <canvas style="background-color: black"></canvas>
+
+  <div>
+    <span>LEFT: A | RIGHT: D | JUMP: W | USE ITEM: F</span>
+  </div>
+
+  <div>
+    <div id="PointsAnimation"></div>
+    <div id="Calculation"></div>
+
+    <div id="Menu">
+      <h1>
+        1. press F11 for fullscreen <br />
+        2. press ENTER to start
+      </h1>
+    </div>
+    <div id="Over">
+      <h1>
+        GAME OVER
+      </h1><br />
+      press F5 to restart
+    </div>
+  </div>
   <img src="sprites.png"/>
 </body>
 </html>

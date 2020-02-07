@@ -3,7 +3,7 @@ namespace AdLunam {
   
     export class Hitbox extends fudge.Node {
       private static mesh: fudge.MeshSprite = new fudge.MeshSprite();
-      //private static material: fudge.Material = new fudge.Material("Hitbox", fudge.ShaderUniColor, new fudge.CoatColored(fudge.Color.CSS("red", 0.1)));
+      //private static material: fudge.Material = new fudge.Material("Hitbox", fudge.ShaderUniColor, new fudge.CoatColored(fudge.Color.CSS("red", 1)));
       private static readonly pivot: fudge.Matrix4x4 = fudge.Matrix4x4.TRANSLATION(fudge.Vector3.Y(-0.5));
   
       public constructor(_name?: string) {
@@ -54,10 +54,11 @@ namespace AdLunam {
                 console.log("HIT ALIEN");
                 if (astronaut.item == ITEM.SHIELD || _isBullet) {
                   astronaut.item = ITEM.NONE;
-                  (<Alien>child).cmpTransform.local.translateY(10);
+                  (<Alien>child).cmpTransform.local.translateY(100);
+                  (<Alien>child).gravity = fudge.Vector2.Y(0);
                   return true;
                 } else { 
-                  console.log("PLAYER DEAD");
+                  gameOver = true;
                 } 
               } 
            } else {

@@ -13,7 +13,7 @@ namespace AdLunam {
     export class Astronaut extends fudge.Node {
       private static sprites: Sprite[];
       private static speedMax: fudge.Vector2 = new fudge.Vector2(2, 2); // units per second
-      private static gravity: fudge.Vector2 = fudge.Vector2.Y(-3);
+      private static gravity: fudge.Vector2 = fudge.Vector2.Y(-7);
       public speed: fudge.Vector3 = fudge.Vector3.ZERO();
       public item: ITEM = ITEM.NONE;
       public direction: DIRECTION = DIRECTION.RIGHT;
@@ -125,6 +125,10 @@ namespace AdLunam {
         for (let child of this.getChildren()) {
           if (this.jetpackUsed)
             child.activate(child.name == _action + "." + _item + "BOOST");
+          else if (_action == ACTION.WALK && this.jetpackUsed)
+            child.activate(child.name == "Jump.JETPACKBOOST");
+          else if (_action == ACTION.WALK && !this.isOnFloor)
+            child.activate(child.name == "Jump" + "." + _item);
           else
            child.activate(child.name == _action + "." + _item);
         }
@@ -139,33 +143,37 @@ namespace AdLunam {
           case ACTION.WALK:
             astronaut.direction = _direction;
             this.speed.x = Astronaut.speedMax.x;
-            this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
+            if (!this.jetpackUsed && !gameOver)
+              this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
             break;
           case ACTION.JUMP:
               if (this.isOnFloor) {
                 this.isOnFloor = false;
-                this.speed.y = 3;
-                if (_direction != null) {
+                this.speed.y = 5;
+                if (_direction != null && !gameOver) {
                   this.speed.x = Astronaut.speedMax.x;
                   this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
                 }
               }
               break;
         }
-        this.show(_action, this.item);
+        if (!gameOver)
+          this.show(_action, this.item);
       }
 
       
   
       private update = (_event: fudge.Eventƒ): void => {
 
-        this.broadcastEvent(new CustomEvent("showNext"));
+        if (!gameOver)
+          this.broadcastEvent(new CustomEvent("showNext"));
 
         let timeFrame: number = fudge.Loop.timeFrameGame / 1000;
         this.speed.y += Astronaut.gravity.y * timeFrame;
         let distance: fudge.Vector3 = fudge.Vector3.SCALE(this.speed, timeFrame);
         
-        this.cmpTransform.local.translate(distance);
+        if (!gameOver)
+          this.cmpTransform.local.translate(distance);
 
         this.checkCollision();
 
@@ -180,6 +188,11 @@ namespace AdLunam {
         }
       
         this.hitbox.checkCollision();
+
+        if (this.cmpTransform.local.translation.y < -10) {
+          Astronaut.gravity = fudge.Vector2.Y(0);
+          gameOver = true;
+        }
       }
 
       private checkCollision(): void {

@@ -47,11 +47,12 @@ var AdLunam;
                             console.log("HIT ALIEN");
                             if (AdLunam.astronaut.item == AdLunam.ITEM.SHIELD || _isBullet) {
                                 AdLunam.astronaut.item = AdLunam.ITEM.NONE;
-                                child.cmpTransform.local.translateY(10);
+                                child.cmpTransform.local.translateY(100);
+                                child.gravity = fudge.Vector2.Y(0);
                                 return true;
                             }
                             else {
-                                console.log("PLAYER DEAD");
+                                AdLunam.gameOver = true;
                             }
                         }
                     }
@@ -87,7 +88,7 @@ var AdLunam;
         }
     }
     Hitbox.mesh = new fudge.MeshSprite();
-    //private static material: fudge.Material = new fudge.Material("Hitbox", fudge.ShaderUniColor, new fudge.CoatColored(fudge.Color.CSS("red", 0.1)));
+    //private static material: fudge.Material = new fudge.Material("Hitbox", fudge.ShaderUniColor, new fudge.CoatColored(fudge.Color.CSS("red", 1)));
     Hitbox.pivot = fudge.Matrix4x4.TRANSLATION(fudge.Vector3.Y(-0.5));
     AdLunam.Hitbox = Hitbox;
 })(AdLunam || (AdLunam = {}));

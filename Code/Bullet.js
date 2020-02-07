@@ -6,12 +6,16 @@ var AdLunam;
         constructor() {
             super("Bullet");
             this.hit = false;
+            this.lifetime = 0;
             this.update = (_event) => {
-                let direction = (this.direction == AdLunam.DIRECTION.RIGHT ? 1 : -1);
-                this.cmpTransform.local.translateX(0.5 * direction);
-                if (this.hitbox.checkCollision(true))
-                    this.hit = true;
-                this.checkCollision();
+                if (!this.hit && this.lifetime < 100) {
+                    let direction = (this.direction == AdLunam.DIRECTION.RIGHT ? 1 : -1);
+                    this.cmpTransform.local.translateX(0.2 * direction);
+                    if (this.hitbox.checkCollision(true))
+                        this.hit = true;
+                    this.checkCollision();
+                    this.lifetime += 1;
+                }
             };
             let nodeSprite = new AdLunam.NodeSprite("BulletSprite", Bullet.sprites[0]);
             nodeSprite.activate(false);
@@ -31,9 +35,9 @@ var AdLunam;
         }
         createHitbox() {
             let hitbox = new AdLunam.Hitbox("BulletHitbox");
-            hitbox.cmpTransform.local.translateY(0.1);
-            hitbox.cmpTransform.local.scaleX(0.2);
-            hitbox.cmpTransform.local.scaleY(0.4);
+            hitbox.cmpTransform.local.translateY(0.15);
+            hitbox.cmpTransform.local.scaleX(0.25);
+            hitbox.cmpTransform.local.scaleY(0.35);
             this.hitbox = hitbox;
             return hitbox;
         }

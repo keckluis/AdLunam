@@ -22,11 +22,13 @@ var AdLunam;
             this.isOnFloor = false;
             this.jetpackUsed = false;
             this.update = (_event) => {
-                this.broadcastEvent(new CustomEvent("showNext"));
+                if (!AdLunam.gameOver)
+                    this.broadcastEvent(new CustomEvent("showNext"));
                 let timeFrame = fudge.Loop.timeFrameGame / 1000;
                 this.speed.y += Astronaut.gravity.y * timeFrame;
                 let distance = fudge.Vector3.SCALE(this.speed, timeFrame);
-                this.cmpTransform.local.translate(distance);
+                if (!AdLunam.gameOver)
+                    this.cmpTransform.local.translate(distance);
                 this.checkCollision();
                 if (this.speed.y == 0)
                     this.isOnFloor = true;
@@ -37,6 +39,10 @@ var AdLunam;
                     this.jetpackUsed = false;
                 }
                 this.hitbox.checkCollision();
+                if (this.cmpTransform.local.translation.y < -10) {
+                    Astronaut.gravity = fudge.Vector2.Y(0);
+                    AdLunam.gameOver = true;
+                }
             };
             this.addComponent(new fudge.ComponentTransform());
             for (let sprite of Astronaut.sprites) {
@@ -117,6 +123,10 @@ var AdLunam;
             for (let child of this.getChildren()) {
                 if (this.jetpackUsed)
                     child.activate(child.name == _action + "." + _item + "BOOST");
+                else if (_action == ACTION.WALK && this.jetpackUsed)
+                    child.activate(child.name == "Jump.JETPACKBOOST");
+                else if (_action == ACTION.WALK && !this.isOnFloor)
+                    child.activate(child.name == "Jump" + "." + _item);
                 else
                     child.activate(child.name == _action + "." + _item);
             }
@@ -130,20 +140,22 @@ var AdLunam;
                 case ACTION.WALK:
                     AdLunam.astronaut.direction = _direction;
                     this.speed.x = Astronaut.speedMax.x;
-                    this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
+                    if (!this.jetpackUsed && !AdLunam.gameOver)
+                        this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
                     break;
                 case ACTION.JUMP:
                     if (this.isOnFloor) {
                         this.isOnFloor = false;
-                        this.speed.y = 3;
-                        if (_direction != null) {
+                        this.speed.y = 5;
+                        if (_direction != null && !AdLunam.gameOver) {
                             this.speed.x = Astronaut.speedMax.x;
                             this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
                         }
                     }
                     break;
             }
-            this.show(_action, this.item);
+            if (!AdLunam.gameOver)
+                this.show(_action, this.item);
         }
         checkCollision() {
             for (let platform of AdLunam.level.getChildren()) {
@@ -159,7 +171,7 @@ var AdLunam;
         }
     }
     Astronaut.speedMax = new fudge.Vector2(2, 2); // units per second
-    Astronaut.gravity = fudge.Vector2.Y(-3);
+    Astronaut.gravity = fudge.Vector2.Y(-7);
     AdLunam.Astronaut = Astronaut;
 })(AdLunam || (AdLunam = {}));
 //# sourceMappingURL=Astronaut.js.map
