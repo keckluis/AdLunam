@@ -18,11 +18,11 @@ var AdLunam;
             this.cmpTransform.local.scaleX(2);
             this.cmpTransform.local.scaleY(2);
             this.cmpTransform.local.translateX(_posX * 0.1);
-            if (_posY > 22)
-                _posY = 22;
-            if (_posY < -30)
-                _posY = -30;
-            this.cmpTransform.local.translateY(_posY * 0.1);
+            if (_posY > 100)
+                _posY = 100;
+            if (_posY < 0)
+                _posY = 0;
+            this.cmpTransform.local.translateY((_posY - 50) * 0.05);
             if (_item) {
                 let item = new AdLunam.Item(_item);
                 this.item = item;

@@ -1,20 +1,7 @@
 namespace AdLunam {
     import fudge = FudgeCore;
   
-    export enum ACTION {
-      IDLE = "Idle",
-      WALK = "Walk",
-      JUMP = "Jump"
-    }
-    export enum DIRECTION {
-      RIGHT, LEFT
-    }
-  
-    export class Astronaut extends fudge.Node {
-      private static sprites: Sprite[];
-      private static speedMax: fudge.Vector2 = new fudge.Vector2(2, 2); // units per second
-      private static gravity: fudge.Vector2 = fudge.Vector2.Y(-7);
-      public speed: fudge.Vector3 = fudge.Vector3.ZERO();
+    export class Astronaut extends Character {
       public item: ITEM = ITEM.NONE;
       public direction: DIRECTION = DIRECTION.RIGHT;
       public isOnFloor: boolean = false;
@@ -23,24 +10,15 @@ namespace AdLunam {
   
       public constructor() {
         super("Astronaut");
-        this.addComponent(new fudge.ComponentTransform());
-  
+        
         for (let sprite of Astronaut.sprites) {
-          let nodeSprite: NodeSprite = new NodeSprite(sprite.name, sprite);
-          nodeSprite.activate(false);
-  
-          nodeSprite.addEventListener(
-            "showNext",
-            (_event: Event) => { (<NodeSprite>_event.currentTarget).showFrameNext(); },
-            true
-          );
-          this.appendChild(nodeSprite);
+          this.nodeSprites(sprite);
         }
-        this.hitbox = this.createHitbox();
+        this.hitbox = this.createHitbox("AstronautHitbox", 0.55, new fudge.Vector3(0.35, 0.55, 1));
         this.appendChild(this.hitbox);
-        this.show(ACTION.IDLE, this.item);
 
-        fudge.Loop.addEventListener(fudge.EVENT.LOOP_FRAME, this.update);
+        this.speedMax = new fudge.Vector2(2, 4);
+        this.show(ACTION.IDLE, this.item);
       }
   
       public static generateSprites(_txtImage: fudge.TextureImage): void {
@@ -111,15 +89,6 @@ namespace AdLunam {
         sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(88, 74, 20, 22), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
         Astronaut.sprites.push(sprite);
       }
-
-      public createHitbox(): Hitbox {
-        let hitbox: Hitbox = new Hitbox("PlayerHitbox");
-        hitbox.cmpTransform.local.translateY(0.55);
-        hitbox.cmpTransform.local.scaleX(0.35);
-        hitbox.cmpTransform.local.scaleY(0.55);
-        this.hitbox = hitbox;
-        return hitbox;
-      }
   
       public show(_action: ACTION, _item: ITEM): void {
         for (let child of this.getChildren()) {
@@ -142,7 +111,7 @@ namespace AdLunam {
             break;
           case ACTION.WALK:
             astronaut.direction = _direction;
-            this.speed.x = Astronaut.speedMax.x;
+            this.speed.x = this.speedMax.x;
             if (!this.jetpackUsed && !gameOver)
               this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
             break;
@@ -151,7 +120,7 @@ namespace AdLunam {
                 this.isOnFloor = false;
                 this.speed.y = 5;
                 if (_direction != null && !gameOver) {
-                  this.speed.x = Astronaut.speedMax.x;
+                  this.speed.x = this.speedMax.x;
                   this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
                 }
               }
@@ -161,22 +130,7 @@ namespace AdLunam {
           this.show(_action, this.item);
       }
 
-      
-  
-      private update = (_event: fudge.Eventƒ): void => {
-
-        if (!gameOver)
-          this.broadcastEvent(new CustomEvent("showNext"));
-
-        let timeFrame: number = fudge.Loop.timeFrameGame / 1000;
-        this.speed.y += Astronaut.gravity.y * timeFrame;
-        let distance: fudge.Vector3 = fudge.Vector3.SCALE(this.speed, timeFrame);
-        
-        if (!gameOver)
-          this.cmpTransform.local.translate(distance);
-
-        this.checkCollision();
-
+      public updateAdditions(): void {
         if (this.speed.y == 0)
           this.isOnFloor = true;
         else
@@ -190,21 +144,8 @@ namespace AdLunam {
         this.hitbox.checkCollision();
 
         if (this.cmpTransform.local.translation.y < -10) {
-          Astronaut.gravity = fudge.Vector2.Y(0);
+          this.gravity = fudge.Vector2.Y(0);
           gameOver = true;
-        }
-      }
-
-      private checkCollision(): void {
-        for (let platform of level.getChildren()) {
-          let rect: fudge.Rectangle = (<Platform>platform).getRectWorld();
-          let hit: boolean = rect.isInside(this.cmpTransform.local.translation.toVector2());
-          if (hit) {
-            let translation: fudge.Vector3 = this.cmpTransform.local.translation;
-            translation.y = rect.y;
-            this.cmpTransform.local.translation = translation;
-            this.speed.y = 0;
-          }
         }
       }
     }

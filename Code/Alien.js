@@ -2,41 +2,16 @@
 var AdLunam;
 (function (AdLunam) {
     var fudge = FudgeCore;
-    let DIRECTION_ALIEN;
-    (function (DIRECTION_ALIEN) {
-        DIRECTION_ALIEN[DIRECTION_ALIEN["LEFT"] = 0] = "LEFT";
-        DIRECTION_ALIEN[DIRECTION_ALIEN["RIGHT"] = 1] = "RIGHT";
-    })(DIRECTION_ALIEN = AdLunam.DIRECTION_ALIEN || (AdLunam.DIRECTION_ALIEN = {}));
-    class Alien extends fudge.Node {
+    class Alien extends AdLunam.Character {
         constructor() {
             super("Alien");
-            this.speed = fudge.Vector3.ZERO();
-            this.gravity = fudge.Vector2.Y(-3);
-            this.update = (_event) => {
-                if (!AdLunam.gameOver)
-                    this.broadcastEvent(new CustomEvent("showNext"));
-                let timeFrame = fudge.Loop.timeFrameGame / 1000;
-                this.speed.y += this.gravity.y * timeFrame;
-                let distance = fudge.Vector3.SCALE(this.speed, timeFrame);
-                if (!AdLunam.gameOver)
-                    this.cmpTransform.local.translate(distance);
-                this.checkCollision();
-                if (this.cmpTransform.local.translation.x > 0.4)
-                    this.act(DIRECTION_ALIEN.LEFT);
-                else if (this.cmpTransform.local.translation.x < -0.4)
-                    this.act(DIRECTION_ALIEN.RIGHT);
-            };
-            this.addComponent(new fudge.ComponentTransform());
             for (let sprite of Alien.sprites) {
-                let nodeSprite = new AdLunam.NodeSprite(sprite.name, sprite);
-                nodeSprite.activate(false);
-                nodeSprite.addEventListener("showNext", (_event) => { _event.currentTarget.showFrameNext(); }, true);
-                this.appendChild(nodeSprite);
+                this.nodeSprites(sprite);
             }
-            this.hitbox = this.createHitbox();
+            this.hitbox = this.createHitbox("AlienHitbox", 0.05, new fudge.Vector3(0.1, 0.1, 1));
             this.appendChild(this.hitbox);
-            this.act(DIRECTION_ALIEN.RIGHT);
-            fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
+            this.speedMax = new fudge.Vector2(0.1, 0);
+            this.act(AdLunam.DIRECTION.RIGHT);
         }
         static generateSprites(_txtImage) {
             Alien.sprites = [];
@@ -44,38 +19,23 @@ var AdLunam;
             sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 74, 8, 10), 4, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
             Alien.sprites.push(sprite);
         }
-        createHitbox() {
-            let hitbox = new AdLunam.Hitbox("AlienHitbox");
-            hitbox.cmpTransform.local.translateY(0.05);
-            hitbox.cmpTransform.local.scaleX(0.1);
-            hitbox.cmpTransform.local.scaleY(0.1);
-            this.hitbox = hitbox;
-            return hitbox;
-        }
         show() {
             for (let child of this.getChildren())
                 child.activate(child.name == "AlienSprite");
         }
         act(_direction) {
-            let direction = (_direction == DIRECTION_ALIEN.RIGHT ? 1 : -1);
-            this.speed.x = Alien.speedMax.x * direction;
+            let direction = (_direction == AdLunam.DIRECTION.RIGHT ? 1 : -1);
+            this.speed.x = this.speedMax.x * direction;
             if (!AdLunam.gameOver)
                 this.show();
         }
-        checkCollision() {
-            for (let platform of AdLunam.level.getChildren()) {
-                let rect = platform.getRectWorld();
-                let hit = rect.isInside(this.cmpTransform.local.translation.toVector2());
-                if (hit) {
-                    let translation = this.cmpTransform.local.translation;
-                    translation.y = rect.y;
-                    this.cmpTransform.local.translation = translation;
-                    this.speed.y = 0;
-                }
-            }
+        updateAdditions() {
+            if (this.cmpTransform.local.translation.x > 0.4)
+                this.act(AdLunam.DIRECTION.LEFT);
+            else if (this.cmpTransform.local.translation.x < -0.4)
+                this.act(AdLunam.DIRECTION.RIGHT);
         }
     }
-    Alien.speedMax = new fudge.Vector2(0.1, 5); // units per second
     AdLunam.Alien = Alien;
 })(AdLunam || (AdLunam = {}));
 //# sourceMappingURL=Alien.js.map
