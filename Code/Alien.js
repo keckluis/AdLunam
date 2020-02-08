@@ -15,13 +15,13 @@ var AdLunam;
         }
         static generateSprites(_txtImage) {
             Alien.sprites = [];
-            let sprite = new AdLunam.Sprite("AlienSprite");
+            let sprite = new AdLunam.Sprite("Alien");
             sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 74, 8, 10), 4, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
             Alien.sprites.push(sprite);
         }
         show() {
             for (let child of this.getChildren())
-                child.activate(child.name == "AlienSprite");
+                child.activate(child.name == "Alien");
         }
         act(_direction) {
             let direction = (_direction == AdLunam.DIRECTION.RIGHT ? 1 : -1);

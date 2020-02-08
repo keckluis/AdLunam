@@ -19,14 +19,14 @@ namespace AdLunam {
 
       public static generateSprites(_txtImage: fudge.TextureImage): void {
         Alien.sprites = [];
-        let sprite: Sprite = new Sprite("AlienSprite");
+        let sprite: Sprite = new Sprite("Alien");
         sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 74, 8, 10), 4, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
         Alien.sprites.push(sprite);
       }
   
       public show(): void {
         for (let child of this.getChildren())
-          child.activate(child.name == "AlienSprite");
+          child.activate(child.name == "Alien");
       }
   
       public act(_direction: DIRECTION): void {

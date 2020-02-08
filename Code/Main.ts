@@ -154,24 +154,6 @@ namespace AdLunam {
         astronaut.act(ACTION.JUMP);
         astronaut.isOnFloor = false;
         return;
-      }
-      
-      //ITEMS
-      if (keysPressed[fudge.KEYBOARD_CODE.ONE]) {
-        astronaut.item = ITEM.NONE;
-        return;
-      }
-      if (keysPressed[fudge.KEYBOARD_CODE.TWO]) {
-        astronaut.item = ITEM.GUN;
-        return;
-      }
-      if (keysPressed[fudge.KEYBOARD_CODE.THREE]) {
-        astronaut.item = ITEM.SHIELD;
-        return;
-      }
-      if (keysPressed[fudge.KEYBOARD_CODE.FOUR]) {
-        astronaut.item = ITEM.JETPACK;
-        return;
       } 
 
       if (astronaut.isOnFloor)

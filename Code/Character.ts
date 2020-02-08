@@ -17,11 +17,10 @@ namespace AdLunam {
         public gravity: fudge.Vector2 = fudge.Vector2.Y(-7);
         public hitbox: Hitbox;
         public speedMax: fudge.Vector2;
+
         public constructor(_name: string) {
             super(_name);
-
             this.addComponent(new fudge.ComponentTransform());
-            
             fudge.Loop.addEventListener(fudge.EVENT.LOOP_FRAME, this.update);
         }
 

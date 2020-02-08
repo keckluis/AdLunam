@@ -123,23 +123,6 @@ var AdLunam;
             AdLunam.astronaut.isOnFloor = false;
             return;
         }
-        //ITEMS
-        if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.ONE]) {
-            AdLunam.astronaut.item = AdLunam.ITEM.NONE;
-            return;
-        }
-        if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.TWO]) {
-            AdLunam.astronaut.item = AdLunam.ITEM.GUN;
-            return;
-        }
-        if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.THREE]) {
-            AdLunam.astronaut.item = AdLunam.ITEM.SHIELD;
-            return;
-        }
-        if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.FOUR]) {
-            AdLunam.astronaut.item = AdLunam.ITEM.JETPACK;
-            return;
-        }
         if (AdLunam.astronaut.isOnFloor)
             AdLunam.astronaut.act(AdLunam.ACTION.IDLE);
     }
