@@ -28,6 +28,8 @@ namespace AdLunam {
             this.show();
             this.hitbox = this.createHitbox();
             this.appendChild(this.hitbox);
+
+            fudge.Loop.addEventListener(fudge.EVENT.LOOP_FRAME, this.update);
         }
 
         public static generateSprites(_txtImage: fudge.TextureImage): void {
@@ -60,6 +62,10 @@ namespace AdLunam {
             hitbox.cmpTransform.local.scaleY(0.25);
             this.hitbox = hitbox;
             return hitbox;
+        }
+
+        private update = (_event: fudge.Eventƒ): void => {
+            this.cmpTransform.local.rotateY(5);
         }
     }
 }

@@ -112,13 +112,14 @@ namespace AdLunam {
           case ACTION.WALK:
             astronaut.direction = _direction;
             this.speed.x = this.speedMax.x;
-            if (!this.jetpackUsed && !gameOver)
+            if (!this.jetpackUsed && !gameOver) 
               this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);
             break;
           case ACTION.JUMP:
               if (this.isOnFloor) {
                 this.isOnFloor = false;
-                this.speed.y = 5;
+
+                this.speed.y = 6;
                 if (_direction != null && !gameOver) {
                   this.speed.x = this.speedMax.x;
                   this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);

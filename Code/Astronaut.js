@@ -99,7 +99,7 @@ var AdLunam;
                 case AdLunam.ACTION.JUMP:
                     if (this.isOnFloor) {
                         this.isOnFloor = false;
-                        this.speed.y = 5;
+                        this.speed.y = 6;
                         if (_direction != null && !AdLunam.gameOver) {
                             this.speed.x = this.speedMax.x;
                             this.cmpTransform.local.rotation = fudge.Vector3.Y(90 - 90 * direction);

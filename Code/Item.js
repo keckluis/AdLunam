@@ -12,6 +12,9 @@ var AdLunam;
     class Item extends fudge.Node {
         constructor(type) {
             super("Item");
+            this.update = (_event) => {
+                this.cmpTransform.local.rotateY(5);
+            };
             this.type = type;
             this.addComponent(new fudge.ComponentTransform());
             for (let sprite of Item.sprites) {
@@ -22,6 +25,7 @@ var AdLunam;
             this.show();
             this.hitbox = this.createHitbox();
             this.appendChild(this.hitbox);
+            fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         }
         static generateSprites(_txtImage) {
             Item.sprites = [];
