@@ -40,6 +40,11 @@ var AdLunam;
                     console.log(AdLunam.bullets);
                 }
             }
+            if (AdLunam.blockItemDrop) {
+                AdLunam.itemDropCounter += 1;
+                if (AdLunam.itemDropCounter > 20)
+                    AdLunam.blockItemDrop = false;
+            }
             viewport.draw();
         }
         function spriteSetup() {

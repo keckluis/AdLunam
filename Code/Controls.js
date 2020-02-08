@@ -2,6 +2,8 @@
 var AdLunam;
 (function (AdLunam) {
     let keysPressed = {};
+    AdLunam.blockItemDrop = false;
+    AdLunam.itemDropCounter = 0;
     function handleKeyboard(_event) {
         keysPressed[_event.code] = (_event.type == "keydown");
     }
@@ -35,8 +37,9 @@ var AdLunam;
     }
     function processInput() {
         //drop item
-        if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.Q]) {
+        if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.Q] && !AdLunam.blockItemDrop) {
             AdLunam.astronaut.item = AdLunam.ITEM.NONE;
+            AdLunam.blockItemDrop = true;
             return;
         }
         //use item (gun & jetpack)

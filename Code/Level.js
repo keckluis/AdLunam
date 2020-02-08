@@ -13,8 +13,10 @@ var AdLunam;
                     let x = randomX();
                     let y = randomY();
                     let item = randomItem();
-                    if (y - this.lastHeight > 40)
+                    if (y - this.lastHeight > 40 || x + y - this.lastHeight > 59)
                         AdLunam.level.getChildren()[AdLunam.level.getChildren().length - 1].addItem(AdLunam.ITEM.JETPACK);
+                    if (x == 50 && y - this.lastHeight == 100)
+                        y = 90;
                     this.appendChild(new AdLunam.Platform(this.lastPlatformPos + x, y, item));
                     this.lastHeight = y;
                     this.lastPlatformPos += x;
@@ -27,9 +29,9 @@ var AdLunam;
                 }
             };
             let platform;
-            platform = new AdLunam.Platform(0, 50);
+            platform = new AdLunam.Platform(0, 0, AdLunam.ITEM.JETPACK);
             this.appendChild(platform);
-            platform = new AdLunam.Platform(50, 65);
+            platform = new AdLunam.Platform(50, 90);
             this.appendChild(platform);
             platform = new AdLunam.Platform(75, 50);
             this.appendChild(platform);

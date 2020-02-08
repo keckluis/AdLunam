@@ -57,6 +57,13 @@ namespace AdLunam {
               console.log(bullets);
             }
         }
+
+        if (blockItemDrop) {
+          itemDropCounter += 1;
+
+          if (itemDropCounter > 20)
+            blockItemDrop = false;
+        }
         
         viewport.draw();
       }

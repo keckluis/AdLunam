@@ -13,10 +13,10 @@ namespace AdLunam {
 
             let platform: Platform;
 
-            platform = new Platform(0, 50);
+            platform = new Platform(0, 0, ITEM.JETPACK);
             this.appendChild(platform);
 
-            platform = new Platform(50, 65);
+            platform = new Platform(50, 90);
             this.appendChild(platform);
 
             platform = new Platform(75, 50);
@@ -35,8 +35,11 @@ namespace AdLunam {
                 let y: number = randomY();
                 let item: ITEM = randomItem();
                
-                if (y - this.lastHeight > 40)
+                if (y - this.lastHeight > 40 || x + y - this.lastHeight > 59)
                     (<Platform>level.getChildren()[level.getChildren().length - 1]).addItem(ITEM.JETPACK);
+                
+                if (x == 50 && y - this.lastHeight == 100)
+                    y = 90;
         
                 this.appendChild(new Platform(this.lastPlatformPos + x, y, item));
 

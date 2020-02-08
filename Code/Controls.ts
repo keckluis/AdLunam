@@ -5,6 +5,9 @@ namespace AdLunam {
       }
 
     let keysPressed: KeyPressed = {};
+    
+    export let blockItemDrop: boolean = false;
+    export let itemDropCounter: number = 0;
 
     function handleKeyboard(_event: KeyboardEvent): void {
         keysPressed[_event.code] = (_event.type == "keydown");
@@ -42,8 +45,9 @@ namespace AdLunam {
     export function processInput(): void {
 
       //drop item
-      if (keysPressed[fudge.KEYBOARD_CODE.Q]) {
+      if (keysPressed[fudge.KEYBOARD_CODE.Q] && !blockItemDrop) {
         astronaut.item = ITEM.NONE;
+        blockItemDrop = true;
         return;
       }
 
