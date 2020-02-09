@@ -6,6 +6,8 @@ var AdLunam;
     AdLunam.score = 0;
     AdLunam.gameOver = false;
     let txtImage;
+    let txtPlatform;
+    let txtBackground;
     function main() {
         const canvas = document.querySelector("canvas");
         AdLunam.args = new URLSearchParams(location.search);
@@ -48,14 +50,19 @@ var AdLunam;
             viewport.draw();
         }
         function spriteSetup() {
-            let img = document.querySelector("img");
+            let images = document.querySelectorAll("img");
             txtImage = new AdLunam.fudge.TextureImage();
-            txtImage.image = img;
+            txtImage.image = images[0];
             AdLunam.Astronaut.generateSprites(txtImage);
             AdLunam.Alien.generateSprites(txtImage);
-            AdLunam.Platform.generateSprites(txtImage);
             AdLunam.Item.generateSprites(txtImage);
             AdLunam.Bullet.generateSprites(txtImage);
+            txtPlatform = new AdLunam.fudge.TextureImage();
+            txtPlatform.image = images[1];
+            AdLunam.Platform.generateSprites(txtPlatform);
+            txtBackground = new AdLunam.fudge.TextureImage();
+            txtBackground.image = images[2];
+            AdLunam.Background.generateSprites(txtBackground);
         }
     }
 })(AdLunam || (AdLunam = {}));

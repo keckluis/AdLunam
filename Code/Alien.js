@@ -5,12 +5,12 @@ var AdLunam;
     class Alien extends AdLunam.Character {
         constructor() {
             super("Alien");
-            for (let sprite of Alien.sprites) {
+            for (let sprite of Alien.sprites)
                 this.nodeSprites(sprite);
-            }
             this.hitbox = this.createHitbox("AlienHitbox", 0.05, new fudge.Vector3(0.1, 0.1, 1));
             this.appendChild(this.hitbox);
             this.speedMax = new fudge.Vector2(0.1, 0);
+            this.gravity = new fudge.Vector2(-1);
             this.act(AdLunam.DIRECTION.RIGHT);
         }
         static generateSprites(_txtImage) {

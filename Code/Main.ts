@@ -11,7 +11,9 @@ namespace AdLunam {
     export let args: URLSearchParams;
     export let score: number = 0;
     export let gameOver: boolean = false;
-    let txtImage: fudge.TextureImage;  
+    let txtImage: fudge.TextureImage; 
+    let txtPlatform: fudge.TextureImage;  
+    let txtBackground: fudge.TextureImage; 
   
     function main(): void {
       const canvas: HTMLCanvasElement = document.querySelector("canvas");
@@ -69,14 +71,21 @@ namespace AdLunam {
       }
 
       function spriteSetup(): void {
-        let img: HTMLImageElement = document.querySelector("img");
+        let images: any = document.querySelectorAll("img");
         txtImage = new fudge.TextureImage();
-        txtImage.image = img;
+        txtImage.image = images[0];
         Astronaut.generateSprites(txtImage);
         Alien.generateSprites(txtImage);
-        Platform.generateSprites(txtImage);
         Item.generateSprites(txtImage);
         Bullet.generateSprites(txtImage);
+
+        txtPlatform = new fudge.TextureImage();
+        txtPlatform.image = images[1];
+        Platform.generateSprites(txtPlatform);
+
+        txtBackground = new fudge.TextureImage();
+        txtBackground.image = images[2];
+        Background.generateSprites(txtBackground);
       }
     }  
 }

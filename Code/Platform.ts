@@ -42,7 +42,7 @@ namespace AdLunam {
     public static generateSprites(_txtImage: fudge.TextureImage): void {
       Platform.sprites = [];
       let sprite: Sprite = new Sprite("PlatformSprite");
-      sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 144, 72, 216), 1, fudge.Vector2.ZERO(), 72, fudge.ORIGIN2D.TOPCENTER);
+      sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 0, 72, 216), 1, fudge.Vector2.ZERO(), 72, fudge.ORIGIN2D.TOPCENTER);
       Platform.sprites.push(sprite);
     }
 
@@ -70,7 +70,7 @@ namespace AdLunam {
 
     public addItem(_item: ITEM): void {
       for (let child of this.getChildren()) {
-        if (child.name == "Item")
+        if (child.name == "Item" || child.name == "Alien") 
           this.removeChild(child);
       }
       let item: Item = new Item(_item);

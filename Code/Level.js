@@ -13,11 +13,16 @@ var AdLunam;
                     let x = randomX();
                     let y = randomY();
                     let item = randomItem();
-                    if (y - this.lastHeight > 40 || x + y - this.lastHeight > 59)
+                    let alien = false;
+                    if (y - this.lastHeight > 40 || x + (y - this.lastHeight) > 70)
                         AdLunam.level.getChildren()[AdLunam.level.getChildren().length - 1].addItem(AdLunam.ITEM.JETPACK);
                     if (x == 50 && y - this.lastHeight == 100)
                         y = 90;
-                    this.appendChild(new AdLunam.Platform(this.lastPlatformPos + x, y, item));
+                    if (item == AdLunam.ITEM.NONE) {
+                        item = null;
+                        alien = alien = randomAlien();
+                    }
+                    this.appendChild(new AdLunam.Platform(this.lastPlatformPos + x, y, item, alien));
                     this.lastHeight = y;
                     this.lastPlatformPos += x;
                     this.lastAstronautPos = AdLunam.astronaut.cmpTransform.local.translation.x;
@@ -29,11 +34,11 @@ var AdLunam;
                 }
             };
             let platform;
-            platform = new AdLunam.Platform(0, 0, AdLunam.ITEM.JETPACK);
+            platform = new AdLunam.Platform(0, 50, AdLunam.ITEM.JETPACK);
             this.appendChild(platform);
-            platform = new AdLunam.Platform(50, 90);
+            platform = new AdLunam.Platform(40, 100);
             this.appendChild(platform);
-            platform = new AdLunam.Platform(75, 50);
+            platform = new AdLunam.Platform(80, 50);
             this.appendChild(platform);
             this.lastPlatformPos = 75;
             fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
@@ -47,7 +52,7 @@ var AdLunam;
         return Math.floor(Math.random() * 101);
     }
     function randomItem() {
-        let result = Math.floor(Math.random() * 8);
+        let result = Math.floor(Math.random() * 12);
         let item;
         if (result < 2) {
             switch (result) {
@@ -62,6 +67,13 @@ var AdLunam;
         else
             item = AdLunam.ITEM.NONE;
         return item;
+    }
+    function randomAlien() {
+        let result = Math.floor(Math.random() * 4);
+        if (result == 0)
+            return true;
+        else
+            return false;
     }
 })(AdLunam || (AdLunam = {}));
 //# sourceMappingURL=Level.js.map

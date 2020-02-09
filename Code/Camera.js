@@ -6,17 +6,23 @@ var AdLunam;
         constructor() {
             super("Camera");
             this.update = (_event) => {
-                let x = AdLunam.astronaut.cmpTransform.local.translation.x;
+                let x = 0;
+                if (AdLunam.astronaut.cmpTransform.local.translation.x > this.cmpTransform.local.translation.x)
+                    x = AdLunam.astronaut.cmpTransform.local.translation.x;
+                else
+                    x = this.cmpTransform.local.translation.x;
                 let y = AdLunam.astronaut.cmpTransform.local.translation.y;
                 let z = this.cmpTransform.local.translation.z;
                 if (y < 0)
                     y = 0;
+                if (y > 2)
+                    y = 2;
                 this.cmpTransform.local.translation = new fudge.Vector3(x, y, z);
             };
             this.addComponent(new fudge.ComponentTransform());
             let cmpCamera = new fudge.ComponentCamera();
             this.addComponent(cmpCamera);
-            this.cmpCamera.backgroundColor = fudge.Color.CSS("black");
+            this.cmpCamera.backgroundColor = fudge.Color.CSS("red");
             this.cmpCamera.pivot.translateZ(10);
             fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         }

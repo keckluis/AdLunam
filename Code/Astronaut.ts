@@ -11,9 +11,9 @@ namespace AdLunam {
       public constructor() {
         super("Astronaut");
         
-        for (let sprite of Astronaut.sprites) {
+        for (let sprite of Astronaut.sprites) 
           this.nodeSprites(sprite);
-        }
+    
         this.hitbox = this.createHitbox("AstronautHitbox", 0.55, new fudge.Vector3(0.35, 0.55, 1));
         this.appendChild(this.hitbox);
 

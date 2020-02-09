@@ -33,7 +33,7 @@ var AdLunam;
         static generateSprites(_txtImage) {
             Platform.sprites = [];
             let sprite = new AdLunam.Sprite("PlatformSprite");
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 144, 72, 216), 1, fudge.Vector2.ZERO(), 72, fudge.ORIGIN2D.TOPCENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 0, 72, 216), 1, fudge.Vector2.ZERO(), 72, fudge.ORIGIN2D.TOPCENTER);
             Platform.sprites.push(sprite);
         }
         show() {
@@ -55,7 +55,7 @@ var AdLunam;
         }
         addItem(_item) {
             for (let child of this.getChildren()) {
-                if (child.name == "Item")
+                if (child.name == "Item" || child.name == "Alien")
                     this.removeChild(child);
             }
             let item = new AdLunam.Item(_item);

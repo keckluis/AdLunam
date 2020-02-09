@@ -13,13 +13,13 @@ namespace AdLunam {
 
             let platform: Platform;
 
-            platform = new Platform(0, 0, ITEM.JETPACK);
+            platform = new Platform(0, 50, ITEM.JETPACK);
             this.appendChild(platform);
 
-            platform = new Platform(50, 90);
+            platform = new Platform(40, 100);
             this.appendChild(platform);
 
-            platform = new Platform(75, 50);
+            platform = new Platform(80, 50);
             this.appendChild(platform);
 
             this.lastPlatformPos = 75;
@@ -34,14 +34,20 @@ namespace AdLunam {
                 let x: number = randomX();
                 let y: number = randomY();
                 let item: ITEM = randomItem();
+                let alien: boolean = false;
                
-                if (y - this.lastHeight > 40 || x + y - this.lastHeight > 59)
+                if (y - this.lastHeight > 40 || x + (y - this.lastHeight) > 70) 
                     (<Platform>level.getChildren()[level.getChildren().length - 1]).addItem(ITEM.JETPACK);
                 
                 if (x == 50 && y - this.lastHeight == 100)
                     y = 90;
-        
-                this.appendChild(new Platform(this.lastPlatformPos + x, y, item));
+                
+                if (item == ITEM.NONE) {
+                    item = null;
+                    alien = alien = randomAlien();
+                }
+                
+                this.appendChild(new Platform(this.lastPlatformPos + x, y, item, alien));
 
                 this.lastHeight = y;
                 this.lastPlatformPos += x;
@@ -65,7 +71,7 @@ namespace AdLunam {
     }
 
     function randomItem(): ITEM {
-        let result: number = Math.floor(Math.random() * 8);
+        let result: number = Math.floor(Math.random() * 12);
         let item: ITEM;
 
         if (result < 2) {
@@ -82,5 +88,15 @@ namespace AdLunam {
             item = ITEM.NONE;
 
         return item;
+    }
+
+    function randomAlien(): boolean {
+
+        let result: number = Math.floor(Math.random() * 4);
+
+        if (result == 0)
+            return true;
+        else
+            return false;
     }
 }
