@@ -36,6 +36,7 @@ var AdLunam;
                 AdLunam.processInput();
             if (Math.round(AdLunam.astronaut.cmpTransform.local.translation.x) > AdLunam.score)
                 AdLunam.score = Math.round(AdLunam.astronaut.cmpTransform.local.translation.x);
+            document.getElementById("Score").innerHTML = AdLunam.score.toString();
             //remove bullets from game
             for (let bullet of AdLunam.bullets.getChildren()) {
                 if (bullet.hit || bullet.lifetime > 99) {

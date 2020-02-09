@@ -14,7 +14,7 @@ namespace AdLunam {
        
         public static sprites: Sprite[];
         public speed: fudge.Vector3 = fudge.Vector3.ZERO();
-        public gravity: fudge.Vector2 = fudge.Vector2.Y(-0.1);
+        public gravity: fudge.Vector2 = fudge.Vector2.Y(-7);
         public hitbox: Hitbox;
         public speedMax: fudge.Vector2;
 

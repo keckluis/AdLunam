@@ -31,7 +31,7 @@ namespace AdLunam {
       game.appendChild(level);
       
       game.appendChild(new BackgroundHandler());
-      
+
       camera = new Camera();
       game.appendChild(camera);
   
@@ -53,6 +53,8 @@ namespace AdLunam {
 
         if (Math.round(astronaut.cmpTransform.local.translation.x) > score)
           score = Math.round(astronaut.cmpTransform.local.translation.x);
+        
+        document.getElementById("Score").innerHTML = score.toString();
 
         //remove bullets from game
         for (let bullet of bullets.getChildren()) {
