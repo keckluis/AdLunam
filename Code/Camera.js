@@ -22,7 +22,7 @@ var AdLunam;
             this.addComponent(new fudge.ComponentTransform());
             let cmpCamera = new fudge.ComponentCamera();
             this.addComponent(cmpCamera);
-            this.cmpCamera.backgroundColor = fudge.Color.CSS("red");
+            this.cmpCamera.backgroundColor = fudge.Color.CSS("black");
             this.cmpCamera.pivot.translateZ(10);
             fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         }

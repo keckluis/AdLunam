@@ -13,10 +13,10 @@ namespace AdLunam {
 
             let platform: Platform;
 
-            platform = new Platform(0, 50, ITEM.JETPACK);
+            platform = new Platform(0, 50);
             this.appendChild(platform);
 
-            platform = new Platform(40, 100);
+            platform = new Platform(40, 50);
             this.appendChild(platform);
 
             platform = new Platform(80, 50);
@@ -71,7 +71,7 @@ namespace AdLunam {
     }
 
     function randomItem(): ITEM {
-        let result: number = Math.floor(Math.random() * 12);
+        let result: number = Math.floor(Math.random() * 8);
         let item: ITEM;
 
         if (result < 2) {

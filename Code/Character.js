@@ -17,7 +17,7 @@ var AdLunam;
         constructor(_name) {
             super(_name);
             this.speed = fudge.Vector3.ZERO();
-            this.gravity = fudge.Vector2.Y(-7);
+            this.gravity = fudge.Vector2.Y(-0.1);
             this.update = (_event) => {
                 if (!AdLunam.gameOver)
                     this.broadcastEvent(new CustomEvent("showNext"));

@@ -14,18 +14,19 @@ var AdLunam;
             this.addComponent(new fudge.ComponentTransform());
             for (let sprite of Background.sprites)
                 this.nodeSprites(sprite);
-            this.show(BACKGROUND.ONE);
+            this.cmpTransform.local.translateZ(-5);
+            this.cmpTransform.local.translateY(1);
         }
         static generateSprites(_txtImage) {
             Background.sprites = [];
             let sprite = new AdLunam.Sprite(BACKGROUND.ONE);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 0, 1920, 1080), 1, fudge.Vector2.ZERO(), 135, fudge.ORIGIN2D.CENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 0, 1920, 1080), 1, fudge.Vector2.ZERO(), 95, fudge.ORIGIN2D.CENTER);
             Background.sprites.push(sprite);
             sprite = new AdLunam.Sprite(BACKGROUND.TWO);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(1920, 0, 1920, 1080), 1, fudge.Vector2.ZERO(), 500, fudge.ORIGIN2D.CENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(1920, 0, 1920, 1080), 1, fudge.Vector2.ZERO(), 95, fudge.ORIGIN2D.CENTER);
             Background.sprites.push(sprite);
             sprite = new AdLunam.Sprite(BACKGROUND.THREE);
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(3840, 0, 1920, 1080), 1, fudge.Vector2.ZERO(), 500, fudge.ORIGIN2D.CENTER);
+            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(3840, 0, 1920, 1080), 1, fudge.Vector2.ZERO(), 95, fudge.ORIGIN2D.CENTER);
             Background.sprites.push(sprite);
         }
         show(_bg) {

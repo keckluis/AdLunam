@@ -29,7 +29,9 @@ namespace AdLunam {
       game.appendChild(bullets);
       game.appendChild(astronaut);
       game.appendChild(level);
-  
+      
+      game.appendChild(new BackgroundHandler());
+      
       camera = new Camera();
       game.appendChild(camera);
   

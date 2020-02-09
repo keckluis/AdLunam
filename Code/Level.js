@@ -34,9 +34,9 @@ var AdLunam;
                 }
             };
             let platform;
-            platform = new AdLunam.Platform(0, 50, AdLunam.ITEM.JETPACK);
+            platform = new AdLunam.Platform(0, 50);
             this.appendChild(platform);
-            platform = new AdLunam.Platform(40, 100);
+            platform = new AdLunam.Platform(40, 50);
             this.appendChild(platform);
             platform = new AdLunam.Platform(80, 50);
             this.appendChild(platform);
@@ -52,7 +52,7 @@ var AdLunam;
         return Math.floor(Math.random() * 101);
     }
     function randomItem() {
-        let result = Math.floor(Math.random() * 12);
+        let result = Math.floor(Math.random() * 8);
         let item;
         if (result < 2) {
             switch (result) {

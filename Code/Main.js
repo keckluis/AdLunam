@@ -20,6 +20,7 @@ var AdLunam;
         AdLunam.game.appendChild(AdLunam.bullets);
         AdLunam.game.appendChild(AdLunam.astronaut);
         AdLunam.game.appendChild(AdLunam.level);
+        AdLunam.game.appendChild(new AdLunam.BackgroundHandler());
         AdLunam.camera = new AdLunam.Camera();
         AdLunam.game.appendChild(AdLunam.camera);
         let viewport = new AdLunam.fudge.Viewport();
