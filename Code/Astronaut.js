@@ -74,7 +74,7 @@ var AdLunam;
         show(_action, _item) {
             for (let child of this.getChildren()) {
                 if (this.jetpackUsed)
-                    child.activate(child.name == _action + "." + _item + "BOOST");
+                    child.activate(child.name == "Jump.JETPACKBOOST");
                 else if (_action == AdLunam.ACTION.WALK && this.jetpackUsed)
                     child.activate(child.name == "Jump.JETPACKBOOST");
                 else if (_action == AdLunam.ACTION.WALK && !this.isOnFloor)

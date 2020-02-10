@@ -21,7 +21,7 @@ namespace AdLunam {
   
       fudge.RenderManager.initialize(true, true);
       game = new fudge.Node("Game");
-      bulletContainer = new fudge.Node("Bullets");
+      bulletContainer = new fudge.Node("BulletContainer");
       astronaut = new Astronaut();
       level = new Level();
       game.appendChild(bulletContainer);
@@ -52,12 +52,7 @@ namespace AdLunam {
 
         handleScore();
 
-        //remove bullets from game
-        for (let bullet of bulletContainer.getChildren()) {
-            if ((<Bullet>bullet).hit || (<Bullet>bullet).lifetime > 99) {
-              bulletContainer.removeChild(bullet);  
-            }
-        }
+        handleBullets();
         
         viewport.draw();
       }
@@ -97,6 +92,15 @@ namespace AdLunam {
           scoreString = "999";
         
         document.getElementById("Score").innerHTML = scoreString;
+      }
+
+      function handleBullets(): void {
+        //remove bullets from game
+        for (let bullet of bulletContainer.getChildren()) {
+          if ((<Bullet>bullet).hit || (<Bullet>bullet).lifetime > 99) {
+            bulletContainer.removeChild(bullet);  
+          }
+        }
       }
     }  
 }

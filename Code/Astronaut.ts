@@ -93,7 +93,7 @@ namespace AdLunam {
       public show(_action: ACTION, _item: ITEM): void {
         for (let child of this.getChildren()) {
           if (this.jetpackUsed)
-            child.activate(child.name == _action + "." + _item + "BOOST");
+            child.activate(child.name == "Jump.JETPACKBOOST");
           else if (_action == ACTION.WALK && this.jetpackUsed)
             child.activate(child.name == "Jump.JETPACKBOOST");
           else if (_action == ACTION.WALK && !this.isOnFloor)

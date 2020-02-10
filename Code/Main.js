@@ -11,7 +11,7 @@ var AdLunam;
         spriteSetup();
         AdLunam.fudge.RenderManager.initialize(true, true);
         AdLunam.game = new AdLunam.fudge.Node("Game");
-        AdLunam.bulletContainer = new AdLunam.fudge.Node("Bullets");
+        AdLunam.bulletContainer = new AdLunam.fudge.Node("BulletContainer");
         AdLunam.astronaut = new AdLunam.Astronaut();
         AdLunam.level = new AdLunam.Level();
         AdLunam.game.appendChild(AdLunam.bulletContainer);
@@ -33,12 +33,7 @@ var AdLunam;
             else
                 AdLunam.processInput();
             handleScore();
-            //remove bullets from game
-            for (let bullet of AdLunam.bulletContainer.getChildren()) {
-                if (bullet.hit || bullet.lifetime > 99) {
-                    AdLunam.bulletContainer.removeChild(bullet);
-                }
-            }
+            handleBullets();
             viewport.draw();
         }
         function spriteSetup() {
@@ -70,6 +65,14 @@ var AdLunam;
             else if (AdLunam.score > 999)
                 scoreString = "999";
             document.getElementById("Score").innerHTML = scoreString;
+        }
+        function handleBullets() {
+            //remove bullets from game
+            for (let bullet of AdLunam.bulletContainer.getChildren()) {
+                if (bullet.hit || bullet.lifetime > 99) {
+                    AdLunam.bulletContainer.removeChild(bullet);
+                }
+            }
         }
     }
 })(AdLunam || (AdLunam = {}));

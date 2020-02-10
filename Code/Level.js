@@ -34,11 +34,11 @@ var AdLunam;
                 }
             };
             let platform;
-            platform = new AdLunam.Platform(0, 50);
+            platform = new AdLunam.Platform(0, 50, AdLunam.ITEM.JETPACK);
             this.appendChild(platform);
-            platform = new AdLunam.Platform(40, 50);
+            platform = new AdLunam.Platform(40, 0, AdLunam.ITEM.JETPACK);
             this.appendChild(platform);
-            platform = new AdLunam.Platform(80, 50);
+            platform = new AdLunam.Platform(80, 100, AdLunam.ITEM.JETPACK);
             this.appendChild(platform);
             this.lastPlatformPos = 80;
             fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);

@@ -56,6 +56,11 @@ div#Over {
   font-size: 3em;
   text-align: center;
   transform: translate(-50%, -50%);
-  top: 50%;
+  top: 25%;
   left: 50%;
+}
+
+#credits {
+  float: right;
+  text-align: right;
 }
