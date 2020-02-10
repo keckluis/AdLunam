@@ -36,6 +36,7 @@ namespace AdLunam {
         let alien: Alien = new Alien();
         this.alien = alien;
         this.appendChild(this.alien);
+        this.alien.cmpTransform.local.translateX((randomAlienStartPos() - 4) * 0.1);
       }
     }
 
@@ -77,5 +78,9 @@ namespace AdLunam {
       this.item = item;
       this.appendChild(this.item);
     }
+  }
+
+  function randomAlienStartPos(): number {
+    return Math.floor(Math.random() * 9);
   }
 }

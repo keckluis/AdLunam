@@ -28,6 +28,7 @@ var AdLunam;
                 let alien = new AdLunam.Alien();
                 this.alien = alien;
                 this.appendChild(this.alien);
+                this.alien.cmpTransform.local.translateX((randomAlienStartPos() - 4) * 0.1);
             }
         }
         static generateSprites(_txtImage) {
@@ -66,5 +67,8 @@ var AdLunam;
     Platform.mesh = new fudge.MeshSprite();
     Platform.pivot = fudge.Matrix4x4.TRANSLATION(fudge.Vector3.Y(-0.5));
     AdLunam.Platform = Platform;
+    function randomAlienStartPos() {
+        return Math.floor(Math.random() * 9);
+    }
 })(AdLunam || (AdLunam = {}));
 //# sourceMappingURL=Platform.js.map

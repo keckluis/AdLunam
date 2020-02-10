@@ -8,7 +8,6 @@ namespace AdLunam {
         private lastHeight: number = 50;
 
         public constructor() {
-
             super("Level");
 
             let platform: Platform;

@@ -44,7 +44,7 @@ var AdLunam;
         if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.F]) {
             if (AdLunam.astronaut.item == AdLunam.ITEM.GUN) {
                 let bullet = new AdLunam.Bullet();
-                AdLunam.bullets.appendChild(bullet);
+                AdLunam.bulletContainer.appendChild(bullet);
                 bullet.cmpTransform.local.translation = AdLunam.astronaut.cmpTransform.local.translation;
                 bullet.cmpTransform.local.translateX(0.3);
                 bullet.cmpTransform.local.translateY(0.22);

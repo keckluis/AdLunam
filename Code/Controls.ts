@@ -52,7 +52,7 @@ namespace AdLunam {
       if (keysPressed[fudge.KEYBOARD_CODE.F]) {
         if (astronaut.item == ITEM.GUN) {
           let bullet: Bullet = new Bullet();
-          bullets.appendChild(bullet);
+          bulletContainer.appendChild(bullet);
           bullet.cmpTransform.local.translation = astronaut.cmpTransform.local.translation;
           bullet.cmpTransform.local.translateX(0.3);
           bullet.cmpTransform.local.translateY(0.22);

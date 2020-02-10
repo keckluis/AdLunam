@@ -5,15 +5,13 @@ namespace AdLunam {
 
     export let camera: Camera;
     export let game: fudge.Node;
-    export let bullets: fudge.Node;
+    export let bulletContainer: fudge.Node;
     export let level: fudge.Node;
     export let astronaut: Astronaut;
     export let args: URLSearchParams;
     export let score: number = 0;
     export let gameOver: boolean = false;
-    let txtImage: fudge.TextureImage; 
-    let txtPlatform: fudge.TextureImage;  
-    let txtBackground: fudge.TextureImage; 
+     
   
     function main(): void {
       const canvas: HTMLCanvasElement = document.querySelector("canvas");
@@ -23,10 +21,10 @@ namespace AdLunam {
   
       fudge.RenderManager.initialize(true, true);
       game = new fudge.Node("Game");
-      bullets = new fudge.Node("Bullets");
+      bulletContainer = new fudge.Node("Bullets");
       astronaut = new Astronaut();
       level = new Level();
-      game.appendChild(bullets);
+      game.appendChild(bulletContainer);
       game.appendChild(astronaut);
       game.appendChild(level);
       
@@ -45,30 +43,19 @@ namespace AdLunam {
       start();
 
       function update(_event: fudge.Eventƒ): void {
+        console.log(game);
 
         if (gameOver)
           end();
         else
           processInput();
 
-        if (Math.round(astronaut.cmpTransform.local.translation.x) > score)
-          score = Math.round(astronaut.cmpTransform.local.translation.x);
-        
-        let scoreString: string = score.toString();
-        if (score < 10)
-          scoreString = "00" + scoreString;
-        else if (score < 100)
-          scoreString = "0" + scoreString;
-        else if (score > 999)
-          scoreString = "999";
-        
-        document.getElementById("Score").innerHTML = scoreString;
+        handleScore();
 
         //remove bullets from game
-        for (let bullet of bullets.getChildren()) {
+        for (let bullet of bulletContainer.getChildren()) {
             if ((<Bullet>bullet).hit || (<Bullet>bullet).lifetime > 99) {
-              bullets.removeChild(bullet);  
-              console.log(bullets);
+              bulletContainer.removeChild(bullet);  
             }
         }
         
@@ -76,6 +63,10 @@ namespace AdLunam {
       }
 
       function spriteSetup(): void {
+        let txtImage: fudge.TextureImage; 
+        let txtPlatform: fudge.TextureImage;  
+        let txtBackground: fudge.TextureImage;
+
         let images: any = document.querySelectorAll("img");
         txtImage = new fudge.TextureImage();
         txtImage.image = images[0];
@@ -91,6 +82,21 @@ namespace AdLunam {
         txtBackground = new fudge.TextureImage();
         txtBackground.image = images[2];
         Background.generateSprites(txtBackground);
+      }
+
+      function handleScore(): void {
+        if (Math.round(astronaut.cmpTransform.local.translation.x) > score)
+          score = Math.round(astronaut.cmpTransform.local.translation.x);
+        
+        let scoreString: string = score.toString();
+        if (score < 10)
+          scoreString = "00" + scoreString;
+        else if (score < 100)
+          scoreString = "0" + scoreString;
+        else if (score > 999)
+          scoreString = "999";
+        
+        document.getElementById("Score").innerHTML = scoreString;
       }
     }  
 }
