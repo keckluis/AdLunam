@@ -22,7 +22,7 @@ namespace AdLunam {
             platform = new Platform(80, 50);
             this.appendChild(platform);
 
-            this.lastPlatformPos = 75;
+            this.lastPlatformPos = 80;
 
             fudge.Loop.addEventListener(fudge.EVENT.LOOP_FRAME, this.update);
         }
@@ -71,7 +71,7 @@ namespace AdLunam {
     }
 
     function randomItem(): ITEM {
-        let result: number = Math.floor(Math.random() * 8);
+        let result: number = Math.floor(Math.random() * 12);
         let item: ITEM;
 
         if (result < 2) {
@@ -92,7 +92,7 @@ namespace AdLunam {
 
     function randomAlien(): boolean {
 
-        let result: number = Math.floor(Math.random() * 4);
+        let result: number = Math.floor(Math.random() * 2);
 
         if (result == 0)
             return true;

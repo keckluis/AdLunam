@@ -36,18 +36,20 @@ var AdLunam;
                 AdLunam.processInput();
             if (Math.round(AdLunam.astronaut.cmpTransform.local.translation.x) > AdLunam.score)
                 AdLunam.score = Math.round(AdLunam.astronaut.cmpTransform.local.translation.x);
-            document.getElementById("Score").innerHTML = AdLunam.score.toString();
+            let scoreString = AdLunam.score.toString();
+            if (AdLunam.score < 10)
+                scoreString = "00" + scoreString;
+            else if (AdLunam.score < 100)
+                scoreString = "0" + scoreString;
+            else if (AdLunam.score > 999)
+                scoreString = "999";
+            document.getElementById("Score").innerHTML = scoreString;
             //remove bullets from game
             for (let bullet of AdLunam.bullets.getChildren()) {
                 if (bullet.hit || bullet.lifetime > 99) {
                     AdLunam.bullets.removeChild(bullet);
                     console.log(AdLunam.bullets);
                 }
-            }
-            if (AdLunam.blockItemDrop) {
-                AdLunam.itemDropCounter += 1;
-                if (AdLunam.itemDropCounter > 20)
-                    AdLunam.blockItemDrop = false;
             }
             viewport.draw();
         }

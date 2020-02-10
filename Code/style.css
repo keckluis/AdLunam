@@ -13,7 +13,7 @@ html, body, canvas {
 }
 
 body {
-  background-color: rgb(25, 25, 25);
+  background-color: rgb(75, 79, 81);
   display: grid;
   grid-template-rows: min-content auto min-content 0;
   color: white;
@@ -36,9 +36,11 @@ h1 {
   display: inline;
 }
 
-#Score {
+#Score, #ScoreText {
   float: right;
-  transform: translate(90%, 0);
+}
+#ScoreText {
+  transform: translate(85%, 0);
 }
 
 div#Menu, div#Over {

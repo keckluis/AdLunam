@@ -6,7 +6,6 @@ namespace AdLunam {
 
     let keysPressed: KeyPressed = {};
     
-    export let blockItemDrop: boolean = false;
     export let itemDropCounter: number = 0;
 
     function handleKeyboard(_event: KeyboardEvent): void {
@@ -43,31 +42,38 @@ namespace AdLunam {
     }
     
     export function processInput(): void {
-
       //drop item
-      if (keysPressed[fudge.KEYBOARD_CODE.Q] && !blockItemDrop) {
+      if (keysPressed[fudge.KEYBOARD_CODE.Q] && itemDropCounter == 0 && astronaut.isOnFloor) {
+        itemDropCounter = 1;
         astronaut.item = ITEM.NONE;
-        blockItemDrop = true;
-        return;
       }
 
-      //use item (gun & jetpack)
-      if (keysPressed[fudge.KEYBOARD_CODE.F] && astronaut.item == ITEM.GUN) {
-
-        let bullet: Bullet = new Bullet();
-        bullets.appendChild(bullet);
-        bullet.cmpTransform.local.translation = astronaut.cmpTransform.local.translation;
-        bullet.cmpTransform.local.translateX(0.3);
-        bullet.cmpTransform.local.translateY(0.22);
-        astronaut.item = ITEM.NONE;
-
-      } else if (keysPressed[fudge.KEYBOARD_CODE.F] && astronaut.item == ITEM.JETPACK && !astronaut.jetpackUsed && !astronaut.isOnFloor) {
+      //use item
+      if (keysPressed[fudge.KEYBOARD_CODE.F]) {
+        if (astronaut.item == ITEM.GUN) {
+          let bullet: Bullet = new Bullet();
+          bullets.appendChild(bullet);
+          bullet.cmpTransform.local.translation = astronaut.cmpTransform.local.translation;
+          bullet.cmpTransform.local.translateX(0.3);
+          bullet.cmpTransform.local.translateY(0.22);
+          astronaut.item = ITEM.NONE;
+        }
+        
+        if (astronaut.item == ITEM.JETPACK && !astronaut.jetpackUsed && !astronaut.isOnFloor) {
           astronaut.isOnFloor = true;
           astronaut.jetpackUsed = true;
           astronaut.act(ACTION.JUMP);
           astronaut.isOnFloor = false;
-          return;
+          astronaut.item = ITEM.NONE;
+        }
+        return;
       }
+
+      if (itemDropCounter > 0)
+        itemDropCounter++;
+
+      if (itemDropCounter > 5)
+        itemDropCounter = 0;
       
       //movement
       if (keysPressed[fudge.KEYBOARD_CODE.A] && keysPressed[fudge.KEYBOARD_CODE.W]) {   

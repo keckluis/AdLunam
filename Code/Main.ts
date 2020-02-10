@@ -54,7 +54,15 @@ namespace AdLunam {
         if (Math.round(astronaut.cmpTransform.local.translation.x) > score)
           score = Math.round(astronaut.cmpTransform.local.translation.x);
         
-        document.getElementById("Score").innerHTML = score.toString();
+        let scoreString: string = score.toString();
+        if (score < 10)
+          scoreString = "00" + scoreString;
+        else if (score < 100)
+          scoreString = "0" + scoreString;
+        else if (score > 999)
+          scoreString = "999";
+        
+        document.getElementById("Score").innerHTML = scoreString;
 
         //remove bullets from game
         for (let bullet of bullets.getChildren()) {
@@ -62,13 +70,6 @@ namespace AdLunam {
               bullets.removeChild(bullet);  
               console.log(bullets);
             }
-        }
-
-        if (blockItemDrop) {
-          itemDropCounter += 1;
-
-          if (itemDropCounter > 20)
-            blockItemDrop = false;
         }
         
         viewport.draw();

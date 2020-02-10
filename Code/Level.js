@@ -40,7 +40,7 @@ var AdLunam;
             this.appendChild(platform);
             platform = new AdLunam.Platform(80, 50);
             this.appendChild(platform);
-            this.lastPlatformPos = 75;
+            this.lastPlatformPos = 80;
             fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         }
     }
@@ -52,7 +52,7 @@ var AdLunam;
         return Math.floor(Math.random() * 101);
     }
     function randomItem() {
-        let result = Math.floor(Math.random() * 8);
+        let result = Math.floor(Math.random() * 12);
         let item;
         if (result < 2) {
             switch (result) {
@@ -69,7 +69,7 @@ var AdLunam;
         return item;
     }
     function randomAlien() {
-        let result = Math.floor(Math.random() * 4);
+        let result = Math.floor(Math.random() * 2);
         if (result == 0)
             return true;
         else
