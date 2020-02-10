@@ -103,7 +103,7 @@ namespace AdLunam {
         }
       }
   
-      public act(_action: ACTION, _direction?: DIRECTION): void {
+      public act(_action: ACTION, _direction?: DIRECTION, _noJumpSound?: boolean): void {
         let direction: number = (_direction == DIRECTION.RIGHT ? 1 : -1);
         switch (_action) {
           case ACTION.IDLE:
@@ -119,7 +119,8 @@ namespace AdLunam {
               if (this.isOnFloor) {
                 this.isOnFloor = false;
                 
-                Sound.play("jump");
+                if (!_noJumpSound)
+                  Sound.play("jump");
                 this.speed.y = 6;
                 if (_direction != null && !gameOver) {
                   this.speed.x = this.speedMax.x;

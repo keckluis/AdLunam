@@ -76,7 +76,7 @@ var AdLunam;
             if (AdLunam.astronaut.item == AdLunam.ITEM.JETPACK && !AdLunam.astronaut.jetpackUsed && !AdLunam.astronaut.isOnFloor) {
                 AdLunam.astronaut.isOnFloor = true;
                 AdLunam.astronaut.jetpackUsed = true;
-                AdLunam.astronaut.act(AdLunam.ACTION.JUMP);
+                AdLunam.astronaut.act(AdLunam.ACTION.JUMP, null, true);
                 AdLunam.astronaut.isOnFloor = false;
                 AdLunam.astronaut.item = AdLunam.ITEM.NONE;
                 AdLunam.Sound.play("jetpack");

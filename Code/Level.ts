@@ -55,7 +55,7 @@ namespace AdLunam {
 
             //clean up for performance
             for (let platform of level.getChildren()) {
-                if (platform.cmpTransform.local.translation.x < astronaut.cmpTransform.local.translation.x - 15) 
+                if (platform.cmpTransform.local.translation.x < astronaut.cmpTransform.local.translation.x - 10) 
                     level.removeChild(platform);
             }
         }

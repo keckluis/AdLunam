@@ -83,7 +83,7 @@ var AdLunam;
                     child.activate(child.name == _action + "." + _item);
             }
         }
-        act(_action, _direction) {
+        act(_action, _direction, _noJumpSound) {
             let direction = (_direction == AdLunam.DIRECTION.RIGHT ? 1 : -1);
             switch (_action) {
                 case AdLunam.ACTION.IDLE:
@@ -98,7 +98,8 @@ var AdLunam;
                 case AdLunam.ACTION.JUMP:
                     if (this.isOnFloor) {
                         this.isOnFloor = false;
-                        AdLunam.Sound.play("jump");
+                        if (!_noJumpSound)
+                            AdLunam.Sound.play("jump");
                         this.speed.y = 6;
                         if (_direction != null && !AdLunam.gameOver) {
                             this.speed.x = this.speedMax.x;

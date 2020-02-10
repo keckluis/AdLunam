@@ -86,7 +86,7 @@ namespace AdLunam {
         if (astronaut.item == ITEM.JETPACK && !astronaut.jetpackUsed && !astronaut.isOnFloor) {
           astronaut.isOnFloor = true;
           astronaut.jetpackUsed = true;
-          astronaut.act(ACTION.JUMP);
+          astronaut.act(ACTION.JUMP, null, true);
           astronaut.isOnFloor = false;
           astronaut.item = ITEM.NONE;
           Sound.play("jetpack");

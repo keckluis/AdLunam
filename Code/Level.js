@@ -29,7 +29,7 @@ var AdLunam;
                 }
                 //clean up for performance
                 for (let platform of AdLunam.level.getChildren()) {
-                    if (platform.cmpTransform.local.translation.x < AdLunam.astronaut.cmpTransform.local.translation.x - 15)
+                    if (platform.cmpTransform.local.translation.x < AdLunam.astronaut.cmpTransform.local.translation.x - 10)
                         AdLunam.level.removeChild(platform);
                 }
             };
