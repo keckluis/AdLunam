@@ -1,51 +1,74 @@
 namespace AdLunam {
 
     interface KeyPressed {
-        [code: string]: boolean;
-      }
+      [code: string]: boolean;
+    }
 
     let keysPressed: KeyPressed = {};
+    let gameOverSoundPlayed: boolean = false;
     
-    export let itemDropCounter: number = 0;
+    let itemDropCounter: number = 0;
+    export let soundMuteCounter: number = 0;
 
     function handleKeyboard(_event: KeyboardEvent): void {
-        keysPressed[_event.code] = (_event.type == "keydown");
+      keysPressed[_event.code] = (_event.type == "keydown");
     }
 
     export async function start(): Promise<void> {
-        fudge.Debug.log("Wait for enter");
-        await waitForKeyPress(fudge.KEYBOARD_CODE.ENTER);
-        fudge.Debug.log("Enter pressed");
-        document.addEventListener("keydown", handleKeyboard);
-        document.addEventListener("keyup", handleKeyboard);
-        let domMenu: HTMLElement = document.querySelector("div#Menu");
-        domMenu.style.visibility = "hidden";
+      fudge.Debug.log("Wait for enter");
+      await waitForKeyPress(fudge.KEYBOARD_CODE.ENTER);
+      fudge.Debug.log("Enter pressed");
+      Sound.playMusic();
+      document.addEventListener("keydown", handleKeyboard);
+      document.addEventListener("keyup", handleKeyboard);
+      let domMenu: HTMLElement = document.querySelector("div#Menu");
+      domMenu.style.visibility = "hidden";
     }
 
     export function end(): void {
-        let domOver: HTMLElement = document.querySelector("div#Over");
-        domOver.style.visibility = "visible";
-        window.removeEventListener("keydown", handleKeyboard);
-        window.removeEventListener("keyup", handleKeyboard);
+      let domOver: HTMLElement = document.querySelector("div#Over");
+      domOver.style.visibility = "visible";
+      window.removeEventListener("keydown", handleKeyboard);
+      window.removeEventListener("keyup", handleKeyboard);
+      Sound.pauseMusic();
+      if (!gameOverSoundPlayed)
+        Sound.play("game_over");
+      gameOverSoundPlayed = true;
     }
 
     async function waitForKeyPress(_code: fudge.KEYBOARD_CODE): Promise<void> {
-        return new Promise(_resolve => {
-          window.addEventListener("keydown", hndKeyDown);
-          function hndKeyDown(_event: KeyboardEvent): void {
-            if (_event.code == _code) {
-              window.removeEventListener("keydown", hndKeyDown);
-              _resolve();
-            }
+      return new Promise(_resolve => {
+        window.addEventListener("keydown", hndKeyDown);
+        function hndKeyDown(_event: KeyboardEvent): void {
+          if (_event.code == _code) {
+            window.removeEventListener("keydown", hndKeyDown);
+            _resolve();
           }
-        });
+        }
+      });
     }
     
     export function processInput(): void {
+      //mute sound
+      if (keysPressed[fudge.KEYBOARD_CODE.M] && soundMuteCounter == 0) {
+        if (Sound.muted) {
+          Sound.muted = false;
+          Sound.continueMusic();
+        }
+        else {
+          Sound.muted = true;
+          Sound.pauseMusic();
+        }
+        soundMuteCounter = 1;
+        console.log(Sound.muted);
+        return;
+      }
+
       //drop item
       if (keysPressed[fudge.KEYBOARD_CODE.Q] && itemDropCounter == 0 && astronaut.isOnFloor) {
         itemDropCounter = 1;
         astronaut.item = ITEM.NONE;
+        Sound.play("item_drop");
       }
 
       //use item
@@ -57,6 +80,7 @@ namespace AdLunam {
           bullet.cmpTransform.local.translateX(0.3);
           bullet.cmpTransform.local.translateY(0.22);
           astronaut.item = ITEM.NONE;
+          Sound.play("gun");
         }
         
         if (astronaut.item == ITEM.JETPACK && !astronaut.jetpackUsed && !astronaut.isOnFloor) {
@@ -65,6 +89,7 @@ namespace AdLunam {
           astronaut.act(ACTION.JUMP);
           astronaut.isOnFloor = false;
           astronaut.item = ITEM.NONE;
+          Sound.play("jetpack");
         }
         return;
       }

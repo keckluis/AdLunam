@@ -18,6 +18,7 @@ namespace AdLunam {
       args = new URLSearchParams(location.search);
       
       spriteSetup();
+      Sound.init();
   
       fudge.RenderManager.initialize(true, true);
       game = new fudge.Node("Game");
@@ -43,8 +44,6 @@ namespace AdLunam {
       start();
 
       function update(_event: fudge.Eventƒ): void {
-        console.log(game);
-
         if (gameOver)
           end();
         else
@@ -53,6 +52,16 @@ namespace AdLunam {
         handleScore();
 
         handleBullets();
+
+        if (Sound.muted)
+          document.getElementById("Sound").innerHTML = "SOUND: OFF";
+        else
+          document.getElementById("Sound").innerHTML = "SOUND: ON";
+
+        if (soundMuteCounter > 0) 
+          soundMuteCounter++;
+        if (soundMuteCounter > 5)
+          soundMuteCounter = 0;
         
         viewport.draw();
       }

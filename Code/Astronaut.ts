@@ -118,7 +118,8 @@ namespace AdLunam {
           case ACTION.JUMP:
               if (this.isOnFloor) {
                 this.isOnFloor = false;
-
+                
+                Sound.play("jump");
                 this.speed.y = 6;
                 if (_direction != null && !gameOver) {
                   this.speed.x = this.speedMax.x;

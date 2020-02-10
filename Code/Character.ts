@@ -49,9 +49,9 @@ namespace AdLunam {
 
         public checkCollision(): void {
             for (let platform of level.getChildren()) {
-              let rect: fudge.Rectangle = (<Platform>platform).getRectWorld();
-              let hit: boolean = rect.isInside(this.cmpTransform.local.translation.toVector2());
-              if (hit) {
+                let rect: fudge.Rectangle = (<Platform>platform).getRectWorld();
+                let hit: boolean = rect.isInside(this.cmpTransform.local.translation.toVector2());
+                if (hit) {
                     let translation: fudge.Vector3 = this.cmpTransform.local.translation;
                     translation.y = rect.y;
                     this.cmpTransform.local.translation = translation;

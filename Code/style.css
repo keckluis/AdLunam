@@ -27,7 +27,7 @@ div {
 }
 
 div#head {
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   display: grid;
   text-align: center;
 }
@@ -36,12 +36,9 @@ h1 {
   display: inline;
 }
 
-#Score, #ScoreText {
-  float: right;
-}
 #ScoreText {
-  transform: translate(85%, 0);
-}
+  transform: translate(-5%, 0);
+}  
 
 div#Menu, div#Over {
   display: inline-block;

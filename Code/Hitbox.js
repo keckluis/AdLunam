@@ -37,6 +37,7 @@ var AdLunam;
                             console.log("HIT ITEM");
                             if (AdLunam.astronaut.item == AdLunam.ITEM.NONE && !_isBullet) {
                                 AdLunam.astronaut.item = child.type;
+                                AdLunam.Sound.play("item_pickup");
                                 child.cmpTransform.local.translateY(100);
                             }
                         }
@@ -49,6 +50,7 @@ var AdLunam;
                                 AdLunam.astronaut.item = AdLunam.ITEM.NONE;
                                 child.cmpTransform.local.translateY(100);
                                 child.gravity = fudge.Vector2.Y(0);
+                                AdLunam.Sound.play("alien_death");
                                 return true;
                             }
                             else {

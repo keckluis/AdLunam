@@ -9,6 +9,7 @@ var AdLunam;
         const canvas = document.querySelector("canvas");
         AdLunam.args = new URLSearchParams(location.search);
         spriteSetup();
+        AdLunam.Sound.init();
         AdLunam.fudge.RenderManager.initialize(true, true);
         AdLunam.game = new AdLunam.fudge.Node("Game");
         AdLunam.bulletContainer = new AdLunam.fudge.Node("BulletContainer");
@@ -27,13 +28,20 @@ var AdLunam;
         AdLunam.fudge.Loop.start(AdLunam.fudge.LOOP_MODE.TIME_GAME, 20);
         AdLunam.start();
         function update(_event) {
-            console.log(AdLunam.game);
             if (AdLunam.gameOver)
                 AdLunam.end();
             else
                 AdLunam.processInput();
             handleScore();
             handleBullets();
+            if (AdLunam.Sound.muted)
+                document.getElementById("Sound").innerHTML = "SOUND: OFF";
+            else
+                document.getElementById("Sound").innerHTML = "SOUND: ON";
+            if (AdLunam.soundMuteCounter > 0)
+                AdLunam.soundMuteCounter++;
+            if (AdLunam.soundMuteCounter > 5)
+                AdLunam.soundMuteCounter = 0;
             viewport.draw();
         }
         function spriteSetup() {

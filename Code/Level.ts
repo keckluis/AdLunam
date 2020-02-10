@@ -12,13 +12,13 @@ namespace AdLunam {
 
             let platform: Platform;
 
-            platform = new Platform(0, 50, ITEM.JETPACK);
+            platform = new Platform(0, 50, ITEM.GUN);
             this.appendChild(platform);
 
-            platform = new Platform(40, 0, ITEM.JETPACK);
+            platform = new Platform(40, 50, null, true);
             this.appendChild(platform);
 
-            platform = new Platform(80, 100, ITEM.JETPACK);
+            platform = new Platform(80, 50);
             this.appendChild(platform);
 
             this.lastPlatformPos = 80;

@@ -2,7 +2,9 @@
 var AdLunam;
 (function (AdLunam) {
     let keysPressed = {};
-    AdLunam.itemDropCounter = 0;
+    let gameOverSoundPlayed = false;
+    let itemDropCounter = 0;
+    AdLunam.soundMuteCounter = 0;
     function handleKeyboard(_event) {
         keysPressed[_event.code] = (_event.type == "keydown");
     }
@@ -10,6 +12,7 @@ var AdLunam;
         AdLunam.fudge.Debug.log("Wait for enter");
         await waitForKeyPress(AdLunam.fudge.KEYBOARD_CODE.ENTER);
         AdLunam.fudge.Debug.log("Enter pressed");
+        AdLunam.Sound.playMusic();
         document.addEventListener("keydown", handleKeyboard);
         document.addEventListener("keyup", handleKeyboard);
         let domMenu = document.querySelector("div#Menu");
@@ -21,6 +24,10 @@ var AdLunam;
         domOver.style.visibility = "visible";
         window.removeEventListener("keydown", handleKeyboard);
         window.removeEventListener("keyup", handleKeyboard);
+        AdLunam.Sound.pauseMusic();
+        if (!gameOverSoundPlayed)
+            AdLunam.Sound.play("game_over");
+        gameOverSoundPlayed = true;
     }
     AdLunam.end = end;
     async function waitForKeyPress(_code) {
@@ -35,10 +42,25 @@ var AdLunam;
         });
     }
     function processInput() {
+        //mute sound
+        if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.M] && AdLunam.soundMuteCounter == 0) {
+            if (AdLunam.Sound.muted) {
+                AdLunam.Sound.muted = false;
+                AdLunam.Sound.continueMusic();
+            }
+            else {
+                AdLunam.Sound.muted = true;
+                AdLunam.Sound.pauseMusic();
+            }
+            AdLunam.soundMuteCounter = 1;
+            console.log(AdLunam.Sound.muted);
+            return;
+        }
         //drop item
-        if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.Q] && AdLunam.itemDropCounter == 0 && AdLunam.astronaut.isOnFloor) {
-            AdLunam.itemDropCounter = 1;
+        if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.Q] && itemDropCounter == 0 && AdLunam.astronaut.isOnFloor) {
+            itemDropCounter = 1;
             AdLunam.astronaut.item = AdLunam.ITEM.NONE;
+            AdLunam.Sound.play("item_drop");
         }
         //use item
         if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.F]) {
@@ -49,6 +71,7 @@ var AdLunam;
                 bullet.cmpTransform.local.translateX(0.3);
                 bullet.cmpTransform.local.translateY(0.22);
                 AdLunam.astronaut.item = AdLunam.ITEM.NONE;
+                AdLunam.Sound.play("gun");
             }
             if (AdLunam.astronaut.item == AdLunam.ITEM.JETPACK && !AdLunam.astronaut.jetpackUsed && !AdLunam.astronaut.isOnFloor) {
                 AdLunam.astronaut.isOnFloor = true;
@@ -56,13 +79,14 @@ var AdLunam;
                 AdLunam.astronaut.act(AdLunam.ACTION.JUMP);
                 AdLunam.astronaut.isOnFloor = false;
                 AdLunam.astronaut.item = AdLunam.ITEM.NONE;
+                AdLunam.Sound.play("jetpack");
             }
             return;
         }
-        if (AdLunam.itemDropCounter > 0)
-            AdLunam.itemDropCounter++;
-        if (AdLunam.itemDropCounter > 5)
-            AdLunam.itemDropCounter = 0;
+        if (itemDropCounter > 0)
+            itemDropCounter++;
+        if (itemDropCounter > 5)
+            itemDropCounter = 0;
         //movement
         if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.A] && keysPressed[AdLunam.fudge.KEYBOARD_CODE.W]) {
             AdLunam.astronaut.act(AdLunam.ACTION.JUMP);

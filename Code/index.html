@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="style.css">
   <script src="../Fudge/FudgeCore.js"></script>
   <script src="SpriteGenerator.js"></script>
+  <script src="Sound.js"></script>
   <script src="Background.js"></script>
   <script src="BackgroundHandler.js"></script>
   <script src="Platform.js"></script>
@@ -26,7 +27,8 @@
 <body>
   <div id="head">
     <h1 style="text-align: left;">AD LUNAM</h1>
-    <h1 id="ScoreText" style="text-align: right;">SCORE</h1><h1 id="Score" style="text-align: right;">0</h1>
+    <h1 id="ScoreText" style="text-align: right;">SCORE</h1><h1 id="Score" style="text-align: left;">000</h1>
+    <h1 id="Sound" style="text-align: right;">SOUND: ON</h1>
   </div>
 
   <canvas style="background-color: black"></canvas>
@@ -56,5 +58,14 @@
   <img src="sprites.png"/>
   <img src="platform.png"/>
   <img src="background.png"/>
+
+  <audio id="alien_death" src="../Sound/alien_death.mp3" type="audio/mpeg"></audio>
+  <audio id="game_over" src="../Sound/game_over.mp3" type="audio/mpeg"></audio>
+  <audio id="gun" src="../Sound/gun.mp3" type="audio/mpeg"></audio>
+  <audio id="item_drop" src="../Sound/item_drop.mp3" type="audio/mpeg"></audio>
+  <audio id="item_pickup" src="../Sound/item_pickup.mp3" type="audio/mpeg"></audio>
+  <audio id="jetpack" src="../Sound/jetpack.mp3" type="audio/mpeg"></audio>
+  <audio id="jump" src="../Sound/jump.mp3" type="audio/mpeg"></audio>
+  <audio id="music" src="../Sound/music.mp3" type="audio/mpeg"></audio>
 </body>
 </html>

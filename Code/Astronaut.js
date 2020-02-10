@@ -98,6 +98,7 @@ var AdLunam;
                 case AdLunam.ACTION.JUMP:
                     if (this.isOnFloor) {
                         this.isOnFloor = false;
+                        AdLunam.Sound.play("jump");
                         this.speed.y = 6;
                         if (_direction != null && !AdLunam.gameOver) {
                             this.speed.x = this.speedMax.x;

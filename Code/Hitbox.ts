@@ -45,6 +45,7 @@ namespace AdLunam {
                 console.log("HIT ITEM");
                 if (astronaut.item == ITEM.NONE && !_isBullet) {
                   astronaut.item = (<Item>child).type;
+                  Sound.play("item_pickup");
                   (<Item>child).cmpTransform.local.translateY(100);
                 }
               } 
@@ -56,6 +57,7 @@ namespace AdLunam {
                   astronaut.item = ITEM.NONE;
                   (<Alien>child).cmpTransform.local.translateY(100);
                   (<Alien>child).gravity = fudge.Vector2.Y(0);
+                  Sound.play("alien_death");
                   return true;
                 } else { 
                   gameOver = true;
