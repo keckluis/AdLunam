@@ -1,5 +1,27 @@
-# ad lunam
+# AD LUNAM
 Repository für die PRIMA Abgabe 
 Luis Keck (256153)
 
 [GAME](https://keckluis.github.io/AdLunam/Code/index.html)
+
+
+
+## Checkliste für Leistungsnachweis
+© Prof. Dipl.-Ing. Jirka R. Dell'Oro-Friedl, HFU
+
+| Nr | Bezeichnung           | Inhalt                                                                                                                                                                                                                                                                         |
+|---:|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|    | Titel                 | AD LUNAM
+|    | Name                  | Luis Keck
+|    | Matrikelnummer        |  256153
+|  1 | Nutzerinteraktion     | Der Nutzer kann die Spielfigur mit Hilfe von Tastatureingaben bewegen. Auswirkung dieser Interaktion ist zum einen das Bewegen der Spielfigur, also laufen und springen und das Einsetzen zuvor eingesammelter Items.|
+|  2 | Objektinteraktion     | Kollisionsprüfung findet zu verschiedenen Zwecken statt. Zum einen gibt es die Prüfung zwischen Charakteren, wie z.B. der Spielfigur oder Gegnern und den Plattformen auf denen sich diese bewegen. Die Kollisionsprüfung dient hier dazu einen Boden zu erzeugen der den ständigen Fall der Figuren zum Halt bringt. Andere Kollisionsprüfung finden zwischen der Spielfigur und Gegnern oder Items auf den Plattformen statt. Bei Kollision mit dem Spieler wird entweder das Spielende oder das Einsammeln des Items ausgelöst. Die letzte Kollisionsprüfung findet zwischen den Laserschüssen den Blaster-Items und den Gegnern statt. Trifft ein Schuss den Gegner, wird dessen Tod ausgelöst.|
+|  3 | Objektanzahl variabel | Die Objekte die in variabler Anzahl erstellt werden sind die Plattformen, Items und Gegner. Die Erzeugung dieser beginnt in der Level Klasse in der während der Laufzeit ein zufälliges Level generiert wird. Gemessen an der horizontalen Distanz die der Spieler bereits zurückgelegt hat, werden neue Instanzen des Plattform Objekts erstellt. Dies geschieht frühzeitig genug, sodass das Erstellen immer außerhalb des Viewports geschieht. Die Plattform erhellt eine zufällige Höhe und einen zufälligen Abstand zur Plattform links von ihr. Ist der Sprung sehr weit und/oder hoch bekommt die vorherige Plattform noch das Jetpack-Item, das einen Doppelsprung möglich macht. Jede Plattform hat außerdem noch eine Chance ein zufälliges Item zu bekommen, und sollte sie keins haben noch eine Chance, dass sich ein Gegner auf ihr befindet.|
+|  4 | Szenenhierarchie      | Der Hauptknoten "Game" ist Parent aller anderen Knoten. Seine direkten Children sind die Hauptknoten der Anwendung wie die Kamera, die Spielfigur, die Hintergrundverwaltung, das Level und ein Containerknoten für alle während der Spielzeit erstellten Laserschüsse, die dann Children des Containerknoten sind. Der Knoten "BackgroundHandler" ist Parent von drei "Background" Knoten die drei verschiedene Hintergründe darstellen. "Level" ist Parent einer beliebigen Anzahl von Plattformen, die wiederum Parent von einem Gegner und/oder einem Item seien können.|
+|  5 | Sound                 | Mit dem Start des Spiels (nach dem Menü) beginnt die Hintergrundmusik die im Loop abgespielt wird. Verschiedene Aktionen des Spielers lösen dann zusätzliche Sounds aus. Dazu gehören Springen, Aufsammeln von Items, Droppen von Items, Einsetzen des Blasters und Einsetzen des Jetpacks. Der Tod eines Gegners wird auch durch einen Sound unterstützt. Außerdem gibt es einen Feedbacksound beim Spielende, also beim Tod der Spielfigur. Kurz bevor dieser zu hören ist stoppt die Musik.|
+|  6 | GUI                   | Das GUI liefert eine kurze Anleitung wie man den Vollbildmodus startet. Außerdem ist durchgängig am unteren Bildschirmrand eine Steuerungsanleitung zu sehen. Mit Enter startet der Nutzer das Spiel. Mit der Taste "M" lässt sich der Ton aus- und wieder einschalten.|
+|  7 | Externe Daten         | Spielparameter sind extern in einer Datei veränderbar, so dass das Spiel nur neu gestartet, aber nicht neu kompiliert werden muss. Welche Parameter sind dies und was sind die Auswirkungen?                                                                                   |
+|  8 | Verhaltensklassen     | Das Verhalten von Objekten ist in den Methoden von Klassen definiert, die in externen Dateien abgelegt sind. Welche Klassen sind dies und welches Verhalten wird dort beschrieben?                                                                                             |
+|  9 | Subklassen            | Es existiert eine Klassenhierarchie, einige Objekte sind Instanzen von einer oder mehreren abgeleiteten Subklassen mit gegenüber den anderen Objekten speziellem Verhalten und besonderen Eigenschaften. Welche Klassen sind dies und welches Verhalten wird dort beschrieben? |
+| 10 | Maße & Positionen     | Maße, Skala und Positionen sind gut durchdacht. Wie groß sind Spielfiguren, wie ist die Welt angeordnet bezogen auf den Ursprung, wie sind Spielelemente bezogen auf ihre lokalen Koordinatensysteme definiert?                                                                |
+| 11 | Event-System          | Das Event-System wird verwendet. Wer sendet wem Informationen oder Methodenaufrufe und wofür?                                                                                                                                                                                  |
