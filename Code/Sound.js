@@ -6,6 +6,7 @@ var AdLunam;
             let audioElements = document.querySelectorAll("audio");
             for (let element of audioElements)
                 Sound.sounds[element.id] = element;
+            Sound.sounds["jump"].volume = 0.2;
         }
         static play(_id) {
             if (!this.muted)

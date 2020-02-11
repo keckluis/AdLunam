@@ -51,6 +51,7 @@ var AdLunam;
                                 child.cmpTransform.local.translateY(100);
                                 child.gravity = fudge.Vector2.Y(0);
                                 AdLunam.Sound.play("alien_death");
+                                fudge.Loop.removeEventListener("loopFrame" /* LOOP_FRAME */, child.update);
                                 return true;
                             }
                             else {

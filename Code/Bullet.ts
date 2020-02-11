@@ -43,17 +43,7 @@ namespace AdLunam {
                 child.activate(child.name == "BulletSprite");
         }
 
-        private checkCollision(): void {
-            for (let platform of level.getChildren()) {
-                let rect: fudge.Rectangle = (<Platform>platform).getRectWorld();
-                let hit: boolean = rect.isInside(this.cmpTransform.local.translation.toVector2());
-                if (hit) {
-                    this.hit = true;
-                } 
-            }
-        }
-
-        private update = (_event: fudge.Eventƒ): void => {
+        public update = (_event: fudge.Eventƒ): void => {
             if (!this.hit && this.lifetime < 100) {   
                 let direction: number = (this.direction == DIRECTION.RIGHT ? 1 : -1);
                 this.cmpTransform.local.translateX(0.2 * direction);
@@ -61,6 +51,16 @@ namespace AdLunam {
                     this.hit = true;
                 this.checkCollision();
                 this.lifetime += 1;
+            }
+        }
+
+        private checkCollision(): void {
+            for (let platform of level.getChildren()) {
+                let rect: fudge.Rectangle = (<Platform>platform).getRectWorld();
+                let hit: boolean = rect.isInside(this.cmpTransform.local.translation.toVector2());
+                if (hit) {
+                    this.hit = true;
+                } 
             }
         }
     }

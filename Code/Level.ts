@@ -6,16 +6,17 @@ namespace AdLunam {
         private lastAstronautPos: number = 0;
         private lastPlatformPos: number = 0;
         private lastHeight: number = 50;
+        private platformCount: number = 0;
 
         public constructor() {
             super("Level");
 
             let platform: Platform;
 
-            platform = new Platform(0, 50, ITEM.GUN);
+            platform = new Platform(0, 50);
             this.appendChild(platform);
 
-            platform = new Platform(40, 50, null, true);
+            platform = new Platform(40, 50);
             this.appendChild(platform);
 
             platform = new Platform(80, 50);
@@ -28,7 +29,7 @@ namespace AdLunam {
 
         private update = (_event: fudge.Eventƒ): void => {
             
-            if (this.lastAstronautPos < astronaut.cmpTransform.local.translation.x - 2) {
+            if (this.lastAstronautPos < astronaut.cmpTransform.local.translation.x - 3 && this.platformCount < 10) {
                 
                 let x: number = randomX();
                 let y: number = randomY();
@@ -50,13 +51,24 @@ namespace AdLunam {
 
                 this.lastHeight = y;
                 this.lastPlatformPos += x;
-                this.lastAstronautPos = astronaut.cmpTransform.local.translation.x;
+                this.lastAstronautPos += 3;
             }
 
-            //clean up for performance
+            this.platformCount = 0;
+
+            //clean up for performance && platform count
             for (let platform of level.getChildren()) {
-                if (platform.cmpTransform.local.translation.x < astronaut.cmpTransform.local.translation.x - 10) 
+                this.platformCount += 1;
+                if (platform.cmpTransform.local.translation.x < astronaut.cmpTransform.local.translation.x - 8) {
+                    for (let child of platform.getChildren()) {
+                        if (child.name == "Item")
+                            fudge.Loop.removeEventListener(fudge.EVENT.LOOP_FRAME, (<Item>child).update);
+                        if (child.name == "Alien") {
+                            fudge.Loop.removeEventListener(fudge.EVENT.LOOP_FRAME, (<Alien>child).update);
+                        }
+                    }
                     level.removeChild(platform);
+                }
             }
         }
     }

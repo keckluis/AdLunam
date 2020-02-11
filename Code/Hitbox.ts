@@ -58,6 +58,7 @@ namespace AdLunam {
                   (<Alien>child).cmpTransform.local.translateY(100);
                   (<Alien>child).gravity = fudge.Vector2.Y(0);
                   Sound.play("alien_death");
+                  fudge.Loop.removeEventListener(fudge.EVENT.LOOP_FRAME, (<Alien>child).update);
                   return true;
                 } else { 
                   gameOver = true;

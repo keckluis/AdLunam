@@ -8,8 +8,9 @@ var AdLunam;
             this.lastAstronautPos = 0;
             this.lastPlatformPos = 0;
             this.lastHeight = 50;
+            this.platformCount = 0;
             this.update = (_event) => {
-                if (this.lastAstronautPos < AdLunam.astronaut.cmpTransform.local.translation.x - 2) {
+                if (this.lastAstronautPos < AdLunam.astronaut.cmpTransform.local.translation.x - 3 && this.platformCount < 10) {
                     let x = randomX();
                     let y = randomY();
                     let item = randomItem();
@@ -25,18 +26,28 @@ var AdLunam;
                     this.appendChild(new AdLunam.Platform(this.lastPlatformPos + x, y, item, alien));
                     this.lastHeight = y;
                     this.lastPlatformPos += x;
-                    this.lastAstronautPos = AdLunam.astronaut.cmpTransform.local.translation.x;
+                    this.lastAstronautPos += 3;
                 }
-                //clean up for performance
+                this.platformCount = 0;
+                //clean up for performance && platform count
                 for (let platform of AdLunam.level.getChildren()) {
-                    if (platform.cmpTransform.local.translation.x < AdLunam.astronaut.cmpTransform.local.translation.x - 10)
+                    this.platformCount += 1;
+                    if (platform.cmpTransform.local.translation.x < AdLunam.astronaut.cmpTransform.local.translation.x - 8) {
+                        for (let child of platform.getChildren()) {
+                            if (child.name == "Item")
+                                fudge.Loop.removeEventListener("loopFrame" /* LOOP_FRAME */, child.update);
+                            if (child.name == "Alien") {
+                                fudge.Loop.removeEventListener("loopFrame" /* LOOP_FRAME */, child.update);
+                            }
+                        }
                         AdLunam.level.removeChild(platform);
+                    }
                 }
             };
             let platform;
-            platform = new AdLunam.Platform(0, 50, AdLunam.ITEM.GUN);
+            platform = new AdLunam.Platform(0, 50);
             this.appendChild(platform);
-            platform = new AdLunam.Platform(40, 50, null, true);
+            platform = new AdLunam.Platform(40, 50);
             this.appendChild(platform);
             platform = new AdLunam.Platform(80, 50);
             this.appendChild(platform);

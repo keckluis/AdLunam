@@ -107,6 +107,7 @@ namespace AdLunam {
         //remove bullets from game
         for (let bullet of bulletContainer.getChildren()) {
           if ((<Bullet>bullet).hit || (<Bullet>bullet).lifetime > 99) {
+            fudge.Loop.removeEventListener(fudge.EVENT.LOOP_FRAME, (<Bullet>bullet).update);
             bulletContainer.removeChild(bullet);  
           }
         }

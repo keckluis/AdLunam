@@ -78,6 +78,7 @@ var AdLunam;
             //remove bullets from game
             for (let bullet of AdLunam.bulletContainer.getChildren()) {
                 if (bullet.hit || bullet.lifetime > 99) {
+                    AdLunam.fudge.Loop.removeEventListener("loopFrame" /* LOOP_FRAME */, bullet.update);
                     AdLunam.bulletContainer.removeChild(bullet);
                 }
             }

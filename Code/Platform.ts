@@ -7,7 +7,6 @@ namespace AdLunam {
     private static sprites: Sprite[];
     public item: Item;
     public alien: Alien;
-    //private static material: fudge.Material = new fudge.Material("Platform", fudge.ShaderUniColor, new fudge.CoatColored(fudge.Color.CSS("red", 0.5)));
 
     public constructor(_posX: number, _posY: number, _item?: ITEM, _alien?: boolean) {
       super("Platform");
@@ -15,7 +14,6 @@ namespace AdLunam {
       nodeSprite.activate(false);
       this.appendChild(nodeSprite);
       this.addComponent(new fudge.ComponentTransform());
-      //this.addComponent(new fudge.ComponentMaterial(Platform.material));
       let cmpMesh: fudge.ComponentMesh = new fudge.ComponentMesh(Platform.mesh);
       cmpMesh.pivot = Platform.pivot;
       this.addComponent(cmpMesh);

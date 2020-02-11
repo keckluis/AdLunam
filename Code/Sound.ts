@@ -9,7 +9,8 @@ namespace AdLunam {
         public static init(): void {
             let audioElements: NodeListOf<HTMLAudioElement> = document.querySelectorAll("audio");
             for (let element of audioElements)
-            Sound.sounds[element.id] = element;    
+            Sound.sounds[element.id] = element;  
+            Sound.sounds["jump"].volume = 0.2;
         }
     
         public static play(_id: string): void {

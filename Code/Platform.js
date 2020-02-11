@@ -3,14 +3,12 @@ var AdLunam;
 (function (AdLunam) {
     var fudge = FudgeCore;
     class Platform extends fudge.Node {
-        //private static material: fudge.Material = new fudge.Material("Platform", fudge.ShaderUniColor, new fudge.CoatColored(fudge.Color.CSS("red", 0.5)));
         constructor(_posX, _posY, _item, _alien) {
             super("Platform");
             let nodeSprite = new AdLunam.NodeSprite("PlatformSprite", Platform.sprites[0]);
             nodeSprite.activate(false);
             this.appendChild(nodeSprite);
             this.addComponent(new fudge.ComponentTransform());
-            //this.addComponent(new fudge.ComponentMaterial(Platform.material));
             let cmpMesh = new fudge.ComponentMesh(Platform.mesh);
             cmpMesh.pivot = Platform.pivot;
             this.addComponent(cmpMesh);

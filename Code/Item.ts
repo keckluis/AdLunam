@@ -64,7 +64,7 @@ namespace AdLunam {
             return hitbox;
         }
 
-        private update = (_event: fudge.Eventƒ): void => {
+        public update = (_event: fudge.Eventƒ): void => {
             this.cmpTransform.local.rotateY(5);
         }
     }
