@@ -2,7 +2,6 @@ namespace AdLunam {
     import fudge = FudgeCore;
   
     export class Alien extends Character {
-
       public constructor() {
         super("Alien");
 
