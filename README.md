@@ -3,6 +3,8 @@ Repository für die PRIMA Abgabe
 Luis Keck (256153)
 
 [GAME](https://keckluis.github.io/AdLunam/Code/index.html)
+[CONCEPT](https://github.com/keckluis/AdLunam/tree/master/AdLunam/Concept)
+[SOURCE CODE](https://github.com/keckluis/AdLunam/tree/master/AdLunam/SourceCode)
 
 
 
