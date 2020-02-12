@@ -16,6 +16,7 @@ var AdLunam;
             Sound.sounds["music"].loop = true;
             Sound.sounds["music"].play();
             Sound.sounds["music"].volume = 0.2;
+            this.musicStarted = true;
         }
         static pauseMusic() {
             Sound.sounds["music"].pause();
@@ -25,6 +26,7 @@ var AdLunam;
         }
     }
     Sound.muted = false;
+    Sound.musicStarted = false;
     Sound.sounds = {};
     AdLunam.Sound = Sound;
 })(AdLunam || (AdLunam = {}));

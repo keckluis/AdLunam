@@ -10,6 +10,8 @@ var AdLunam;
         AdLunam.args = new URLSearchParams(location.search);
         spriteSetup();
         AdLunam.Sound.init();
+        document.addEventListener("keydown", AdLunam.handleSound);
+        document.addEventListener("keyup", AdLunam.handleSound);
         AdLunam.fudge.RenderManager.initialize(true, true);
         AdLunam.game = new AdLunam.fudge.Node("Game");
         AdLunam.bulletContainer = new AdLunam.fudge.Node("BulletContainer");

@@ -19,6 +19,9 @@ namespace AdLunam {
       
       spriteSetup();
       Sound.init();
+
+      document.addEventListener("keydown", handleSound);
+      document.addEventListener("keyup", handleSound);
   
       fudge.RenderManager.initialize(true, true);
       game = new fudge.Node("Game");

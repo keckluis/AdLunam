@@ -4,6 +4,7 @@ namespace AdLunam {
     }
     export class Sound {
         public static muted: boolean = false;
+        public static musicStarted: boolean = false;
         private static sounds: Sounds = {};
     
         public static init(): void {
@@ -22,6 +23,7 @@ namespace AdLunam {
             Sound.sounds["music"].loop = true;
             Sound.sounds["music"].play();
             Sound.sounds["music"].volume = 0.2;
+            this.musicStarted = true;
         }
 
         public static pauseMusic(): void {

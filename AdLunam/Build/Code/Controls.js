@@ -3,6 +3,7 @@ var AdLunam;
 (function (AdLunam) {
     let keysPressed = {};
     let gameOverSoundPlayed = false;
+    let gameStarted = false;
     let itemDropCounter = 0;
     AdLunam.soundMuteCounter = 0;
     function handleKeyboard(_event) {
@@ -10,7 +11,9 @@ var AdLunam;
     }
     async function start() {
         await waitForKeyPress(AdLunam.fudge.KEYBOARD_CODE.ENTER);
-        AdLunam.Sound.playMusic();
+        if (!AdLunam.Sound.muted)
+            AdLunam.Sound.playMusic();
+        gameStarted = true;
         document.addEventListener("keydown", handleKeyboard);
         document.addEventListener("keyup", handleKeyboard);
         let domMenu = document.querySelector("div#Menu");
@@ -39,6 +42,23 @@ var AdLunam;
             }
         });
     }
+    function handleSound(_event) {
+        if (_event.type == "keydown" && _event.keyCode == 77 && AdLunam.soundMuteCounter == 0) {
+            if (AdLunam.Sound.muted) {
+                AdLunam.Sound.muted = false;
+                if (AdLunam.Sound.musicStarted)
+                    AdLunam.Sound.continueMusic();
+                else if (gameStarted)
+                    AdLunam.Sound.playMusic();
+            }
+            else {
+                AdLunam.Sound.muted = true;
+                AdLunam.Sound.pauseMusic();
+            }
+            AdLunam.soundMuteCounter = 1;
+        }
+    }
+    AdLunam.handleSound = handleSound;
     function processInput() {
         //mute sound
         if (keysPressed[AdLunam.fudge.KEYBOARD_CODE.M] && AdLunam.soundMuteCounter == 0) {
@@ -51,7 +71,6 @@ var AdLunam;
                 AdLunam.Sound.pauseMusic();
             }
             AdLunam.soundMuteCounter = 1;
-            console.log(AdLunam.Sound.muted);
             return;
         }
         //drop item

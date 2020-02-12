@@ -6,6 +6,7 @@ namespace AdLunam {
 
     let keysPressed: KeyPressed = {};
     let gameOverSoundPlayed: boolean = false;
+    let gameStarted: boolean = false;
     
     let itemDropCounter: number = 0;
     export let soundMuteCounter: number = 0;
@@ -16,7 +17,9 @@ namespace AdLunam {
 
     export async function start(): Promise<void> {
       await waitForKeyPress(fudge.KEYBOARD_CODE.ENTER);
-      Sound.playMusic();
+      if (!Sound.muted)
+        Sound.playMusic();
+      gameStarted = true;
       document.addEventListener("keydown", handleKeyboard);
       document.addEventListener("keyup", handleKeyboard);
       let domMenu: HTMLElement = document.querySelector("div#Menu");
@@ -45,6 +48,24 @@ namespace AdLunam {
         }
       });
     }
+
+    export function handleSound(_event: KeyboardEvent): void {
+      if (_event.type == "keydown" && _event.keyCode == 77 && soundMuteCounter == 0) {
+        if (Sound.muted) {
+          Sound.muted = false;
+
+          if (Sound.musicStarted)
+            Sound.continueMusic();
+          else if (gameStarted)
+            Sound.playMusic();
+        }
+        else {
+          Sound.muted = true;
+          Sound.pauseMusic();
+        }
+        soundMuteCounter = 1;
+      }
+    }
     
     export function processInput(): void {
       //mute sound
@@ -58,7 +79,6 @@ namespace AdLunam {
           Sound.pauseMusic();
         }
         soundMuteCounter = 1;
-        console.log(Sound.muted);
         return;
       }
 
