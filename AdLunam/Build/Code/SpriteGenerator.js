@@ -130,7 +130,7 @@ var AdLunam;
     }
     AdLunam.SpriteGenerator = SpriteGenerator;
     async function generateSprites(_txtImage) {
-        let response = await fetch("../Code/SpriteData.json");
+        let response = await fetch("../Build/Resources/SpriteSheets/SpriteData.json");
         let offer = await response.text();
         let data = JSON.parse(offer);
         SpriteGenerator.data = data;

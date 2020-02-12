@@ -9,9 +9,7 @@ var AdLunam;
         keysPressed[_event.code] = (_event.type == "keydown");
     }
     async function start() {
-        AdLunam.fudge.Debug.log("Wait for enter");
         await waitForKeyPress(AdLunam.fudge.KEYBOARD_CODE.ENTER);
-        AdLunam.fudge.Debug.log("Enter pressed");
         AdLunam.Sound.playMusic();
         document.addEventListener("keydown", handleKeyboard);
         document.addEventListener("keyup", handleKeyboard);

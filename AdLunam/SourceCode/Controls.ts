@@ -15,9 +15,7 @@ namespace AdLunam {
     }
 
     export async function start(): Promise<void> {
-      fudge.Debug.log("Wait for enter");
       await waitForKeyPress(fudge.KEYBOARD_CODE.ENTER);
-      fudge.Debug.log("Enter pressed");
       Sound.playMusic();
       document.addEventListener("keydown", handleKeyboard);
       document.addEventListener("keyup", handleKeyboard);

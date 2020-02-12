@@ -33,7 +33,6 @@ var AdLunam;
                     if (child.name == "Item") {
                         let hitbox = child.hitbox;
                         if (this.detectHit(hitbox)) {
-                            console.log("HIT ITEM");
                             if (AdLunam.astronaut.item == AdLunam.ITEM.NONE && !_isBullet) {
                                 AdLunam.astronaut.item = child.type;
                                 AdLunam.Sound.play("item_pickup");
@@ -44,7 +43,6 @@ var AdLunam;
                     else if (child.name == "Alien") {
                         let hitbox = child.hitbox;
                         if (this.detectHit(hitbox)) {
-                            console.log("HIT ALIEN");
                             if (AdLunam.astronaut.item == AdLunam.ITEM.SHIELD || _isBullet) {
                                 AdLunam.astronaut.item = AdLunam.ITEM.NONE;
                                 child.cmpTransform.local.translateY(100);
