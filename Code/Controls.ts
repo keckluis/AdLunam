@@ -77,7 +77,10 @@ namespace AdLunam {
           let bullet: Bullet = new Bullet();
           bulletContainer.appendChild(bullet);
           bullet.cmpTransform.local.translation = astronaut.cmpTransform.local.translation;
-          bullet.cmpTransform.local.translateX(0.3);
+          if (astronaut.direction == DIRECTION.RIGHT)
+            bullet.cmpTransform.local.translateX(0.3);
+          else 
+            bullet.cmpTransform.local.translateX(-0.3);
           bullet.cmpTransform.local.translateY(0.22);
           astronaut.item = ITEM.NONE;
           Sound.play("gun");

@@ -74,11 +74,8 @@ namespace AdLunam {
         let images: any = document.querySelectorAll("img");
         txtImage = new fudge.TextureImage();
         txtImage.image = images[0];
-        Astronaut.generateSprites(txtImage);
-        Alien.generateSprites(txtImage);
-        Item.generateSprites(txtImage);
-        Bullet.generateSprites(txtImage);
-
+        generateSprites(txtImage);
+        
         txtPlatform = new fudge.TextureImage();
         txtPlatform.image = images[1];
         Platform.generateSprites(txtPlatform);

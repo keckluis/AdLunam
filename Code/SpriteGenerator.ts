@@ -39,10 +39,6 @@ namespace AdLunam {
         frame.timeScale = 1;
         this.frames.push(frame);
 
-        // fudge.Debug.log(frame.rectTexture.toString());
-        // fudge.Debug.log(frame.pivot.toString());
-        // fudge.Debug.log(frame.material);
-
         count++;
       }
     }
@@ -63,7 +59,6 @@ namespace AdLunam {
           break;
       }
 
-      rects.forEach((_rect: fudge.Rectangle) => fudge.Debug.log(_rect.toString()));
       this.generate(_texture, rects, _resolutionQuad, _origin);
     }
 
@@ -79,7 +74,6 @@ namespace AdLunam {
       frame.pivot.translate(new fudge.Vector3(rectQuad.position.x + rectQuad.size.x / 2, -rectQuad.position.y - rectQuad.size.y / 2, 0));
       frame.pivot.scaleX(rectQuad.size.x);
       frame.pivot.scaleY(rectQuad.size.y);
-      // fudge.Debug.log(rectQuad.toString());
 
       let coat: fudge.CoatTextured = new fudge.CoatTextured();
       coat.pivot.translate(frame.rectTexture.position);
@@ -88,7 +82,6 @@ namespace AdLunam {
       coat.texture = _texture;
 
       frame.material = new fudge.Material(_name, fudge.ShaderTexture, coat);
-      // fudge.Debug.log(coat.pivot.toString());  
 
       return frame;
     }
@@ -111,8 +104,6 @@ namespace AdLunam {
       this.addComponent(this.cmpMaterial);
 
       this.showFrame(this.frameCurrent);
-
-      fudge.Debug.info("NodeSprite constructor", this);
     }
 
     public showFrame(_index: number): void {
@@ -131,5 +122,55 @@ namespace AdLunam {
     public setFrameDirection(_direction: number): void {
       this.direction = Math.floor(_direction);
     }
+  }
+
+  export class SpriteGenerator {
+
+    public static data: any;
+
+    public static generateSprites(_txtImage: fudge.TextureImage): void {
+      Astronaut.sprites = [];
+      Alien.sprites = [];
+      Item.sprites = [];
+      Bullet.sprites = [];
+      let sprite: Sprite;
+
+      let i: number = 0;
+      while (SpriteGenerator.data[i] != null) {
+        sprite = new Sprite(this.data[i].name);
+        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(this.data[i].x, this.data[i].y, this.data[i].sizeX, this.data[i].sizeY), this.data[i].frames, fudge.Vector2.ZERO(), this.data[i].scale, fudge.ORIGIN2D.BOTTOMCENTER);
+
+        switch (this.data[i].type) {
+          case "Astronaut":
+            Astronaut.sprites.push(sprite);
+            break;
+          case "Alien":
+              Alien.sprites.push(sprite);
+              break;
+          case "Item":
+              Item.sprites.push(sprite);
+              break;
+          case "Bullet":
+              Bullet.sprites.push(sprite);
+              break;
+          default:
+              console.log("Type does not exist.");
+              break;
+        }
+        i++;
+      }
+    }
+  }
+
+  export async function generateSprites(_txtImage: fudge.TextureImage): Promise<void> {
+    let response: Response = await fetch("../Code/SpriteData.json");
+    let offer: string = await response.text();
+    let data: any = JSON.parse(offer);
+    SpriteGenerator.data = data;
+    SpriteGenerator.generateSprites(_txtImage);
+
+    for (let sprite of Astronaut.sprites) 
+        astronaut.nodeSprites(sprite);
+    astronaut.show(ACTION.IDLE, astronaut.item);
   }
 }

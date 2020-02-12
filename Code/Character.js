@@ -13,7 +13,7 @@ var AdLunam;
         DIRECTION[DIRECTION["RIGHT"] = 0] = "RIGHT";
         DIRECTION[DIRECTION["LEFT"] = 1] = "LEFT";
     })(DIRECTION = AdLunam.DIRECTION || (AdLunam.DIRECTION = {}));
-    class Character extends fudge.Node {
+    class Character extends AdLunam.HitboxObject {
         constructor(_name) {
             super(_name);
             this.speed = fudge.Vector3.ZERO();
@@ -32,11 +32,11 @@ var AdLunam;
             this.addComponent(new fudge.ComponentTransform());
             fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         }
-        createHitbox(_name, _yTranslation, _scale) {
-            let hitbox = new AdLunam.Hitbox(_name);
-            hitbox.cmpTransform.local.translateY(_yTranslation);
-            hitbox.cmpTransform.local.scale(_scale);
-            return hitbox;
+        nodeSprites(_sprite) {
+            let nodeSprite = new AdLunam.NodeSprite(_sprite.name, _sprite);
+            nodeSprite.activate(false);
+            nodeSprite.addEventListener("showNext", (_event) => { _event.currentTarget.showFrameNext(); }, true);
+            this.appendChild(nodeSprite);
         }
         checkCollision() {
             for (let platform of AdLunam.level.getChildren()) {
@@ -52,12 +52,6 @@ var AdLunam;
         }
         updateAdditions() {
             return;
-        }
-        nodeSprites(_sprite) {
-            let nodeSprite = new AdLunam.NodeSprite(_sprite.name, _sprite);
-            nodeSprite.activate(false);
-            nodeSprite.addEventListener("showNext", (_event) => { _event.currentTarget.showFrameNext(); }, true);
-            this.appendChild(nodeSprite);
         }
     }
     AdLunam.Character = Character;

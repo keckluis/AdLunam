@@ -10,18 +10,27 @@ namespace AdLunam {
       RIGHT, LEFT
     }
 
-    export class Character extends fudge.Node {
-       
-        public static sprites: Sprite[];
+    export class Character extends HitboxObject {
         public speed: fudge.Vector3 = fudge.Vector3.ZERO();
         public gravity: fudge.Vector2 = fudge.Vector2.Y(-7);
-        public hitbox: Hitbox;
         public speedMax: fudge.Vector2;
 
         public constructor(_name: string) {
             super(_name);
             this.addComponent(new fudge.ComponentTransform());
             fudge.Loop.addEventListener(fudge.EVENT.LOOP_FRAME, this.update);
+        }
+
+        public nodeSprites(_sprite: Sprite): void {
+            let nodeSprite: NodeSprite = new NodeSprite(_sprite.name, _sprite);
+            nodeSprite.activate(false);
+
+            nodeSprite.addEventListener(
+                "showNext",
+                (_event: Event) => { (<NodeSprite>_event.currentTarget).showFrameNext(); },
+                true
+            );
+            this.appendChild(nodeSprite);
         }
 
         public update = (_event: fudge.Eventƒ): void => {
@@ -40,13 +49,6 @@ namespace AdLunam {
             this.updateAdditions();
         }
 
-        public createHitbox(_name: string, _yTranslation: number, _scale: fudge.Vector3): Hitbox {
-            let hitbox: Hitbox = new Hitbox(_name);
-            hitbox.cmpTransform.local.translateY(_yTranslation);
-            hitbox.cmpTransform.local.scale(_scale);
-            return hitbox;
-        }
-
         public checkCollision(): void {
             for (let platform of level.getChildren()) {
                 let rect: fudge.Rectangle = (<Platform>platform).getRectWorld();
@@ -62,18 +64,6 @@ namespace AdLunam {
 
         public updateAdditions(): void {
             return;
-        }
-
-        public nodeSprites(_sprite: Sprite): void {
-            let nodeSprite: NodeSprite = new NodeSprite(_sprite.name, _sprite);
-            nodeSprite.activate(false);
-
-            nodeSprite.addEventListener(
-                "showNext",
-                (_event: Event) => { (<NodeSprite>_event.currentTarget).showFrameNext(); },
-                true
-            );
-            this.appendChild(nodeSprite);
         }
     }
 }

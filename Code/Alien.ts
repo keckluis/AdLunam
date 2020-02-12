@@ -16,13 +16,6 @@ namespace AdLunam {
         this.gravity = new fudge.Vector2(-1);
         this.act(DIRECTION.RIGHT);
       }
-
-      public static generateSprites(_txtImage: fudge.TextureImage): void {
-        Alien.sprites = [];
-        let sprite: Sprite = new Sprite("Alien");
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 74, 8, 10), 4, fudge.Vector2.ZERO(), 60, fudge.ORIGIN2D.BOTTOMCENTER);
-        Alien.sprites.push(sprite);
-      }
   
       public show(): void {
         for (let child of this.getChildren())

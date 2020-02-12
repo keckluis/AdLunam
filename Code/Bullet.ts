@@ -1,46 +1,27 @@
 namespace AdLunam {
     import fudge = FudgeCore;
 
-    export class Bullet extends fudge.Node {
-
-        private static sprites: Sprite[];
+    export class Bullet extends HitboxObject {
         public hit: boolean = false;
         public lifetime: number = 0;
         private direction: DIRECTION;
-        private hitbox: Hitbox;
 
         public constructor() {
             super("Bullet");
-            let nodeSprite: NodeSprite = new NodeSprite("BulletSprite", Bullet.sprites[0]);
+            let nodeSprite: NodeSprite = new NodeSprite("Bullet", Bullet.sprites[0]);
             nodeSprite.activate(false);
             this.appendChild(nodeSprite);
             this.addComponent(new fudge.ComponentTransform());
             this.show();
-            this.hitbox = this.createHitbox();
+            this.hitbox = this.createHitbox("BulletHitbox", 0.15, new fudge.Vector3(0.25, 0.35, 1));
             this.appendChild(this.hitbox);
             fudge.Loop.addEventListener(fudge.EVENT.LOOP_FRAME, this.update);
             this.direction = astronaut.direction;
         }
 
-        public static generateSprites(_txtImage: fudge.TextureImage): void {
-            Bullet.sprites = [];
-            let sprite: Sprite = new Sprite("BulletSprite");
-            sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(23, 87, 3, 1), 1, fudge.Vector2.ZERO(), 35, fudge.ORIGIN2D.CENTER);
-            Bullet.sprites.push(sprite);
-        }
-
-        public createHitbox(): Hitbox {
-            let hitbox: Hitbox = new Hitbox("BulletHitbox");
-            hitbox.cmpTransform.local.translateY(0.15);
-            hitbox.cmpTransform.local.scaleX(0.25);
-            hitbox.cmpTransform.local.scaleY(0.35);
-            this.hitbox = hitbox;
-            return hitbox;
-        }
-
         public show(): void {
             for (let child of this.getChildren()) 
-                child.activate(child.name == "BulletSprite");
+                child.activate(child.name == "Bullet");
         }
 
         public update = (_event: fudge.Eventƒ): void => {

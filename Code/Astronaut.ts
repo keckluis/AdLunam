@@ -5,89 +5,15 @@ namespace AdLunam {
       public item: ITEM = ITEM.NONE;
       public direction: DIRECTION = DIRECTION.RIGHT;
       public isOnFloor: boolean = false;
-      public hitbox: Hitbox;
       public jetpackUsed: boolean = false;
   
       public constructor() {
         super("Astronaut");
-        
-        for (let sprite of Astronaut.sprites) 
-          this.nodeSprites(sprite);
-    
+      
         this.hitbox = this.createHitbox("AstronautHitbox", 0.55, new fudge.Vector3(0.35, 0.55, 1));
         this.appendChild(this.hitbox);
 
         this.speedMax = new fudge.Vector2(2, 4);
-        this.show(ACTION.IDLE, this.item);
-      }
-  
-      public static generateSprites(_txtImage: fudge.TextureImage): void {
-        Astronaut.sprites = [];
-
-        //WALKING DEFAULT
-        let sprite: Sprite = new Sprite(ACTION.WALK + "." + ITEM.NONE);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(18, 0, 18, 18), 4, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
-        Astronaut.sprites.push(sprite);
-        
-        //IDLE DEFAULT
-        sprite = new Sprite(ACTION.IDLE + "." + ITEM.NONE);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 0, 18, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
-        Astronaut.sprites.push(sprite);
-
-        //JUMP DEFAULT
-        sprite = new Sprite(ACTION.JUMP + "." + ITEM.NONE);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(90, 0, 18, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
-        Astronaut.sprites.push(sprite);
-
-        //WALKING GUN
-        sprite = new Sprite(ACTION.WALK + "." + ITEM.GUN);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(18, 18, 18, 18), 4, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
-        Astronaut.sprites.push(sprite);
-        
-        //IDLE GUN
-        sprite = new Sprite(ACTION.IDLE + "." + ITEM.GUN);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 18, 18, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
-        Astronaut.sprites.push(sprite);
-
-        //JUMP GUN
-        sprite = new Sprite(ACTION.JUMP + "." + ITEM.GUN);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(90, 18, 18, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
-        Astronaut.sprites.push(sprite);
-
-        //WALKING SHIELD
-        sprite = new Sprite(ACTION.WALK + "." + ITEM.SHIELD);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(18, 36, 18, 18), 4, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
-        Astronaut.sprites.push(sprite);
-        
-        //IDLE SHIELD
-        sprite = new Sprite(ACTION.IDLE + "." + ITEM.SHIELD);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 36, 18, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
-        Astronaut.sprites.push(sprite);
-
-        //JUMP SHIELD
-        sprite = new Sprite(ACTION.JUMP + "." + ITEM.SHIELD);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(90, 36, 18, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
-        Astronaut.sprites.push(sprite);
-
-        //WALKING JETPACK
-        sprite = new Sprite(ACTION.WALK + "." + ITEM.JETPACK);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(18, 54, 18, 18), 4, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
-        Astronaut.sprites.push(sprite);
-        
-        //IDLE JETPACK
-        sprite = new Sprite(ACTION.IDLE + "." + ITEM.JETPACK);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(0, 54, 18, 18), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
-        Astronaut.sprites.push(sprite);
-
-        //JUMP JETPACK
-        sprite = new Sprite(ACTION.JUMP + "." + ITEM.JETPACK);
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(90, 54, 18, 20), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
-        Astronaut.sprites.push(sprite);
-
-        //JUMP JETPACK BOOST
-        sprite = new Sprite(ACTION.JUMP + "." + ITEM.JETPACK + "BOOST");
-        sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(88, 74, 20, 22), 1, fudge.Vector2.ZERO(), 30, fudge.ORIGIN2D.BOTTOMCENTER);
-        Astronaut.sprites.push(sprite);
       }
   
       public show(_action: ACTION, _item: ITEM): void {

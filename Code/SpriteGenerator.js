@@ -29,9 +29,6 @@ var AdLunam;
                 let frame = this.createFrame(this.name + `${count}`, _texture, framing, rect, _resolutionQuad, _origin);
                 frame.timeScale = 1;
                 this.frames.push(frame);
-                // fudge.Debug.log(frame.rectTexture.toString());
-                // fudge.Debug.log(frame.pivot.toString());
-                // fudge.Debug.log(frame.material);
                 count++;
             }
         }
@@ -48,7 +45,6 @@ var AdLunam;
                 if (rect.bottom > _texture.image.height)
                     break;
             }
-            rects.forEach((_rect) => fudge.Debug.log(_rect.toString()));
             this.generate(_texture, rects, _resolutionQuad, _origin);
         }
         createFrame(_name, _texture, _framing, _rect, _resolutionQuad, _origin) {
@@ -61,14 +57,12 @@ var AdLunam;
             frame.pivot.translate(new fudge.Vector3(rectQuad.position.x + rectQuad.size.x / 2, -rectQuad.position.y - rectQuad.size.y / 2, 0));
             frame.pivot.scaleX(rectQuad.size.x);
             frame.pivot.scaleY(rectQuad.size.y);
-            // fudge.Debug.log(rectQuad.toString());
             let coat = new fudge.CoatTextured();
             coat.pivot.translate(frame.rectTexture.position);
             coat.pivot.scale(frame.rectTexture.size);
             coat.name = _name;
             coat.texture = _texture;
             frame.material = new fudge.Material(_name, fudge.ShaderTexture, coat);
-            // fudge.Debug.log(coat.pivot.toString());  
             return frame;
         }
     }
@@ -85,7 +79,6 @@ var AdLunam;
             this.addComponent(this.cmpMesh);
             this.addComponent(this.cmpMaterial);
             this.showFrame(this.frameCurrent);
-            fudge.Debug.info("NodeSprite constructor", this);
         }
         showFrame(_index) {
             let spriteFrame = this.sprite.frames[_index];
@@ -103,5 +96,49 @@ var AdLunam;
         }
     }
     AdLunam.NodeSprite = NodeSprite;
+    class SpriteGenerator {
+        static generateSprites(_txtImage) {
+            AdLunam.Astronaut.sprites = [];
+            AdLunam.Alien.sprites = [];
+            AdLunam.Item.sprites = [];
+            AdLunam.Bullet.sprites = [];
+            let sprite;
+            let i = 0;
+            while (SpriteGenerator.data[i] != null) {
+                sprite = new Sprite(this.data[i].name);
+                sprite.generateByGrid(_txtImage, fudge.Rectangle.GET(this.data[i].x, this.data[i].y, this.data[i].sizeX, this.data[i].sizeY), this.data[i].frames, fudge.Vector2.ZERO(), this.data[i].scale, fudge.ORIGIN2D.BOTTOMCENTER);
+                switch (this.data[i].type) {
+                    case "Astronaut":
+                        AdLunam.Astronaut.sprites.push(sprite);
+                        break;
+                    case "Alien":
+                        AdLunam.Alien.sprites.push(sprite);
+                        break;
+                    case "Item":
+                        AdLunam.Item.sprites.push(sprite);
+                        break;
+                    case "Bullet":
+                        AdLunam.Bullet.sprites.push(sprite);
+                        break;
+                    default:
+                        console.log("Type does not exist.");
+                        break;
+                }
+                i++;
+            }
+        }
+    }
+    AdLunam.SpriteGenerator = SpriteGenerator;
+    async function generateSprites(_txtImage) {
+        let response = await fetch("../Code/SpriteData.json");
+        let offer = await response.text();
+        let data = JSON.parse(offer);
+        SpriteGenerator.data = data;
+        SpriteGenerator.generateSprites(_txtImage);
+        for (let sprite of AdLunam.Astronaut.sprites)
+            AdLunam.astronaut.nodeSprites(sprite);
+        AdLunam.astronaut.show(AdLunam.ACTION.IDLE, AdLunam.astronaut.item);
+    }
+    AdLunam.generateSprites = generateSprites;
 })(AdLunam || (AdLunam = {}));
 //# sourceMappingURL=SpriteGenerator.js.map

@@ -68,7 +68,10 @@ var AdLunam;
                 let bullet = new AdLunam.Bullet();
                 AdLunam.bulletContainer.appendChild(bullet);
                 bullet.cmpTransform.local.translation = AdLunam.astronaut.cmpTransform.local.translation;
-                bullet.cmpTransform.local.translateX(0.3);
+                if (AdLunam.astronaut.direction == AdLunam.DIRECTION.RIGHT)
+                    bullet.cmpTransform.local.translateX(0.3);
+                else
+                    bullet.cmpTransform.local.translateX(-0.3);
                 bullet.cmpTransform.local.translateY(0.22);
                 AdLunam.astronaut.item = AdLunam.ITEM.NONE;
                 AdLunam.Sound.play("gun");

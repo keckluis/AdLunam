@@ -1,0 +1,20 @@
+[
+{"type": "Astronaut", "name": "Walk.NONE", "x": 18, "y": 0, "sizeX": 18, "sizeY": 18, "frames": 4, "scale": 30},
+{"type": "Astronaut", "name": "Idle.NONE", "x": 0, "y": 0, "sizeX": 18, "sizeY": 18, "frames": 1, "scale": 30},
+{"type": "Astronaut", "name": "Jump.NONE", "x": 90, "y": 0, "sizeX": 18, "sizeY": 18, "frames": 1, "scale": 30},
+{"type": "Astronaut", "name": "Walk.GUN", "x": 18, "y": 18, "sizeX": 18, "sizeY": 18, "frames": 4, "scale": 30},
+{"type": "Astronaut", "name": "Idle.GUN", "x": 0, "y": 18, "sizeX": 18, "sizeY": 18, "frames": 1, "scale": 30},
+{"type": "Astronaut", "name": "Jump.GUN", "x": 90, "y": 18, "sizeX": 18, "sizeY": 18, "frames": 1, "scale": 30},
+{"type": "Astronaut", "name": "Walk.SHIELD", "x": 18, "y": 36, "sizeX": 18, "sizeY": 18, "frames": 4, "scale": 30},
+{"type": "Astronaut", "name": "Idle.SHIELD", "x": 0, "y": 36, "sizeX": 18, "sizeY": 18, "frames": 1, "scale": 30},
+{"type": "Astronaut", "name": "Jump.SHIELD", "x": 90, "y": 36, "sizeX": 18, "sizeY": 18, "frames": 1, "scale": 30},
+{"type": "Astronaut", "name": "Walk.JETPACK", "x": 18, "y": 54, "sizeX": 18, "sizeY": 18, "frames": 4, "scale": 30},
+{"type": "Astronaut", "name": "Idle.JETPACK", "x": 0, "y": 54, "sizeX": 18, "sizeY": 18, "frames": 1, "scale": 30},
+{"type": "Astronaut", "name": "Jump.JETPACK", "x": 90, "y": 54, "sizeX": 18, "sizeY": 20, "frames": 1, "scale": 30},
+{"type": "Astronaut", "name": "Jump.JETPACKBOOST", "x": 88, "y": 74, "sizeX": 20, "sizeY": 22, "frames": 1, "scale": 30},
+{"type": "Alien", "name": "Alien", "x": 0, "y": 74, "sizeX": 8, "sizeY": 10, "frames": 4, "scale": 60},
+{"type": "Item", "name": "JETPACK", "x": 0, "y": 86, "sizeX": 6, "sizeY": 9, "frames": 1, "scale": 40},
+{"type": "Item", "name": "GUN", "x": 8, "y": 86, "sizeX": 6, "sizeY": 9, "frames": 1, "scale": 40},
+{"type": "Item", "name": "SHIELD", "x": 16, "y": 86, "sizeX": 6, "sizeY": 9, "frames": 1, "scale": 40},
+{"type": "Bullet", "name": "Bullet", "x": 23, "y": 87, "sizeX": 3, "sizeY": 1, "frames": 1, "scale": 35}
+]
