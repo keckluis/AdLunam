@@ -124,9 +124,20 @@ namespace AdLunam {
     }
   }
 
+  interface Object {
+    type: string;
+    name: string;
+    x: number;
+    y: number;
+    sizeX: number;
+    sizeY: number;
+    frames: number;
+    scale: number;
+  }
+
   export class SpriteGenerator {
 
-    public static data: any;
+    public static data: Object[];
 
     public static generateSprites(_txtImage: fudge.TextureImage): void {
       Astronaut.sprites = [];
@@ -163,9 +174,9 @@ namespace AdLunam {
   }
 
   export async function generateSprites(_txtImage: fudge.TextureImage): Promise<void> {
-    let response: Response = await fetch("../Build/Resources/SpriteSheets/SpriteData.json");
+    let response: Response = await fetch("../Resources/SpriteSheets/SpriteData.json");
     let offer: string = await response.text();
-    let data: any = JSON.parse(offer);
+    let data: Object[] = JSON.parse(offer);
     SpriteGenerator.data = data;
     SpriteGenerator.generateSprites(_txtImage);
 
