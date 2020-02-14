@@ -174,7 +174,7 @@ namespace AdLunam {
   }
 
   export async function generateSprites(_txtImage: fudge.TextureImage): Promise<void> {
-    let response: Response = await fetch("../Resources/SpriteSheets/SpriteData.json");
+    let response: Response = await fetch("../Build/Resources/SpriteSheets/SpriteData.json");
     let offer: string = await response.text();
     let data: Object[] = JSON.parse(offer);
     SpriteGenerator.data = data;
