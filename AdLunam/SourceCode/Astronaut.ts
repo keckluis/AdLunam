@@ -66,7 +66,6 @@ namespace AdLunam {
           this.isOnFloor = false;
         
         if (this.isOnFloor && this.jetpackUsed) {
-          this.item = ITEM.NONE;
           this.jetpackUsed = false;
         }
       

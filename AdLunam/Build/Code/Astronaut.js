@@ -59,7 +59,6 @@ var AdLunam;
             else
                 this.isOnFloor = false;
             if (this.isOnFloor && this.jetpackUsed) {
-                this.item = AdLunam.ITEM.NONE;
                 this.jetpackUsed = false;
             }
             this.hitbox.checkCollision();
