@@ -42,7 +42,7 @@ namespace AdLunam {
       viewport.draw();
   
       fudge.Loop.addEventListener(fudge.EVENT.LOOP_FRAME, update);
-      fudge.Loop.start(fudge.LOOP_MODE.TIME_GAME, 20);
+      fudge.Loop.start(fudge.LOOP_MODE.TIME_GAME, 30);
 
       start();
 

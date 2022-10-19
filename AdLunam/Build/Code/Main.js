@@ -27,7 +27,7 @@ var AdLunam;
         viewport.initialize("Viewport", AdLunam.game, AdLunam.camera.cmpCamera, canvas);
         viewport.draw();
         AdLunam.fudge.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
-        AdLunam.fudge.Loop.start(AdLunam.fudge.LOOP_MODE.TIME_GAME, 20);
+        AdLunam.fudge.Loop.start(AdLunam.fudge.LOOP_MODE.TIME_GAME, 30);
         AdLunam.start();
         function update(_event) {
             if (AdLunam.gameOver)
